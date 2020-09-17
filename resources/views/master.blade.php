@@ -10,10 +10,10 @@
   <meta name="keywords" content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard">
   <meta name="author" content="PIXINVENT">
   <title>@yield('title', config('app.name', '@Master Layout'))</title>
-  <link rel="apple-touch-icon" href="public/img/logo.png">
-  <link rel="shortcut icon" type="public/image/x-icon" href="public/img/logo.png">
+  <link rel="apple-touch-icon" href="img/logo.png">
+  <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700" rel="stylesheet">
-  <script type="text/javascript" src="{{ asset('public/dx/js/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="{{ asset('dx/js/jquery.min.js') }}"></script>
 
 
 

@@ -1206,18 +1206,18 @@ $("#sotiettoidatrongbuoicuamon").change(function () {
 
 </script>
 
-<script type="text/javascript" src="public/js/rangbuoc/rangbuoctietcodinh.js"></script>
-<script type="text/javascript" src="public/js/rangbuoc/tiethopcuato.js"></script>
-<script type="text/javascript" src="public/js/rangbuoc/rangbuoctiettranhcuamon.js"></script>
-<script type="text/javascript" src="public/js/rangbuoc/rangbuoctiettranh2moncungbuoi.js"></script>
-<script type="text/javascript" src="public/js/rangbuoc/rangbuoccaptietxepliennhau.js"></script>
+<script type="text/javascript" src="js/rangbuoc/rangbuoctietcodinh.js"></script>
+<script type="text/javascript" src="js/rangbuoc/tiethopcuato.js"></script>
+<script type="text/javascript" src="js/rangbuoc/rangbuoctiettranhcuamon.js"></script>
+<script type="text/javascript" src="js/rangbuoc/rangbuoctiettranh2moncungbuoi.js"></script>
+<script type="text/javascript" src="js/rangbuoc/rangbuoccaptietxepliennhau.js"></script>
 
-<script type="text/javascript" src="public/js/rangbuoc/dangkybuoitietnghicuagv.js"></script>
-<script type="text/javascript" src="public/js/rangbuoc/tietgvbuocphaico.js"></script>
-<script type="text/javascript" src="public/js/rangbuoc/rangbuocsotiet5sangtiet1chieu.js"></script>
+<script type="text/javascript" src="js/rangbuoc/dangkybuoitietnghicuagv.js"></script>
+<script type="text/javascript" src="js/rangbuoc/tietgvbuocphaico.js"></script>
+<script type="text/javascript" src="js/rangbuoc/rangbuocsotiet5sangtiet1chieu.js"></script>
 
 <!-- a duc -->
-<!-- <script type="module" src="public/js\rangbuoc\toidabuoi.js"></script> -->
-<script type="module" src="public/js\rangbuoc\toidangay.js"></script>
+<!-- <script type="module" src="js\rangbuoc\toidabuoi.js"></script> -->
+<script type="module" src="js\rangbuoc\toidangay.js"></script>
 
 @endsection
