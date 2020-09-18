@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\khaibao;
 
 use App\danhsachgv;
 use App\danhsachlophoc;
@@ -80,17 +80,6 @@ class PhanconggiaovienDayController extends Controller
         }
     }
 
-    public function show($id)
-    {
-    }
-
-    public function update(Request $request, $id)
-    {
-    }
-
-    public function destroy($id)
-    {
-    }
 
     /**
      * Ham xoa toan bo cac phan mon cua giao vien

@@ -228,7 +228,7 @@
 							<div class="form-group">
 								<h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h5>
 								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="btnimportexcel"  onclick="document.getElementById('link').click()"><i class="fa fa-file-excel-o"></i> Tải file mẫu</button>	
-								<a id="link" href="public/excelfilemau/bangphancongtkb.xls" download hidden></a>
+								<a id="link" href="excelfilemau/bangphancongtkb.xls" download hidden></a>
 							</div>
 						</div>
 					</div>
@@ -1152,38 +1152,38 @@
 
 
 
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachgv.js"></script>
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachmonhoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachlophoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachtochuyenmon.js"></script>
-<script type="text/javascript" src="public/js/khaibao/danhsachgvcuatochuyenmon.js"></script>
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachphonghocbomon.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chongvthamgiagiangday.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chonmonhoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chonlophoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chontochuyenmon.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chonphonghoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/sotiettrongbuoi.js"></script>
-<script type="text/javascript" src="public/js/khaibao/sotietmoimon.js"></script>
-<script type="module" src="public/js/khaibao/js\pccm\index.js"></script>
-<script type="text/javascript" src='public/dx/js/jszip/dist/xlsx.full.min.js'></script>
+<script type="text/javascript" src="js/khaibao/nhapdanhsachgv.js"></script>
+<script type="text/javascript" src="js/khaibao/nhapdanhsachmonhoc.js"></script>
+<script type="text/javascript" src="js/khaibao/nhapdanhsachlophoc.js"></script>
+<script type="text/javascript" src="js/khaibao/nhapdanhsachtochuyenmon.js"></script>
+<script type="text/javascript" src="js/khaibao/danhsachgvcuatochuyenmon.js"></script>
+<script type="text/javascript" src="js/khaibao/nhapdanhsachphonghocbomon.js"></script>
+<script type="text/javascript" src="js/khaibao/chongvthamgiagiangday.js"></script>
+<script type="text/javascript" src="js/khaibao/chonmonhoc.js"></script>
+<script type="text/javascript" src="js/khaibao/chonlophoc.js"></script>
+<script type="text/javascript" src="js/khaibao/chontochuyenmon.js"></script>
+<script type="text/javascript" src="js/khaibao/chonphonghoc.js"></script>
+<script type="text/javascript" src="js/khaibao/sotiettrongbuoi.js"></script>
+<script type="text/javascript" src="js/khaibao/sotietmoimon.js"></script>
+<script type="module" src="js/khaibao/js\pccm\index.js"></script>
+<script type="text/javascript" src='dx/js/jszip/dist/xlsx.full.min.js'></script>
 
 
 
 <!-- 
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachgv.js"></script>
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachmonhoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachlophoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachtochuyenmon.js"></script>
-<script type="text/javascript" src="public/js/khaibao/danhsachgvcuatochuyenmon.js"></script>
-<script type="text/javascript" src="public/js/khaibao/nhapdanhsachphonghocbomon.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chongvthamgiagiangday.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chonmonhoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chonlophoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chontochuyenmon.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chonphonghoc.js"></script>
-<script type="text/javascript" src="public/js/khaibao/chonbuoihoc.js"></script>
-<script type="text/javascript" src='public/dx/js/jszip/dist/xlsx.full.min.js'></script> -->
+<script type="text/javascript" src="js/khaibao/nhapdanhsachgv.js"></script>
+<script type="text/javascript" src="js/khaibao/nhapdanhsachmonhoc.js"></script>
+<script type="text/javascript" src="js/khaibao/nhapdanhsachlophoc.js"></script>
+<script type="text/javascript" src="js/khaibao/nhapdanhsachtochuyenmon.js"></script>
+<script type="text/javascript" src="js/khaibao/danhsachgvcuatochuyenmon.js"></script>
+<script type="text/javascript" src="js/khaibao/nhapdanhsachphonghocbomon.js"></script>
+<script type="text/javascript" src="js/khaibao/chongvthamgiagiangday.js"></script>
+<script type="text/javascript" src="js/khaibao/chonmonhoc.js"></script>
+<script type="text/javascript" src="js/khaibao/chonlophoc.js"></script>
+<script type="text/javascript" src="js/khaibao/chontochuyenmon.js"></script>
+<script type="text/javascript" src="js/khaibao/chonphonghoc.js"></script>
+<script type="text/javascript" src="js/khaibao/chonbuoihoc.js"></script>
+<script type="text/javascript" src='dx/js/jszip/dist/xlsx.full.min.js'></script> -->
 
 
 @endsection

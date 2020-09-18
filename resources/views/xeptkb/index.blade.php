@@ -505,5 +505,5 @@
 
 
 
-	<script type="module" src="public/js/xeptkb/xeptkb.js"></script>
+	<script type="module" src="js/xeptkb/xeptkb.js"></script>
 	@endsection

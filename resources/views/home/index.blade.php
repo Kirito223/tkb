@@ -7,7 +7,7 @@
 	<div class="col-xl-12 col-md-12 col-sm-12">
 		<div class="card" >
 			<div class="card-content">
-				<img class="card-img-top img-fluid" src="public/img/backgroud.png" alt="Card image cap">
+				<img class="card-img-top img-fluid" src="img/backgroud.png" alt="Card image cap">
 				<div class="card-body">
 				</div>
 			</div>

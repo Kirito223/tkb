@@ -51,7 +51,6 @@ class LoginController extends Controller
 				Session::put('mahuyen', $user->mahuyen);
 				Session::put('loaixa', $user->loaixa);
 				Session::put('level', $user->level);
-
 				// Auth::login($user, true);
 				return redirect('/');
 			} else {

@@ -11,24 +11,24 @@
     <meta name="keywords" content="admin template, robust admin template, dashboard template, flat admin template, responsive admin template, web app, crypto dashboard, bitcoin dashboard" />
     <meta name="author" content="PIXINVENT" />
     <title>Thời khóa biểu LIHANET</title>
-    <link rel="apple-touch-icon" href="public/theme/app-assets/images/ico/apple-icon-120.png" />
-    <link rel="shortcut icon" type="public/image/x-icon" href="public/img/logo.png" />
+    <link rel="apple-touch-icon" href="theme/app-assets/images/ico/apple-icon-120.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo.png" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i%7CMuli:300,400,500,700" rel="stylesheet" />
     <!-- BEGIN VENDOR CSS-->
-    <link rel="stylesheet" type="text/css" href="public/theme/app-assets/css/vendors.min.css" />
-    <link rel="stylesheet" type="text/css" href="public/theme/app-assets/vendors/css/forms/icheck/icheck.css" />
-    <link rel="stylesheet" type="text/css" href="public/theme/app-assets/vendors/css/forms/icheck/custom.css" />
+    <link rel="stylesheet" type="text/css" href="theme/app-assets/css/vendors.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/app-assets/vendors/css/forms/icheck/icheck.css" />
+    <link rel="stylesheet" type="text/css" href="theme/app-assets/vendors/css/forms/icheck/custom.css" />
     <!-- END VENDOR CSS-->
     <!-- BEGIN ROBUST CSS-->
-    <link rel="stylesheet" type="text/css" href="public/theme/app-assets/css/app.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/app-assets/css/app.min.css" />
     <!-- END ROBUST CSS-->
     <!-- BEGIN Page Level CSS-->
-    <link rel="stylesheet" type="text/css" href="public/theme/app-assets/css/core/menu/menu-types/vertical-menu.min.css" />
-    <link rel="stylesheet" type="text/css" href="public/theme/app-assets/css/core/colors/palette-gradient.min.css" />
-    <link rel="stylesheet" type="text/css" href="public/theme/app-assets/css/pages/login-register.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/app-assets/css/core/menu/menu-types/vertical-menu.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/app-assets/css/core/colors/palette-gradient.min.css" />
+    <link rel="stylesheet" type="text/css" href="theme/app-assets/css/pages/login-register.min.css" />
     <!-- END Page Level CSS-->
     <!-- BEGIN Custom CSS-->
-    <link rel="stylesheet" type="text/css" href="public/theme/assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="theme/assets/css/style.css" />
     <!-- END Custom CSS-->
 </head>
 <body class="vertical-layout vertical-menu 1-column   menu-expanded blank-page blank-page" data-open="click" data-menu="vertical-menu" data-col="1-column">
@@ -42,7 +42,7 @@
                     <div class="card border-grey border-lighten-3 m-0">
                         <div class="card-header border-0">
                             <div class="card-title text-center">
-                                <div class="p-1"><img src="public/img/logo.png" alt="branding logo" /></div>
+                                <div class="p-1"><img src="img/logo.png" alt="branding logo" /></div>
                             </div>
                             <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2"><span>Đăng nhập</span></h6>
                         </div>
@@ -117,18 +117,18 @@
 <!-- ////////////////////////////////////////////////////////////////////////////-->
 
 <!-- BEGIN VENDOR JS-->
-<script src="public/theme/app-assets/vendors/js/vendors.min.js"></script>
+<script src="theme/app-assets/vendors/js/vendors.min.js"></script>
 <!-- BEGIN VENDOR JS-->
 <!-- BEGIN PAGE VENDOR JS-->
-<script src="public/theme/app-assets/vendors/js/forms/icheck/icheck.min.js"></script>
-<script src="public/theme/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
+<script src="theme/app-assets/vendors/js/forms/icheck/icheck.min.js"></script>
+<script src="theme/app-assets/vendors/js/forms/validation/jqBootstrapValidation.js"></script>
 <!-- END PAGE VENDOR JS-->
 <!-- BEGIN ROBUST JS-->
-<script src="public/theme/app-assets/js/core/app-menu.min.js"></script>
-<script src="public/theme/app-assets/js/core/app.min.js"></script>
+<script src="theme/app-assets/js/core/app-menu.min.js"></script>
+<script src="theme/app-assets/js/core/app.min.js"></script>
 <!-- END ROBUST JS-->
 <!-- BEGIN PAGE LEVEL JS-->
-<script src="public/theme/app-assets/js/scripts/forms/form-login-register.min.js"></script>
+<script src="theme/app-assets/js/scripts/forms/form-login-register.min.js"></script>
 <!-- END PAGE LEVEL JS-->
 </body>
 </html>

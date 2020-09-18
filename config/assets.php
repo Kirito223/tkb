@@ -31,10 +31,11 @@ return [
                 // Vị trí chèn, trên header hay dưới footer, có thể là top hoặc bottom
                 'src'      => [
                     'local' => [
-                        'theme/app-assets/vendors/js/vendors.min.js',                          
+                        'theme/app-assets/vendors/js/vendors.min.js',
                         'theme/app-assets/js/core/app-menu.min.js',
                         'theme/app-assets/js/core/app.min.js',
                         'theme/app-assets/js/scripts/customizer.min.js',
+                        'datepicker/js/bootstrap-datepicker.js'
                     ],
                     // Đường dẫn tới thư viện
                 ],
@@ -43,11 +44,10 @@ return [
                 'use_cdn'  => false,
                 'location' => 'footer',
                 'src'      => [
-                    'local' => [   
+                    'local' => [
                         'assets/axios/dist/axios.min.js',
                         'assets/sweetalert2/dist/sweetalert2.all.min.js',
                         'theme/app-assets/vendors/js/forms/select/select2.full.min.js',
-
                     ],
                 ],
             ],
@@ -56,7 +56,7 @@ return [
                 'location' => 'footer',
                 'src'      => [
                     'local' => [
-                        'dx/js/dx.all.js',                        
+                        'dx/js/dx.all.js',
                     ],
                 ],
             ],
@@ -110,8 +110,7 @@ return [
                         'theme/app-assets/vendors/css/forms/selects/select2.min.css',
                     ],
                 ],
-                'attributes' => [
-                ],
+                'attributes' => [],
             ],
         ],
     ],

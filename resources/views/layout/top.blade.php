@@ -5,7 +5,7 @@
                 <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="navbar-brand" href="/"><img class="brand-logo" alt="robust admin logo" src="public/img/logo.png">
+                    <a class="navbar-brand" href="/"><img class="brand-logo" alt="robust admin logo" src="img/logo.png">
                         <h3 class="brand-text">Thời khóa biểu</h3>
                     </a>
                 </li>
@@ -95,7 +95,7 @@
                                             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                                 <span class="avatar avatar-online">
 
-                                                    <img src="public/img/logo.png" alt="avatar">
+                                                    <img src="img/logo.png" alt="avatar">
                                                 </span>
 
                                                 <span class="user-name">{{Auth::user()->tentaikhoan}}</span>

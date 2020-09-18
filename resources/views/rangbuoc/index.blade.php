@@ -1027,23 +1027,6 @@
 				</div>
 			</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			<!-- script -->
 			<script type="text/javascript">
 
@@ -1217,7 +1200,6 @@ $("#sotiettoidatrongbuoicuamon").change(function () {
 <script type="text/javascript" src="js/rangbuoc/rangbuocsotiet5sangtiet1chieu.js"></script>
 
 <!-- a duc -->
-<!-- <script type="module" src="js\rangbuoc\toidabuoi.js"></script> -->
 <script type="module" src="js\rangbuoc\toidangay.js"></script>
 
 @endsection
