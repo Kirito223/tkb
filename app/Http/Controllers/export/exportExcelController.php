@@ -167,9 +167,9 @@ class exportExcelController extends Controller
         $rowTeacher = 7;
         foreach ($arrteacherRest as $restItem) {
             // Merge row
-            $sheetTKBSchool->mergeCellsByColumnAndRow($lastColumn, $rowTeacher, $lastColumn, $rowTeacher + 4);
+            $sheetTKBSchool->mergeCellsByColumnAndRow($lastColumn, $rowTeacher, $lastColumn, $rowTeacher + 9);
             $sheetTKBSchool->setCellValueByColumnAndRow($lastColumn, $rowTeacher, $restItem);
-            $rowTeacher = $rowTeacher + 5;
+            $rowTeacher = $rowTeacher + 10;
         }
         $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn, $totalRow - 4)->getCoordinate();
 
