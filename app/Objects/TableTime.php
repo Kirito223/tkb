@@ -27,4 +27,5 @@ class TableTime extends ObjectClass
     {
         return $this->name;
     }
+
 }

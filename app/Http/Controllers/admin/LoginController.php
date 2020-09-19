@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\tbl_admin;
 use App\User;
 use App\Http\Controllers\Controller;
+use App\truong;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -20,10 +21,11 @@ class LoginController extends Controller
 		return view('admin.login');
 	}
 
-	public function postLogin(Request $request) {
-	// Kiểm tra dữ liệu nhập vào
+	public function postLogin(Request $request)
+	{
+		// Kiểm tra dữ liệu nhập vào
 		$rules = [
-			'tentaikhoan' =>'required|string',
+			'tentaikhoan' => 'required|string',
 			'password' => 'required|min:6'
 		];
 		$messages = [
@@ -35,26 +37,28 @@ class LoginController extends Controller
 		$validator = Validator::make($request->all(), $rules, $messages);
 
 		if ($validator->fails()) {
-		// Điều kiện dữ liệu không hợp lệ sẽ chuyển về trang đăng nhập và thông báo lỗi
+			// Điều kiện dữ liệu không hợp lệ sẽ chuyển về trang đăng nhập và thông báo lỗi
 			return redirect('login')->withErrors($validator)->withInput();
 		} else {
-		// Nếu dữ liệu hợp lệ sẽ kiểm tra trong csdl
+			// Nếu dữ liệu hợp lệ sẽ kiểm tra trong csdl
 			$tentaikhoan = $request->get('tentaikhoan');
 			$password = $request->get('password');
 
-			if(Auth::attempt(['tentaikhoan' => $tentaikhoan, 'password' =>$password])) {
-			// Kiểm tra đúng email và mật khẩu sẽ chuyển trang
+			if (Auth::attempt(['tentaikhoan' => $tentaikhoan, 'password' => $password])) {
+				// Kiểm tra đúng email và mật khẩu sẽ chuyển trang
 				$user = Auth::user();
+				$school = truong::where('id', $user->matruong)->first();
 				Session::put('id', $user->id);
 				Session::put('tentaikhoan', $user->tentaikhoan);
 				Session::put('matruong', $user->matruong);
 				Session::put('mahuyen', $user->mahuyen);
 				Session::put('loaixa', $user->loaixa);
 				Session::put('level', $user->level);
+				Session::put('schoolName', $school->tentruong);
 				// Auth::login($user, true);
 				return redirect('/');
 			} else {
-			// Kiểm tra không đúng sẽ hiển thị thông báo lỗi
+				// Kiểm tra không đúng sẽ hiển thị thông báo lỗi
 				Session::flash('error', 'Tài khoản hoặc mật khẩu không đúng!');
 				return back();
 			}
@@ -67,5 +71,4 @@ class LoginController extends Controller
 		Session::put('matruong', '0');
 		return redirect()->route('login');
 	}
-
 }

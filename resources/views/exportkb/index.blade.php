@@ -48,12 +48,13 @@
 									<div class="form-group">
 										<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
 											<button type="button" id="btnDownloadTKB" class="btn btn-success">Tải
-												tkb</button>
+												thời khóa biểu</button>
 											<button type="button" class="btn btn-danger">Gửi tkb cho GV qua
 												email</button>
 											<button type="button" class="btn btn-primary"> Lưu tkb trực tuyến</button>
 											<button type="button" class="btn btn-info"> Xuất tkb để tra cứu</button>
 										</div>
+
 									</div>
 									<a class="heading-elements-toggle"><i
 											class="fa fa-ellipsis-v font-medium-3"></i></a>
