@@ -47,7 +47,7 @@ class LoginController extends Controller
 			if (Auth::attempt(['tentaikhoan' => $tentaikhoan, 'password' => $password])) {
 				// Kiểm tra đúng email và mật khẩu sẽ chuyển trang
 				$user = Auth::user();
-				$school = truong::where('id', $user->matruong)->first();
+				$school = truong::where('matruong', $user->matruong)->first();
 				Session::put('id', $user->id);
 				Session::put('tentaikhoan', $user->tentaikhoan);
 				Session::put('matruong', $user->matruong);

@@ -14,4 +14,5 @@ class Day
 
     public static $MORNING = 1;
     public static $AFTERNOON = 11;
+    public static $MIDDAY = 6;
 }
