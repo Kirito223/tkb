@@ -56,6 +56,13 @@
 										</div>
 
 									</div>
+									<div class="form-group">
+										<div class="progress">
+											<div class="progress-bar progress-bar-striped progress-bar-animated"
+												role="progressbar" aria-valuenow="75" aria-valuemin="0"
+												aria-valuemax="100" style="width:100%">Đang tải dữ liệu</div>
+										</div>
+									</div>
 									<a class="heading-elements-toggle"><i
 											class="fa fa-ellipsis-v font-medium-3"></i></a>
 									<div class="heading-elements">

@@ -54,6 +54,7 @@ function initControl() {
     btnDownloadTKB = document.getElementById("btnDownloadTKB");
     $("#dateprocess").datepicker();
     tkbNo = document.getElementById("tkbNo");
+
 }
 
 async function initListTeacher() {

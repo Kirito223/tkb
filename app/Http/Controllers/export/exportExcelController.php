@@ -40,10 +40,17 @@ class exportExcelController extends Controller
 
         // TKB School
 
-        $sheet->setActiveSheetIndex(0);
-        $sheetTKBSchool = $sheet->getActiveSheet();
-        // export data to school timetabl
-        $this->exportTKBSchool($sheetTKBSchool, $param->date, $param->tkbNo);
+        // $sheet->setActiveSheetIndex(0);
+
+        // $sheetTKBSchool = $sheet->getActiveSheet();
+        // // export data to school timetabl
+
+        // $this->exportTKBSchool($sheetTKBSchool, $param->date, $param->tkbNo);
+
+        $sheet->setActiveSheetIndex(1);
+        $sheetTKBTeacherTypeOne = $sheet->getActiveSheet();
+        $this->exportTKBTecherTypeOne($sheetTKBTeacherTypeOne, $param->date, $param->tkbNo);
+
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($sheet);
         if (!file_exists(public_path('export'))) {
@@ -173,35 +180,9 @@ class exportExcelController extends Controller
         }
         $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn, $totalRow - 4)->getCoordinate();
 
-        $sheetTKBSchool->mergeCellsByColumnAndRow($lastColumn - 3, $totalRow, $lastColumn,  $totalRow);
-        $sheetTKBSchool->setCellValueByColumnAndRow($lastColumn - 3,  $totalRow, "KT. HIỆU TRƯỞNG");
+        $this->sign($sheetTKBSchool, $lastColumn, $totalRow);
 
-        $cellPrincipal = $sheetTKBSchool->getCellByColumnAndRow($lastColumn - 3, $totalRow)->getCoordinate();
-        $sheetTKBSchool->getStyle($cellPrincipal)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $sheetTKBSchool->getStyle($cellPrincipal)->getFont()->setBold(true);
-
-        $totalRow++;
-        $sheetTKBSchool->mergeCellsByColumnAndRow($lastColumn - 3, $totalRow, $lastColumn,  $totalRow);
-        $sheetTKBSchool->setCellValueByColumnAndRow($lastColumn - 3,  $totalRow, "PHÓ HIỆU TRƯỞNG");
-
-        $cellPrincipal = $sheetTKBSchool->getCellByColumnAndRow($lastColumn - 3, $totalRow)->getCoordinate();
-        $sheetTKBSchool->getStyle($cellPrincipal)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-        $sheetTKBSchool->getStyle($cellPrincipal)->getFont()->setBold(true);
-
-        $sheetTKBSchool->mergeCellsByColumnAndRow(1, 2, $lastColumn, 2);
-        $sheetTKBSchool->setCellValueByColumnAndRow(1, 2, "THỜI KHÓA BIỂU SỐ " . $no);
-        $sheetTKBSchool->mergeCellsByColumnAndRow(1, 3, $lastColumn, 3);
-        $sheetTKBSchool->setCellValueByColumnAndRow(1, 3, "Ngày thực hiện " . $date);
-
-        $sheetTKBSchool->getStyle("A2:" . $lastCellAddress)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $sheetTKBSchool->getStyle("A2:" . $lastCellAddress)->getFont()->setBold(true);
-
-
-        $sheetTKBSchool->getStyle("A3:" . $lastCellAddress)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
-
-        $sheetTKBSchool->getStyle("A3:" . $lastCellAddress)->getFont()->setBold(true);
-
+        $this->headerRow($sheetTKBSchool, $lastColumn, $lastCellAddress, $no, $date);
         $styleArray = [
             'borders' => [
                 'outline' => [
@@ -224,17 +205,146 @@ class exportExcelController extends Controller
         $sheetTKBSchool->getStyle("A1")->getFont()->setBold(true);
     }
 
-    private function exportTKBClass()
+    private function exportTKBClass($sheetTKBSchool, $date, $no)
     {
     }
 
-    private function exportTKBTecher()
+    private function setBorder($sheet, $cellFrist,  $lastCellAddress)
+    {
+        $styleArray = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                    'borderSize' => 1,
+                ],
+                'inside' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'], 'borderSize' => 1,
+                ),
+            ],
+        ];
+
+        $sheet->getStyle($cellFrist . $lastCellAddress)->applyFromArray($styleArray);
+    }
+
+    private function headerRow($sheet, $lastColumn, $lastCellAddress, $no, $date)
+    {
+
+        $sheet->mergeCellsByColumnAndRow(1, 2, $lastColumn, 2);
+        $sheet->setCellValueByColumnAndRow(1, 2, "THỜI KHÓA BIỂU SỐ " . $no);
+        $sheet->mergeCellsByColumnAndRow(1, 3, $lastColumn, 3);
+        $sheet->setCellValueByColumnAndRow(1, 3, "Ngày thực hiện " . $date);
+
+        $sheet->getStyle("A2:" . $lastCellAddress)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $sheet->getStyle("A2:" . $lastCellAddress)->getFont()->setBold(true);
+
+
+        $sheet->getStyle("A3:" . $lastCellAddress)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $sheet->getStyle("A3:" . $lastCellAddress)->getFont()->setBold(true);
+    }
+
+    private function sign($sheet, $lastColumn, $totalRow)
+    {
+        $sheet->mergeCellsByColumnAndRow($lastColumn - 3, $totalRow, $lastColumn,  $totalRow);
+        $sheet->setCellValueByColumnAndRow($lastColumn - 3,  $totalRow, "KT. HIỆU TRƯỞNG");
+
+        $cellPrincipal = $sheet->getCellByColumnAndRow($lastColumn - 3, $totalRow)->getCoordinate();
+        $sheet->getStyle($cellPrincipal)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle($cellPrincipal)->getFont()->setBold(true);
+
+        $totalRow++;
+        $sheet->mergeCellsByColumnAndRow($lastColumn - 3, $totalRow, $lastColumn,  $totalRow);
+        $sheet->setCellValueByColumnAndRow($lastColumn - 3,  $totalRow, "PHÓ HIỆU TRƯỞNG");
+
+        $cellPrincipal = $sheet->getCellByColumnAndRow($lastColumn - 3, $totalRow)->getCoordinate();
+        $sheet->getStyle($cellPrincipal)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle($cellPrincipal)->getFont()->setBold(true);
+    }
+
+    private function exportTKBTecherTypeOne($sheetTKBTeacher, $date, $no)
+    {
+        $listTeacher = danhsachgv::where('matruong', $this->sessionInfo->getSchoolId())->get();
+        $rowHead = 4;
+        $indexColum = 3;
+        $lastColumn = 0;
+        // Render Header with list teacher
+        foreach ($listTeacher as $teacher) {
+            $sheetTKBTeacher->setCellValueByColumnAndRow($indexColum, $rowHead, $teacher->hovaten);
+            $indexColum++;
+        }
+
+        // Get data
+        $tableTime = array();
+
+        for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+            for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
+                foreach ($listTeacher as $objTeacher) {
+                    // get table time of morning
+                    $table = thoikhoabieu::where('thu', $day)
+                        ->where('tiet', $session)
+                        ->where('magiaovien', $objTeacher->id)
+                        ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+                        ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
+                        ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
+                        ->first();
+
+                    if ($table != null) {
+                        $item = new TableTime($day, $session, $table->tenmonhoc, $table->tenlop);
+                        array_push($tableTime, $item);
+                    } else {
+                        array_push($tableTime, null);
+                    }
+                }
+            }
+        }
+
+        // Render Tabletime
+        $indexColum = 3;
+        $totalRow = 64;
+        $indexTable = 0;
+        $titleLenght = count($listTeacher);
+
+        for ($indexRowbody = 5; $indexRowbody < $totalRow; $indexRowbody++) {
+            $indexColum = 3;
+            while ($indexColum < $titleLenght) {
+                if ($indexColum == 35) {
+                    $p = 1;
+                }
+                $tableItem = $tableTime[$indexTable];
+                if ($tableItem != null) {
+                    $sheetTKBTeacher->setCellValueByColumnAndRow($indexColum, $indexRowbody, $tableItem->getSubject() . "-" . $tableItem->getName());
+                    $indexColum++;
+                } else {
+                    $sheetTKBTeacher->setCellValueByColumnAndRow($indexColum, $indexRowbody, "");
+                    $indexColum++;
+                }
+                $lastColumn = $indexColum;
+                if ($indexTable < count($tableTime)) {
+                    $indexTable++;
+                }
+            }
+        }
+        $lastCellAddress = $sheetTKBTeacher->getCellByColumnAndRow($lastColumn, $totalRow)->getCoordinate();
+        $this->headerRow($sheetTKBTeacher, $lastColumn, $lastCellAddress, $no, $date);
+        $this->sign($sheetTKBTeacher, $lastColumn, $totalRow + 2);
+        $this->setBorder($sheetTKBTeacher, "A4:", $lastCellAddress);
+    }
+
+    private function exportTKBTecherTypeTwo($sheetTKBSchool, $date, $no)
     {
     }
-    private function exportTKBRoomDepartment()
+
+    private function exportTKBTecherTypeThree($sheetTKBSchool, $date, $no)
     {
     }
-    private function exportTKBGroup()
+
+    private function exportTKBRoomDepartment($sheetTKBSchool, $date, $no)
+    {
+    }
+    private function exportTKBGroup($sheetTKBSchool, $date, $no)
     {
     }
 }
