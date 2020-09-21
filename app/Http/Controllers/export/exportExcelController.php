@@ -54,9 +54,13 @@ class exportExcelController extends Controller
         // $this->exportTKBTecherTypeOne($sheetTKBTeacherTypeOne, $param->date, $param->tkbNo);
 
 
-        $sheet->setActiveSheetIndex(2);
-        $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
-        $this->exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $param->date, $param->tkbNo);
+        // $sheet->setActiveSheetIndex(2);
+        // $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
+        // $this->exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $param->date, $param->tkbNo);
+
+        $sheet->setActiveSheetIndex(3);
+        $sheetTKBTeacherTypeThree = $sheet->getActiveSheet();
+        $this->exportTKBTecherTypeThree($sheetTKBTeacherTypeThree, $param->date, $param->tkbNo);
 
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($sheet);
@@ -425,8 +429,100 @@ class exportExcelController extends Controller
         $sheetTKBTeacherTypeTwo->setCellValue("A3", "Thời gian thực hiện " . $date);
     }
 
-    private function exportTKBTecherTypeThree($sheetTKBSchool, $date, $no)
+    private function exportTKBTecherTypeThree($sheetTKBSchoolThree, $date, $no)
     {
+        $tableTime = array();
+        $listTeacher = danhsachgv::where('matruong', $this->sessionInfo->getSchoolId())->get();
+
+        // construction tableTime;
+        foreach ($listTeacher as $teacher) {
+            $arrMorning = array();
+            $arrAfternoon = array();
+
+            // Get morning
+            for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$AFTERNOON; $sessionMorning++) {
+                for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+                    $table = thoikhoabieu::where('thu', $day)
+                        ->where('buoi', 1)
+                        ->where('tiet', $sessionMorning)
+                        ->where('magiaovien', $teacher->id)
+                        ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+                        ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
+                        ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop', 'thoikhoabieu.tiet')
+                        ->first();
+                    array_push($arrMorning, $table);
+                }
+            }
+            // Get afternoon
+            for ($sessionAfterNoon = Day::$MORNING; $sessionAfterNoon < Day::$MIDDAY; $sessionAfterNoon++) {
+                for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+                    $table = thoikhoabieu::where('thu', $day)
+                        ->where('buoi', 2)
+                        ->where('tiet', $sessionAfterNoon)
+                        ->where('magiaovien', $teacher->id)
+                        ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+                        ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
+                        ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop', 'thoikhoabieu.tiet')
+                        ->first();
+                    array_push($arrAfternoon, $table);
+                }
+            }
+            $itemTeacher = new TableTimeTypeTwo($teacher->hovaten, $arrMorning, $arrAfternoon);
+            array_push($tableTime, $itemTeacher);
+        }
+        // Generate TimeTable
+        $row = 3;
+
+        $rowTableBody = 4;
+        // Render Header Table
+        foreach ($tableTime as $item) {
+            // Render Header
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(1, $row, "Buổi");
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(2, $row, "Tiết");
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(3, $row, "Thứ 2");
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(4, $row, "Thứ 3");
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(5, $row, "Thứ 4");
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(6, $row, "Thứ 5");
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(7, $row, "Thứ 6");
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(8, $row, "Thứ 7");
+            // Render Body Table
+            $row++;
+            $sheetTKBSchoolThree->mergeCellsByColumnAndRow(1, $row, 1, $row + 4);
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(1, $row, "Sáng");
+            $row += 5;
+            $sheetTKBSchoolThree->mergeCellsByColumnAndRow(1, $row, 1, $row + 4);
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(1, $row, "Chiều");
+            // Render Morning
+            // Redner session
+
+            for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
+                $sheetTKBSchoolThree->setCellValueByColumnAndRow(2, $rowTableBody, $session);
+                $rowTableBody++;
+            }
+            $row += 12;
+            $rowTableBody = $rowTableBody + 8;
+        }
+
+        $columnTableTime = 3;
+        $rowTableBody = 4;
+        foreach ($tableTime as $item) {
+            $tableMorning = $item->getTableTimeMorning();
+            foreach ($tableMorning as $key => $table) {
+                if ($table != null) {
+                    $sheetTKBSchoolThree->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->tenlop);
+                } else {
+                    $sheetTKBSchoolThree->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
+                }
+                if ($columnTableTime == 8) {
+                    $rowTableBody++;
+                    $columnTableTime = 3;
+                } else {
+                    $columnTableTime++;
+                }
+            }
+            $row += 12;
+            $rowTableBody = $rowTableBody + 8;
+        }
     }
 
     private function exportTKBRoomDepartment($sheetTKBSchool, $date, $no)
