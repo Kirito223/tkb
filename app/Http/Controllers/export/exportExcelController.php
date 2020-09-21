@@ -471,11 +471,31 @@ class exportExcelController extends Controller
             array_push($tableTime, $itemTeacher);
         }
         // Generate TimeTable
+
+        $startRow = 3;
         $row = 3;
 
         $rowTableBody = 4;
+        $rowName = 1;
         // Render Header Table
         foreach ($tableTime as $item) {
+            if ($row > 12) {
+                $rowName = $row - 4;
+            }
+            $startRow = $row;
+            $sheetTKBSchoolThree->mergeCells("A" . $rowName . ":H" . $rowName);
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(1, $rowName, $item->getTeacher());
+
+            $sheetTKBSchoolThree->getStyle("A" . $rowName)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheetTKBSchoolThree->getStyle("A" . $rowName)->getFont()->setBold(true);
+
+            $rowName++;
+            $sheetTKBSchoolThree->mergeCells("A" . $rowName . ":H" . $rowName);
+            $sheetTKBSchoolThree->setCellValueByColumnAndRow(1, $rowName, "Thực hiện từ ngày: ", $date);
+
+            $sheetTKBSchoolThree->getStyle("A" . $rowName)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+            $sheetTKBSchoolThree->getStyle("A" . $rowName)->getFont()->setBold(false);
+
             // Render Header
             $sheetTKBSchoolThree->setCellValueByColumnAndRow(1, $row, "Buổi");
             $sheetTKBSchoolThree->setCellValueByColumnAndRow(2, $row, "Tiết");
@@ -495,10 +515,31 @@ class exportExcelController extends Controller
             // Render Morning
             // Redner session
 
+            $sessions = 1;
             for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
-                $sheetTKBSchoolThree->setCellValueByColumnAndRow(2, $rowTableBody, $session);
+                if ($sessions == 6) {
+                    $sessions = 1;
+                }
+                $sheetTKBSchoolThree->setCellValueByColumnAndRow(2, $rowTableBody, $sessions);
                 $rowTableBody++;
+                $sessions++;
             }
+
+            $styleArray = [
+                'borders' => [
+                    'outline' => [
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => ['argb' => '000000'],
+                        'borderSize' => 1,
+                    ],
+                    'inside' => array(
+                        'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                        'color' => ['argb' => '000000'], 'borderSize' => 1,
+                    ),
+                ],
+            ];
+            $endrow = $rowTableBody;
+            $sheetTKBSchoolThree->getStyle("A" . $startRow . ":H" . $endrow)->applyFromArray($styleArray);
             $row += 12;
             $rowTableBody = $rowTableBody + 8;
         }
@@ -506,8 +547,29 @@ class exportExcelController extends Controller
         $columnTableTime = 3;
         $rowTableBody = 4;
         foreach ($tableTime as $item) {
+            // Export Morning
+            if ($rowTableBody > 13) {
+                $rowTableBody -= 3;
+            }
             $tableMorning = $item->getTableTimeMorning();
             foreach ($tableMorning as $key => $table) {
+                if ($table != null) {
+                    $sheetTKBSchoolThree->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->tenlop);
+                } else {
+                    $sheetTKBSchoolThree->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
+                }
+                if ($columnTableTime == 8) {
+                    $rowTableBody++;
+                    $columnTableTime = 3;
+                } else {
+                    $columnTableTime++;
+                }
+            }
+            // Export Afternoon
+            $tableAfterNoon = $item->getTableTimeAfterNoon();
+            $columnTableTime = 3;
+
+            foreach ($tableAfterNoon as $key => $table) {
                 if ($table != null) {
                     $sheetTKBSchoolThree->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->tenlop);
                 } else {
