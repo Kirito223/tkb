@@ -1,4 +1,6 @@
+import { baseURl } from "../api/api.js";
 import xuattkbapi from "../api/xuattkbapi.js";
+import { download } from "../ultils/ultils.js";
 
 var listTeacherBody,
     chkTKBSchollMVDuo,
@@ -54,7 +56,6 @@ function initControl() {
     btnDownloadTKB = document.getElementById("btnDownloadTKB");
     $("#dateprocess").datepicker();
     tkbNo = document.getElementById("tkbNo");
-
 }
 
 async function initListTeacher() {
@@ -76,16 +77,22 @@ function initData() {
     initListTeacher();
 }
 function initEvent() {
-    let tkbSchool, tkbClass, tkbGV1, tkbGV2, tkbGV3, tkbRoomDepartment, tkbGroup;
+    let tkbSchool,
+        tkbClass,
+        tkbGV1,
+        tkbGV2,
+        tkbGV3,
+        tkbRoomDepartment,
+        tkbGroup;
 
-    btnDownloadTKB.onclick = function (e) {
+    btnDownloadTKB.onclick = async function (e) {
         if (chkTKBSchollMVDuo.checked == true) {
             tkbSchool = 1;
         }
-        if (chkTKBSchollMVDuoLine.checked) {
+        if (chkTKBSchollMV.checked) {
             tkbSchool = 2;
         }
-        if (chkTKBSchollMV.checked) {
+        if (chkTKBSchollMVDuoLine.checked) {
             tkbSchool = 3;
         }
         if (chkTKBSchollM.checked) {
@@ -148,7 +155,7 @@ function initEvent() {
             tkbGroup = 1;
         }
 
-        let result = xuattkbapi.export(
+        let result = await xuattkbapi.export(
             JSON.stringify({
                 tkbSchool: tkbSchool,
                 tkbClass: tkbClass,
@@ -161,5 +168,7 @@ function initEvent() {
                 date: $("#dateprocess").val(),
             })
         );
+
+        window.open(`${baseURl}xuattkb/export/${result}`);
     };
 }

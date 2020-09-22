@@ -56,36 +56,36 @@ class exportExcelController extends Controller
                 $this->exportTKBSchoolOneColumn($sheetTKBSchool, $param->date, $param->tkbNo);
                 break;
             case 3:
-                $this->exportTKBSchoolOneColumn($sheetTKBSchool, $param->date, $param->tkbNo);
+                $this->exportTKBSchoolTwoRow($sheetTKBSchool, $param->date, $param->tkbNo);
                 break;
             case 4:
-                $this->exportTKBSchoolOneColumn($sheetTKBSchool, $param->date, $param->tkbNo);
+                $this->exportTKBSchoolSubject($sheetTKBSchool, $param->date, $param->tkbNo);
                 break;
             default:
-                # code...
+                $this->exportTKBSchoolTwoColumn($sheetTKBSchool, $param->date, $param->tkbNo);
                 break;
         }
 
 
-        // $sheet->setActiveSheetIndex(1);
-        // $sheetTKBTeacherTypeOne = $sheet->getActiveSheet();
-        // $this->exportTKBTecherTypeOne($sheetTKBTeacherTypeOne, $param->date, $param->tkbNo, $param->tkbGV1);
+        $sheet->setActiveSheetIndex(1);
+        $sheetTKBTeacherTypeOne = $sheet->getActiveSheet();
+        $this->exportTKBTecherTypeOne($sheetTKBTeacherTypeOne, $param->date, $param->tkbNo, $param->tkbGV1);
 
 
-        // $sheet->setActiveSheetIndex(2);
-        // $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
-        // $this->exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $param->date, $param->tkbNo, $param->tkbGV2);
+        $sheet->setActiveSheetIndex(2);
+        $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
+        $this->exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $param->date, $param->tkbNo, $param->tkbGV2);
 
-        // $sheet->setActiveSheetIndex(3);
-        // $sheetTKBTeacherTypeThree = $sheet->getActiveSheet();
-        // $this->exportTKBTecherTypeThree($sheetTKBTeacherTypeThree, $param->date, $param->tkbNo, $param->tkbGV3);
+        $sheet->setActiveSheetIndex(3);
+        $sheetTKBTeacherTypeThree = $sheet->getActiveSheet();
+        $this->exportTKBTecherTypeThree($sheetTKBTeacherTypeThree, $param->date, $param->tkbNo, $param->tkbGV3);
 
 
-        // $sheet->setActiveSheetIndex(4);
-        // $sheetTKBTeacherClass = $sheet->getActiveSheet();
-        // $this->exportTKBClass($sheetTKBTeacherClass, $param->date, $param->tkbNo, $param->tkbClass);
+        $sheet->setActiveSheetIndex(4);
+        $sheetTKBTeacherClass = $sheet->getActiveSheet();
+        $this->exportTKBClass($sheetTKBTeacherClass, $param->date, $param->tkbNo, $param->tkbClass);
 
-        // $this->exportTKBGroup($sheet, $param->date, $param->tkbNo);
+        $this->exportTKBGroup($sheet, $param->date, $param->tkbNo);
 
         // Auto-size columns for all worksheets
         foreach ($sheet->getWorksheetIterator() as $worksheet) {
@@ -100,7 +100,12 @@ class exportExcelController extends Controller
             mkdir(public_path('export'));
         }
         $writer->save(public_path('export') . "/thoikhoabieu{$param->tkbNo}.xlsx");
-        return "thoikhoabieu{$param->tkbNo}.xlsx";
+        return response()->json($param->tkbNo, Response::HTTP_OK);
+    }
+
+    public function downLoadTableTime($tkbNo)
+    {
+        return response()->download(public_path('export') . "/thoikhoabieu{$tkbNo}.xlsx");
     }
 
     private function exportTKBSchoolOneColumn($sheetTKBSchool, $date, $no)
@@ -235,6 +240,292 @@ class exportExcelController extends Controller
         $sheetTKBSchool->setCellValue("A1", $this->sessionInfo->getSchoolName());
 
         $sheetTKBSchool->getStyle("A1")->getFont()->setBold(true);
+    }
+
+
+    private function exportTKBSchoolSubject($sheetTKBSchool, $date, $no)
+    {
+        $rowTitle = 5;
+        $columnTitle = 3;
+        $matruong = $this->sessionInfo->getSchoolId();
+        $listClassRoom = danhsachlophoc::where('matruong', $matruong)->get();
+
+        // Render Class at header
+        foreach ($listClassRoom as $class) {
+            $sheetTKBSchool->setCellValueByColumnAndRow($columnTitle, $rowTitle, $class->tenlop);
+            $sheetTKBSchool->mergeCellsByColumnAndRow($columnTitle, $rowTitle, $columnTitle, $rowTitle + 1);
+            $columnTitle++;
+        }
+        $sheetTKBSchool->setCellValueByColumnAndRow($columnTitle, $rowTitle, "Giáo viên nghỉ");
+        $sheetTKBSchool->mergeCellsByColumnAndRow($columnTitle, $rowTitle, $columnTitle, $rowTitle + 1);
+
+        $titleLenght = count($listClassRoom);
+        $indexcolum = 3;
+
+
+        // Data synthesis for tabletime
+        // day of week
+        /***
+         * 1 - monday
+         * 2 - tuesday
+         * 3 - Wednesday
+         * 4 - Thursday
+         * 5 - Friday
+         * 6 - Saturday
+         * 
+         * session of the day
+         * 1-5: morning
+         * 6-10: afternoon
+         */
+
+        $tableTime = array();
+        for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+            for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
+                foreach ($listClassRoom as $class) {
+                    // get table time of morning
+                    $table = thoikhoabieu::where('malop', $class->id)
+                        ->where('thu', $day)
+                        ->where('tiet', $session)
+                        ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+                        ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
+                        ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'thoikhoabieu.malop')
+                        ->first();
+
+                    if ($table != null) {
+                        $item = new TableTime($day, $session, $table->tenmonhoc, $table->hovaten);
+                        array_push($tableTime, $item);
+                    } else {
+                        array_push($tableTime, null);
+                    }
+                }
+            }
+        }
+        // Render content tabletime
+        $totalRow = 70;
+        $indexTable = 0;
+        $lastColumn = 0;
+
+        for ($indexRowbody = 7; $indexRowbody < $totalRow; $indexRowbody++) {
+            // Loop follow class and insert data to cell in excel
+            $indexcolum = 3;
+            while ($indexcolum < $titleLenght) {
+
+                $tableItem = $tableTime[$indexTable];
+                if ($tableItem != null) {
+                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, "{$tableItem->getSubject()}");
+                    $indexcolum++;
+                } else {
+                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, "");
+                    $indexcolum++;
+                }
+                $lastColumn = $indexcolum;
+                if ($indexTable < count($tableTime) - 1) {
+                    $indexTable++;
+                }
+            }
+        }
+
+        //get list teacher rest
+        $arrteacherRest = array();
+        for ($day = 1; $day < 7; $day++) {
+            $teacherRest = tietnghigiaovien::where('thu', $day)
+            ->join('danhsachgv', 'danhsachgv.id', 'tietnghigiaovien.magiaovien')
+            ->select('danhsachgv.hovaten')
+            ->get();
+            $teacher = "";
+            if ($teacherRest != null) {
+                foreach ($teacherRest as $item) {
+                    $teacher .= $item->hovaten . ",";
+                }
+            }
+            array_push($arrteacherRest, $teacher);
+        }
+
+        // Render
+
+        $rowTeacher = 7;
+        foreach ($arrteacherRest as $restItem) {
+            // Merge row
+            $sheetTKBSchool->mergeCellsByColumnAndRow($lastColumn + 3, $rowTeacher, $lastColumn + 3, $rowTeacher + 9);
+            $sheetTKBSchool->setCellValueByColumnAndRow($lastColumn + 3, $rowTeacher, $restItem);
+            $rowTeacher = $rowTeacher + 10;
+        }
+        $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn + 3, $totalRow - 4)->getCoordinate();
+
+        $this->sign($sheetTKBSchool, $lastColumn, $totalRow);
+
+        $this->headerRow($sheetTKBSchool, $lastColumn, $lastCellAddress, $no, $date);
+        $styleArray = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                    'borderSize' => 1,
+                ],
+                'inside' => array(
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'], 'borderSize' => 1,
+                ),
+            ],
+        ];
+
+        $sheetTKBSchool->getStyle('A5:' . $lastCellAddress)->applyFromArray($styleArray);
+
+        $sheetTKBSchool->mergeCells("A1:G1");
+        $sheetTKBSchool->setCellValue("A1", $this->sessionInfo->getSchoolName());
+
+        $sheetTKBSchool->getStyle("A1")->getFont()->setBold(true);
+    }
+
+    private function exportTKBSchoolTwoRow($sheetTKBSchool, $date, $no)
+    {
+        $sheetTKBSchool->removeRow(7, 67);
+
+        $sheetTKBSchool->unmergeCells('A7:A11');
+        $sheetTKBSchool->unmergeCells('A12:A16');
+        $sheetTKBSchool->unmergeCells('A17:A21');
+        $sheetTKBSchool->unmergeCells('A22:A26');
+        $sheetTKBSchool->unmergeCells('A27:A31');
+        $sheetTKBSchool->unmergeCells('A32:A36');
+        $sheetTKBSchool->unmergeCells('A37:A41');
+        $sheetTKBSchool->unmergeCells('A42:A46');
+        $sheetTKBSchool->unmergeCells('A47:A51');
+        $sheetTKBSchool->unmergeCells('A52:A56');
+        $sheetTKBSchool->unmergeCells('A57:A61');
+        $sheetTKBSchool->unmergeCells('A62:A66');
+        $rowDay = 7;
+        for ($day = 2; $day < 8; $day++) {
+            $sheetTKBSchool->mergeCellsByColumnAndRow(1, $rowDay, 1, $rowDay + 9);
+            $sheetTKBSchool->setCellValueByColumnAndRow(1, $rowDay, "Thứ {$day}");
+            $rowDay += 10;
+            $sheetTKBSchool->mergeCellsByColumnAndRow(1, $rowDay, 1, $rowDay + 9);
+            $sheetTKBSchool->setCellValueByColumnAndRow(1, $rowDay, "Thứ {$day}");
+            $rowDay += 10;
+        }
+        $sheetTKBSchool->getStyle('A')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $ss = 1;
+        for ($rowSession = 7; $rowSession < 126; $rowSession += 2) {
+            $sheetTKBSchool->mergeCells("B" . $rowSession . ":B" . ($rowSession + 1));
+            $sheetTKBSchool->setCellValue("B" . $rowSession, $ss);
+            if ($ss == 5) {
+                $ss = 1;
+            } else {
+                $ss++;
+            }
+        }
+        $rowTitle = 5;
+        $columnTitle = 3;
+        $matruong = $this->sessionInfo->getSchoolId();
+        $listClassRoom = danhsachlophoc::where('matruong', $matruong)->get();
+
+        // Render Class at header
+        foreach ($listClassRoom as $class) {
+            $sheetTKBSchool->setCellValueByColumnAndRow($columnTitle, $rowTitle, $class->tenlop);
+            $sheetTKBSchool->mergeCellsByColumnAndRow($columnTitle, $rowTitle, $columnTitle, $rowTitle + 1);
+            $columnTitle++;
+        }
+        $sheetTKBSchool->setCellValueByColumnAndRow($columnTitle, $rowTitle, "Giáo viên nghỉ");
+        $sheetTKBSchool->mergeCellsByColumnAndRow($columnTitle, $rowTitle, $columnTitle, $rowTitle + 1);
+
+
+        $titleLenght = count($listClassRoom);
+        $indexcolum = 3;
+
+
+        // Data synthesis for tabletime
+        // day of week
+        /***
+         * 1 - monday
+         * 2 - tuesday
+         * 3 - Wednesday
+         * 4 - Thursday
+         * 5 - Friday
+         * 6 - Saturday
+         * 
+         * session of the day
+         * 1-5: morning
+         * 6-10: afternoon
+         */
+
+        $tableTime = array();
+        for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+            for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
+                foreach ($listClassRoom as $class) {
+                    // get table time of morning
+                    $table = thoikhoabieu::where('malop', $class->id)
+                        ->where('thu', $day)
+                        ->where('tiet', $session)
+                        ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+                        ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
+                        ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'thoikhoabieu.malop')
+                        ->first();
+
+                    if ($table != null) {
+                        $item = new TableTime($day, $session, $table->tenmonhoc, $table->hovaten);
+                        array_push($tableTime, $item);
+                    } else {
+                        array_push($tableTime, null);
+                    }
+                }
+            }
+        }
+        // Render content tabletime
+        $totalRow = 126;
+        $indexTable = 0;
+        $lastColumn = 0;
+
+        for ($indexRowbody = 7; $indexRowbody < $totalRow; $indexRowbody += 2) {
+            // Loop follow class and insert data to cell in excel
+            $indexcolum = 3;
+            while ($indexcolum < $titleLenght) {
+
+                $tableItem = $tableTime[$indexTable];
+                if ($tableItem != null) {
+                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, "{$tableItem->getSubject()}");
+                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody + 1, "{$tableItem->getName()}");
+                } else {
+                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, "");
+                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody + 1, "");
+                }
+                $indexcolum++;
+                $lastColumn = $indexcolum;
+                if ($indexTable < count($tableTime) - 1) {
+                    $indexTable++;
+                }
+            }
+        }
+
+        //get list teacher rest
+        $arrteacherRest = array();
+        for ($day = 1; $day < 7; $day++) {
+            $teacherRest = tietnghigiaovien::where('thu', $day)
+            ->join('danhsachgv', 'danhsachgv.id', 'tietnghigiaovien.magiaovien')
+            ->select('danhsachgv.hovaten')
+            ->get();
+            $teacher = "";
+            if ($teacherRest != null) {
+                foreach ($teacherRest as $item) {
+                    $teacher .= $item->hovaten . ",";
+                }
+            }
+            array_push($arrteacherRest, $teacher);
+        }
+        // Render
+
+        $rowTeacher = 7;
+        foreach ($arrteacherRest as $restItem) {
+            // Merge row
+            $sheetTKBSchool->mergeCellsByColumnAndRow($lastColumn + 3, $rowTeacher, $lastColumn + 3, $rowTeacher + 19);
+            $sheetTKBSchool->setCellValueByColumnAndRow($lastColumn + 3, $rowTeacher, $restItem);
+            $rowTeacher = $rowTeacher + 20;
+        }
+
+        $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn + 3, $totalRow)->getCoordinate();
+        $sheetTKBSchool->getStyle($lastCellAddress)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $this->sign($sheetTKBSchool, $lastColumn + 3, $totalRow + 4);
+        $this->setBorder($sheetTKBSchool, "A5:", $lastCellAddress);
+        $this->headerRow($sheetTKBSchool, $lastColumn + 3, $lastCellAddress, $no, $date);
     }
 
 
@@ -453,6 +744,7 @@ class exportExcelController extends Controller
             $sheetTKBClass->getStyle("A" . $rowName)->getFont()->setBold(false);
 
             // Render Header
+
             $sheetTKBClass->setCellValueByColumnAndRow(1, $row, "Buổi");
             $sheetTKBClass->setCellValueByColumnAndRow(2, $row, "Tiết");
             $sheetTKBClass->setCellValueByColumnAndRow(3, $row, "Thứ 2");
@@ -461,13 +753,32 @@ class exportExcelController extends Controller
             $sheetTKBClass->setCellValueByColumnAndRow(6, $row, "Thứ 5");
             $sheetTKBClass->setCellValueByColumnAndRow(7, $row, "Thứ 6");
             $sheetTKBClass->setCellValueByColumnAndRow(8, $row, "Thứ 7");
+
+            for ($i = 1; $i < 9; $i++) {
+                $cellPart = $sheetTKBClass->getCellByColumnAndRow($i, $row)->getCoordinate();
+                $sheetTKBClass->getStyle($cellPart)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $sheetTKBClass->getStyle($cellPart)->getFont()->setBold(true);
+            }
+
+
+
             // Render Body Table
             $row++;
             $sheetTKBClass->mergeCellsByColumnAndRow(1, $row, 1, $row + 4);
             $sheetTKBClass->setCellValueByColumnAndRow(1, $row, "Sáng");
+
+            $cell = $sheetTKBClass->getCellByColumnAndRow(1, $row)->getCoordinate();
+            $sheetTKBClass->getStyle($cell)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheetTKBClass->getStyle($cell)->getFont()->setBold(true);
+
             $row += 5;
             $sheetTKBClass->mergeCellsByColumnAndRow(1, $row, 1, $row + 4);
             $sheetTKBClass->setCellValueByColumnAndRow(1, $row, "Chiều");
+
+            $cell = $sheetTKBClass->getCellByColumnAndRow(1, $row)->getCoordinate();
+            $sheetTKBClass->getStyle($cell)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            $sheetTKBClass->getStyle($cell)->getFont()->setBold(true);
+
             // Render Morning
             // Redner session
 
@@ -477,6 +788,10 @@ class exportExcelController extends Controller
                     $sessions = 1;
                 }
                 $sheetTKBClass->setCellValueByColumnAndRow(2, $rowTableBody, $sessions);
+
+                $cellSesion = $sheetTKBClass->getCellByColumnAndRow(2, $rowTableBody)->getCoordinate();
+                $sheetTKBClass->getStyle($cellSesion)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheetTKBClass->getStyle($cellSesion)->getFont()->setBold(true);
                 $rowTableBody++;
                 $sessions++;
             }
@@ -494,7 +809,7 @@ class exportExcelController extends Controller
                     ),
                 ],
             ];
-            $endrow = $rowTableBody;
+            $endrow = $rowTableBody - 1;
             $sheetTKBClass->getStyle("A" . $startRow . ":H" . $endrow)->applyFromArray($styleArray);
             $row += 12;
             $rowTableBody = $rowTableBody + 8;
@@ -528,7 +843,6 @@ class exportExcelController extends Controller
             foreach ($tableAfterNoon as $key => $table) {
                 if ($table != null) {
                     if ($type == 1) {
-
                         $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->hovaten);
                     }
                     if ($type == 2) {

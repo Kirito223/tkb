@@ -268,7 +268,7 @@
 												<textarea id="emailContent"></textarea>
 											</div>
 											<div class="col-md-7 col-sm-7 col-xl-7">
-												<label><input id="chkSelectTeacher" type="radio" />Chọn giáo viên gửi
+												<label><input id="chkSelectTeacher" type="checkbox" />Chọn giáo viên gửi
 													email</label>
 
 											</div>
@@ -281,7 +281,8 @@
 													<thead class="">
 														<tr>
 															<th rowspan="2">STT</th>
-															<th rowspan="2"><input type="radio" /></th>
+															<th rowspan="2"><input id="selectAllEmail"
+																	type="checkbox" /></th>
 															<th><label>Chọn giáo
 																	viên</label></th>
 															<th rowspan="2">Email</th>
