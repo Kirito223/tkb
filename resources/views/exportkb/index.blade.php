@@ -49,7 +49,8 @@
 										<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
 											<button type="button" id="btnDownloadTKB" class="btn btn-success">Tải
 												thời khóa biểu</button>
-											<button type="button" class="btn btn-danger">Gửi tkb cho GV qua
+											<button id="sendTKBwithEmail" type="button" class="btn btn-danger">Gửi tkb
+												cho GV qua
 												email</button>
 											<button type="button" class="btn btn-primary"> Lưu tkb trực tuyến</button>
 											<button type="button" class="btn btn-info"> Xuất tkb để tra cứu</button>
@@ -57,10 +58,11 @@
 
 									</div>
 									<div class="form-group">
-										<div class="progress">
+										<div class="progress hidden">
 											<div class="progress-bar progress-bar-striped progress-bar-animated"
 												role="progressbar" aria-valuenow="75" aria-valuemin="0"
-												aria-valuemax="100" style="width:100%">Đang tải dữ liệu</div>
+												aria-valuemax="100" style="width:100%">Đang tải xuất thời khóa biểu vui
+												lòng đợi trong giây lát</div>
 										</div>
 									</div>
 									<a class="heading-elements-toggle"><i
@@ -272,11 +274,9 @@
 													email</label>
 
 											</div>
-											<div class="col-md-5 col-sm-5 col-xl-5 justify-content-end d-flex">
-												<button id="btnSend" class="btn btn-sm btn-info">Sử dụng email riêng để
-													gửi</button>
-											</div>
-											<div class="col-md-12 col-sm-12 col-xl-12" id="listTeacher">
+
+											<div class="col-md-12 col-sm-12 col-xl-12 hidden" style="overflow: scroll"
+												id="listTeacher">
 												<table class="table table-bordered">
 													<thead class="">
 														<tr>

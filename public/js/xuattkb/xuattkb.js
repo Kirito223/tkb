@@ -1,6 +1,5 @@
 import { baseURl } from "../api/api.js";
 import xuattkbapi from "../api/xuattkbapi.js";
-import { download } from "../ultils/ultils.js";
 
 var listTeacherBody,
     chkTKBSchollMVDuo,
@@ -24,7 +23,16 @@ var listTeacherBody,
     chkTKBTNML,
     btnDownloadTKB,
     dateprocess,
-    tkbNo;
+    tkbNo,
+    chkSelectTeacher,
+    selectAllEmail,
+    progress,
+    listTeacher,
+    sendTKBwithEmail,
+    emailTitle,
+    emailContent;
+
+var tkbCode = "";
 
 window.onload = function () {
     initControl();
@@ -34,6 +42,7 @@ window.onload = function () {
 
 function initControl() {
     listTeacherBody = document.getElementById("listTeacherBody");
+    listTeacher = document.getElementById("listTeacher");
     chkTKBSchollMVDuo = document.getElementById("chkTKBSchollMVDuo");
     chkTKBSchollMV = document.getElementById("chkTKBSchollMV");
     chkTKBSchollMVDuoLine = document.getElementById("chkTKBSchollMVDuoLine");
@@ -56,6 +65,12 @@ function initControl() {
     btnDownloadTKB = document.getElementById("btnDownloadTKB");
     $("#dateprocess").datepicker();
     tkbNo = document.getElementById("tkbNo");
+    chkSelectTeacher = document.getElementById("chkSelectTeacher");
+    selectAllEmail = document.getElementById("selectAllEmail");
+    progress = document.getElementsByClassName("progress");
+    sendTKBwithEmail = document.getElementById("sendTKBwithEmail");
+    emailTitle = document.getElementById("emailTitle");
+    emailContent = document.getElementById("emailContent");
 }
 
 async function initListTeacher() {
@@ -65,7 +80,9 @@ async function initListTeacher() {
     listTeacher.forEach((element) => {
         html += `<tr>
         <td>${stt}</td>
-        <td><input type="checkbox" /></td>
+        <td><input type="checkbox" data-email="${
+            element.email
+        }" class="emailTeacher" /></td>
         <td>${element.hovaten}</td>
         <td>${element.email != null ? element.email : ""}</td>
         </tr>`;
@@ -77,6 +94,60 @@ function initData() {
     initListTeacher();
 }
 function initEvent() {
+    sendTKBwithEmail.onclick = async function (e) {
+        let chkEmail = document.querySelectorAll(".emailTeacher:checked");
+        let emails = [];
+        for (const email of chkEmail) {
+            emails.push(email.dataset.email);
+        }
+
+        if (tkbCode == "") {
+            await exportExcel();
+            if (tkbCode != "") {
+                sendMail(emails);
+            }
+        } else {
+            sendMail(emails);
+        }
+    };
+    chkSelectTeacher.onclick = function (e) {
+        if (!e.target.checked) {
+            listTeacher.classList.add("hidden");
+        } else {
+            listTeacher.classList.remove("hidden");
+        }
+    };
+
+    selectAllEmail.onclick = function (e) {
+        let emailList = document.querySelectorAll(".emailTeacher");
+        for (const chk of emailList) {
+            chk.checked = e.target.checked;
+        }
+    };
+
+    btnDownloadTKB.onclick = function (e) {
+        exportExcel();
+    };
+}
+
+async function sendMail(listMail) {
+    let result = await xuattkbapi.sendEmail({
+        tkbNo: tkbCode,
+        listMail: listMail,
+        emailTitle: emailTitle.value,
+        emailContent: emailContent.value,
+    });
+    if (result.msg == "OK") {
+        Swal.fire(
+            "Đã gửi email thành công",
+            "Hoàn tất gửi mail! Số email gửi không thành công: " +
+                result.fail.lenght,
+            "success"
+        );
+    }
+}
+
+async function exportExcel() {
     let tkbSchool,
         tkbClass,
         tkbGV1,
@@ -84,8 +155,14 @@ function initEvent() {
         tkbGV3,
         tkbRoomDepartment,
         tkbGroup;
-
-    btnDownloadTKB.onclick = async function (e) {
+    if (tkbNo.value == "") {
+        Swal.fire(
+            "Xin vui lòng nhập số hiệu của thời khóa biểu",
+            "Nhập số hiệu của thời khóa biểu",
+            "warning"
+        );
+    } else {
+        progress[0].classList.remove("hidden");
         if (chkTKBSchollMVDuo.checked == true) {
             tkbSchool = 1;
         }
@@ -168,7 +245,8 @@ function initEvent() {
                 date: $("#dateprocess").val(),
             })
         );
-
+        progress[0].classList.add("hidden");
+        tkbCode = result;
         window.open(`${baseURl}xuattkb/export/${result}`);
-    };
+    }
 }

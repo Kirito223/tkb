@@ -14,8 +14,7 @@ use App\tietnghigiaovien;
 use App\tochuyenmon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Session;
-use stdClass;
+use Illuminate\Support\Facades\Mail;
 
 class exportExcelController extends Controller
 {
@@ -329,9 +328,9 @@ class exportExcelController extends Controller
         $arrteacherRest = array();
         for ($day = 1; $day < 7; $day++) {
             $teacherRest = tietnghigiaovien::where('thu', $day)
-            ->join('danhsachgv', 'danhsachgv.id', 'tietnghigiaovien.magiaovien')
-            ->select('danhsachgv.hovaten')
-            ->get();
+                ->join('danhsachgv', 'danhsachgv.id', 'tietnghigiaovien.magiaovien')
+                ->select('danhsachgv.hovaten')
+                ->get();
             $teacher = "";
             if ($teacherRest != null) {
                 foreach ($teacherRest as $item) {
@@ -500,9 +499,9 @@ class exportExcelController extends Controller
         $arrteacherRest = array();
         for ($day = 1; $day < 7; $day++) {
             $teacherRest = tietnghigiaovien::where('thu', $day)
-            ->join('danhsachgv', 'danhsachgv.id', 'tietnghigiaovien.magiaovien')
-            ->select('danhsachgv.hovaten')
-            ->get();
+                ->join('danhsachgv', 'danhsachgv.id', 'tietnghigiaovien.magiaovien')
+                ->select('danhsachgv.hovaten')
+                ->get();
             $teacher = "";
             if ($teacherRest != null) {
                 foreach ($teacherRest as $item) {
@@ -1400,5 +1399,29 @@ class exportExcelController extends Controller
             $sheetSelect->getStyle("A2:" . $lastCellAddress)->getFont()->setBold(true);
             $numberSheet++;
         }
+    }
+
+    public function sendEmail(Request $request)
+    {
+
+        $contentRequest = $request->getContent();
+        $contentRequest = json_decode($contentRequest);
+        $listMail = $contentRequest->listMail;
+        $tkbNo = $contentRequest->tkbNo;
+        $title = $contentRequest->emailTitle;
+        $content = $contentRequest->emailContent;
+        $arrFail = array();
+        foreach ($listMail as $mail) {
+            if ($mail != "null") {
+                Mail::send(array(), array(), function ($message) use ($mail, $tkbNo, $title, $content) {
+                    $message->to($mail, 'Tutorials Point')->subject($title);
+                    $message->attach(public_path('export') . "/thoikhoabieu{$tkbNo}.xlsx");
+                    $message->from('hacker11357@gmail.com', 'Thời khóa biểu ' . $this->sessionInfo->getSchoolName());
+                });
+            } else {
+                array_push($arrFail, $mail);
+            }
+        }
+        return response()->json(['msg' => "OK", 'fail' => $arrFail]);
     }
 }

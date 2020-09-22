@@ -12,6 +12,10 @@ const xuattkbapi = {
         });
         return result;
     },
+    sendEmail: async function (params) {
+        let result = await axiosClient.post("xuattkb/sendEmail", params);
+        return result;
+    },
 };
 
 export default xuattkbapi;
