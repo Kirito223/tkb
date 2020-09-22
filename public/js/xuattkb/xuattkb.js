@@ -76,7 +76,7 @@ function initData() {
     initListTeacher();
 }
 function initEvent() {
-    let tkbSchool, tkbClass, tkbGV, tkbRoomDepartment, tkbGroup;
+    let tkbSchool, tkbClass, tkbGV1, tkbGV2, tkbGV3, tkbRoomDepartment, tkbGroup;
 
     btnDownloadTKB.onclick = function (e) {
         if (chkTKBSchollMVDuo.checked == true) {
@@ -100,36 +100,36 @@ function initEvent() {
         }
 
         if (chkTKBGV1ML.checked) {
-            tkbGV = 1;
+            tkbGV1 = 1;
         }
         if (chkTKBGV1M.checked) {
-            tkbGV = 2;
+            tkbGV1 = 2;
         }
 
         if (chkTKBGV1L.checked) {
-            tkbGV = 3;
+            tkbGV1 = 3;
         }
 
         if (chkTKBGV2ML.checked) {
-            tkbGV = 4;
+            tkbGV2 = 1;
         }
         if (chkTKBGV2M.checked) {
-            tkbGV = 5;
+            tkbGV2 = 2;
         }
 
         if (chkTKBGV2L.checked) {
-            tkbGV = 6;
+            tkbGV2 = 3;
         }
 
         if (chkTKBGV3ML.checked) {
-            tkbGV = 7;
+            tkbGV3 = 1;
         }
         if (chkTKBGV3M.checked) {
-            tkbGV = 8;
+            tkbGV3 = 2;
         }
 
         if (chkTKBGV3L.checked) {
-            tkbGV = 9;
+            tkbGV3 = 3;
         }
 
         if (chkTKBPBMML.checked) {
@@ -152,7 +152,9 @@ function initEvent() {
             JSON.stringify({
                 tkbSchool: tkbSchool,
                 tkbClass: tkbClass,
-                tkbGV: tkbGV,
+                tkbGV1: tkbGV1,
+                tkbGV2: tkbGV2,
+                tkbGV3: tkbGV3,
                 tkbRoomDepartment: tkbRoomDepartment,
                 tkbGroup: tkbGroup,
                 tkbNo: tkbNo.value,

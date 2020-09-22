@@ -77,30 +77,30 @@
 										<div class="form-group">
 											<label for="projectinput1">Sheet: TKB trường</label>
 											<div class="row" style="padding-left: 10px;padding-right: 10px">
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input checked type="checkbox" name="checkbox" value=""
+														<input checked type="radio" name="radioSchool" value=""
 															id="chkTKBSchollMVDuo">
 														Môn, GV (riêng 2 cột)
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value=""
+														<input type="radio" name="radioSchool" value=""
 															id="chkTKBSchollMV">
 														Môn, GV (trong 1 cột)
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value=""
+														<input type="radio" name="radioSchool" value=""
 															id="chkTKBSchollMVDuoLine">
 														Môn/GV (2 dòng)
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value=""
+														<input type="radio" name="radioSchool" value=""
 															id="chkTKBSchollM">
 														Môn
 													</label>
@@ -110,16 +110,16 @@
 											<label for="projectinput1">Sheet: TKB lớp</label>
 											<div class="row" style="padding-left: 10px;padding-right: 10px">
 
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input checked type="checkbox" name="checkbox" value=""
+														<input checked type="radio" name="radioClass" value=""
 															id="chkTKBLopMGV">
 														Môn, GV
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value="" id="chkTKBLopM">
+														<input type="radio" name="radioClass" value="" id="chkTKBLopM">
 														Môn
 													</label>
 												</fieldset>
@@ -129,65 +129,71 @@
 											<label for="projectinput1">Sheet: TKB GV</label>
 											<div class="row" style="padding-left: 10px;padding-right: 10px">
 
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>TKB GV1:</label>
 													<label>
-														<input checked type="checkbox" name="checkbox" value=""
+														<input checked type="radio" name="radioTeacherOne" value=""
 															id="chkTKBGV1ML">
 														Môn, lớp
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value="" id="chkTKBGV1M">
+														<input type="radio" name="radioTeacherOne" value=""
+															id="chkTKBGV1M">
 														Môn
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value="" id="chkTKBGV1L">
+														<input type="radio" name="radioTeacherOne" value=""
+															id="chkTKBGV1L">
 														Lớp
 													</label>
 												</fieldset>
 												<div class="break"></div>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>TKB GV2:</label>
 													<label>
-														<input checked type="checkbox" name="checkbox" value=""
+														<input checked type="radio" name="radioTeacherTwo" value=""
 															id="chkTKBGV2ML">
 														Môn, lớp
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value="" id="chkTKBGV2M">
+														<input type="radio" name="radioTeacherTwo" value=""
+															id="chkTKBGV2M">
 														Môn
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value="" id="chkTKBGV2L">
+														<input type="radio" name="radioTeacherTwo" value=""
+															id="chkTKBGV2L">
 														Lớp
 													</label>
 												</fieldset>
 												<div class="break"></div>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>TKB GV3:</label>
 													<label>
-														<input checked type="checkbox" name="checkbox" value=""
+														<input checked type="radio" name="radioTeacherThree" value=""
 															id="chkTKBGV3ML">
 														Môn, lớp
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value="" id="chkTKBGV3M">
+														<input type="radio" name="radioTeacherThree" value=""
+															id="chkTKBGV3M">
 														Môn
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value="" id="chkTKBGV3L">
+														<input type="radio" name="radioTeacherThree" value=""
+															id="chkTKBGV3L">
 														Lớp
 													</label>
 												</fieldset>
@@ -196,24 +202,22 @@
 											<label for="projectinput1">Sheet: TKB phòng bộ môn</label>
 											<div class="row" style="padding-left: 10px;padding-right: 10px">
 
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input checked type="checkbox" name="checkbox" value=""
+														<input checked type="radio" name="radioRoom" value=""
 															id="chkTKBPBMML">
 														Môn, lớp
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value=""
-															id="chkTKBPBMMGV">
+														<input type="radio" name="radioRoom" value="" id="chkTKBPBMMGV">
 														Môn, GV
 													</label>
 												</fieldset>
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input type="checkbox" name="checkbox" value=""
-															id="chkTKBPBMGVL">
+														<input type="radio" name="radioRoom" value="" id="chkTKBPBMGVL">
 														GV, lớp
 													</label>
 												</fieldset>
@@ -222,9 +226,9 @@
 											<label for="projectinput1">Sheet: TKB tổ nhóm</label>
 											<div class="row" style="padding-left: 10px;padding-right: 10px">
 
-												<fieldset class="checkbox" style="padding-right: 10px;">
+												<fieldset class="radio" style="padding-right: 10px;">
 													<label>
-														<input checked type="checkbox" name="checkbox" value=""
+														<input checked type="radio" name="radio" value=""
 															id="chkTKBTNML">
 														Môn, lớp
 													</label>
@@ -264,7 +268,7 @@
 												<textarea id="emailContent"></textarea>
 											</div>
 											<div class="col-md-7 col-sm-7 col-xl-7">
-												<label><input id="chkSelectTeacher" type="checkbox" />Chọn giáo viên gửi
+												<label><input id="chkSelectTeacher" type="radio" />Chọn giáo viên gửi
 													email</label>
 
 											</div>
@@ -277,7 +281,7 @@
 													<thead class="">
 														<tr>
 															<th rowspan="2">STT</th>
-															<th rowspan="2"><input type="checkbox" /></th>
+															<th rowspan="2"><input type="radio" /></th>
 															<th><label>Chọn giáo
 																	viên</label></th>
 															<th rowspan="2">Email</th>
