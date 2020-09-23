@@ -28,8 +28,7 @@
 					<label class="col-md-6 label-control" for="dateprocess" style="text-align: right;">Thực hiện từ
 						ngày:</label>
 					<div class="col-md-6" style="padding-left: 0">
-						<input type="text" id="dateprocess" class="form-control border-primary input-sm"
-							name="dateprocess">
+						<div id="dateprocess"></div>
 						<span class="add-on"><i class="icon-th"></i></span>
 					</div>
 				</div>
@@ -59,9 +58,10 @@
 									</div>
 									<div class="form-group">
 										<div class="progress hidden">
-											<div class="progress-bar progress-bar-striped progress-bar-animated"
+											<div id="progressbarTitle"
+												class="progress-bar progress-bar-striped progress-bar-animated"
 												role="progressbar" aria-valuenow="75" aria-valuemin="0"
-												aria-valuemax="100" style="width:100%">Đang tải xuất thời khóa biểu vui
+												aria-valuemax="100" style="width:100%">Đang xuất thời khóa biểu vui
 												lòng đợi trong giây lát</div>
 										</div>
 									</div>
@@ -288,7 +288,7 @@
 															<th rowspan="2">Email</th>
 														</tr>
 														<tr>
-															<th><input type="text" /></th>
+															<th><input id="searchTeacher" type="text" /></th>
 														</tr>
 													</thead>
 													<tbody id="listTeacherBody">
@@ -307,6 +307,7 @@
 		</div>
 	</div>
 </div>
+
 <script type="module" src="{{asset('js\xuattkb\xuattkb.js')}}"></script>
 <style>
 	.break {

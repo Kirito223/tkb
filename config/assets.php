@@ -35,7 +35,8 @@ return [
                         'theme/app-assets/js/core/app-menu.min.js',
                         'theme/app-assets/js/core/app.min.js',
                         'theme/app-assets/js/scripts/customizer.min.js',
-                        'datepicker/js/bootstrap-datepicker.js'
+                        'dx/js/dx.all.js',
+                        '/moment/moment.min.js',
                     ],
                     // Đường dẫn tới thư viện
                 ],
@@ -108,6 +109,8 @@ return [
                         'theme/app-assets/css/plugins/forms/wizard.min.css',
                         'theme/assets/css/style.css',
                         'theme/app-assets/vendors/css/forms/selects/select2.min.css',
+                        'dx/css/dx.common.css',
+                        'dx/css/dx.material.blue.light.compact.css',
                     ],
                 ],
                 'attributes' => [],

@@ -30,7 +30,9 @@ var listTeacherBody,
     listTeacher,
     sendTKBwithEmail,
     emailTitle,
-    emailContent;
+    emailContent,
+    searchTeacher,
+    progressbarTitle;
 
 var tkbCode = "";
 
@@ -63,7 +65,14 @@ function initControl() {
     chkTKBPBMGVL = document.getElementById("chkTKBPBMGVL");
     chkTKBTNML = document.getElementById("chkTKBTNML");
     btnDownloadTKB = document.getElementById("btnDownloadTKB");
-    $("#dateprocess").datepicker();
+    progressbarTitle = document.getElementById("progressbarTitle");
+    const now = new Date();
+    $("#dateprocess").dxDateBox({
+        type: "date",
+        max: now,
+        min: new Date(1900, 0, 1),
+        value: now,
+    });
     tkbNo = document.getElementById("tkbNo");
     chkSelectTeacher = document.getElementById("chkSelectTeacher");
     selectAllEmail = document.getElementById("selectAllEmail");
@@ -71,6 +80,7 @@ function initControl() {
     sendTKBwithEmail = document.getElementById("sendTKBwithEmail");
     emailTitle = document.getElementById("emailTitle");
     emailContent = document.getElementById("emailContent");
+    searchTeacher = document.getElementById("searchTeacher");
 }
 
 async function initListTeacher() {
@@ -79,11 +89,11 @@ async function initListTeacher() {
     let stt = 1;
     listTeacher.forEach((element) => {
         html += `<tr>
-        <td>${stt}</td>
+        <td class="">${stt}</td>
         <td><input type="checkbox" data-email="${
             element.email
         }" class="emailTeacher" /></td>
-        <td>${element.hovaten}</td>
+        <td class="tdTeacherName">${element.hovaten}</td>
         <td>${element.email != null ? element.email : ""}</td>
         </tr>`;
         stt++;
@@ -94,21 +104,43 @@ function initData() {
     initListTeacher();
 }
 function initEvent() {
+    searchTeacher.oninput = function (e) {
+        Search("tdTeacherName", searchTeacher);
+    };
     sendTKBwithEmail.onclick = async function (e) {
-        let chkEmail = document.querySelectorAll(".emailTeacher:checked");
         let emails = [];
-        for (const email of chkEmail) {
-            emails.push(email.dataset.email);
-        }
 
-        if (tkbCode == "") {
-            await exportExcel();
-            if (tkbCode != "") {
+        if (chkSelectTeacher.checked) {
+            progress[0].classList.remove("hidden");
+            progressbarTitle.textContent =
+                "Đang gửi thời khóa biểu cho giáo viên xin vui lòng chờ cho đến khi hoàn tất";
+            let chkEmail = document.querySelectorAll(".emailTeacher:checked");
+            for (const email of chkEmail) {
+                emails.push(email.dataset.email);
+            }
+            if (tkbCode == "") {
+                await exportExcel();
+                if (tkbCode != "") {
+                    sendMail(emails);
+                }
+            } else {
                 sendMail(emails);
             }
         } else {
-            sendMail(emails);
+            let chkEmail = document.querySelectorAll(".emailTeacher");
+            for (const email of chkEmail) {
+                emails.push(email.dataset.email);
+            }
+            if (tkbCode == "") {
+                await exportExcel();
+                if (tkbCode != "") {
+                    sendMail(emails);
+                }
+            } else {
+                sendMail(emails);
+            }
         }
+        progress[0].classList.add("hidden");
     };
     chkSelectTeacher.onclick = function (e) {
         if (!e.target.checked) {
@@ -126,8 +158,13 @@ function initEvent() {
     };
 
     btnDownloadTKB.onclick = function (e) {
-        exportExcel();
+        downLoadTKBEvent();
     };
+}
+
+async function downLoadTKBEvent() {
+    await exportExcel();
+    await downloadTkb();
 }
 
 async function sendMail(listMail) {
@@ -141,7 +178,7 @@ async function sendMail(listMail) {
         Swal.fire(
             "Đã gửi email thành công",
             "Hoàn tất gửi mail! Số email gửi không thành công: " +
-                result.fail.lenght,
+                result.fail.length,
             "success"
         );
     }
@@ -231,7 +268,8 @@ async function exportExcel() {
         if (chkTKBTNML.checked) {
             tkbGroup = 1;
         }
-
+        let date = $("#dateprocess").dxDateBox("instance").option("value");
+        date = moment(date).format("DD/MM/YYYY");
         let result = await xuattkbapi.export(
             JSON.stringify({
                 tkbSchool: tkbSchool,
@@ -242,11 +280,26 @@ async function exportExcel() {
                 tkbRoomDepartment: tkbRoomDepartment,
                 tkbGroup: tkbGroup,
                 tkbNo: tkbNo.value,
-                date: $("#dateprocess").val(),
+                date: date,
             })
         );
         progress[0].classList.add("hidden");
         tkbCode = result;
-        window.open(`${baseURl}xuattkb/export/${result}`);
+    }
+}
+
+function downloadTkb() {
+    window.open(`${baseURl}xuattkb/export/${tkbCode}`);
+}
+function Search(tdClass, searchTxt) {
+    let td = document.getElementsByClassName(tdClass);
+    let textSearch = searchTxt.value.toUpperCase();
+    for (const item of td) {
+        let tdValue = item.textContent || item.innerText;
+        if (tdValue.toUpperCase().indexOf(textSearch) > -1) {
+            item.parentElement.style.display = "";
+        } else {
+            item.parentElement.style.display = "none";
+        }
     }
 }
