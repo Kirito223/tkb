@@ -51,8 +51,10 @@
 											<button id="sendTKBwithEmail" type="button" class="btn btn-danger">Gửi tkb
 												cho GV qua
 												email</button>
-											<button type="button" class="btn btn-primary"> Lưu tkb trực tuyến</button>
-											<button type="button" class="btn btn-info"> Xuất tkb để tra cứu</button>
+											<button id="savetkb" type="button" class="btn btn-primary">
+												Lưu tkb trực tuyến</button>
+											<button id="exportTkb" type="button" class="btn btn-info"> Xuất tkb để tra
+												cứu</button>
 										</div>
 
 									</div>
