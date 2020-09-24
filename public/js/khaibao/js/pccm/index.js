@@ -7,7 +7,7 @@ import {
 } from "../api/phancongGVApi.js";
 import phanconggv from "../model/phanconggv.js";
 import http from "../const/http.js";
-import {public_path} from "../const/path.js";
+import { public_path } from "../const/path.js";
 var bangPhancong = [];
 
 var danhsachphancong;
@@ -33,7 +33,8 @@ var bangdanhsachphancong,
     btnTaipccm,
     timkiemhovaten,
     timkiemTen,
-    timkiemBidanh;
+    timkiemBidanh,
+    chontatcaphancongmon;
 
 var mondachon = [];
 var lopdachon = [];
@@ -67,8 +68,9 @@ function initControl() {
     btnXoatatcaPCCMtaimon = document.getElementById("btnXoatatcaPCCMtaimon");
     btnTaipccm = document.getElementById("btnTaipccm");
     timkiemhovaten = document.getElementById("timkiemhovaten");
-    timkiemTen = document.getElementById("timkiemTen");
+    // timkiemTen = document.getElementById("timkiemTen");
     timkiemBidanh = document.getElementById("timkiemBidanh");
+    chontatcaphancongmon = document.getElementById("chontatcaphancongmon");
 }
 
 async function initData() {
@@ -88,12 +90,35 @@ function Search(tdClass, searchTxt) {
 }
 
 function initEvent() {
+    chontatcaphancongmon.onclick = function (e) {
+        let chk = document.querySelectorAll(".chkChonlop");
+        let chkChecked = document.querySelectorAll(".chkChonlop:checked");
+
+        let arrChecked = [];
+        for (const checked of chkChecked) {
+            arrChecked.push(checked.value);
+        }
+
+        if (e.target.checked == true) {
+            for (const item of chk) {
+                let index = arrChecked.findIndex((x) => x == item.value);
+                if (index == -1) {
+                    item.click();
+                }
+            }
+        } else {
+            for (const item of chk) {
+                item.click();
+            }
+        }
+    };
+
     timkiemhovaten.oninput = function (e) {
         Search("tdhovaten", timkiemhovaten);
     };
-    timkiemTen.oninput = function (e) {
-        Search("tdTen", timkiemTen);
-    };
+    // timkiemTen.oninput = function (e) {
+    //     Search("tdTen", timkiemTen);
+    // };
     timkiemBidanh.oninput = function (e) {
         Search("tdBidanh", timkiemBidanh);
     };
@@ -141,7 +166,7 @@ function initEvent() {
         // Cap nhat thong tin phan cong chuyen mon cho giao vien
         luuPhancong(bangphancongTam, giaovienchon, xoaPhancong).then((res) => {
             if (res["code"] == http.CODE_SUCCESS) {
-                window.location.reload();
+                // window.location.reload();
             } else {
                 Swal.fire(
                     "Đã có lỗi xảy ra vui lòng thử lại sau",
@@ -293,7 +318,9 @@ function hienthiDanhsach(danhsach) {
         buttonPCCM.setAttribute(`data-id`, item.magiaovien);
         let lbl = document.createTextNode("PCCM");
         buttonPCCM.appendChild(lbl);
+
         // Su kien click cua nut phan cong chuyen mon
+
         buttonPCCM.onclick = function (e) {
             bangdanhsachmonpc.innerHTML = "";
             bangdanhsachphancongchomonhoc.innerHTML = "";
@@ -302,8 +329,8 @@ function hienthiDanhsach(danhsach) {
             let indexGiaovien = danhsachGiaovien.findIndex((x) => x.id == id);
             let ttgiaovien = danhsachGiaovien[indexGiaovien];
             giaovienchon = ttgiaovien.id;
-            btncapnhatpccmgiaovien.textContent = `Phân công chuyên môn cho giáo viên: ${ttgiaovien.ten}`;
-            lblPhacong.textContent = `Phân công chuyên môn cho giáo viên: ${ttgiaovien.ten}`;
+            btncapnhatpccmgiaovien.textContent = `Phân công chuyên môn cho giáo viên: ${ttgiaovien.hovaten}`;
+            lblPhacong.textContent = `Phân công chuyên môn cho giáo viên: ${ttgiaovien.hovaten}`;
 
             hienthiTongsotiet(giaovienchon);
             // Hien thi danh sach cac lop hoc cung nhu cac giao vien duoc phan cong giang day bo mon dang duoc chon
@@ -326,7 +353,12 @@ function hienthiDanhsach(danhsach) {
                 chk.setAttribute("type", "checkbox");
                 chk.setAttribute("value", item.id);
                 chk.setAttribute("class", "chkMon");
+                chk.setAttribute("data-giaovien", giaovienchon);
                 chk.onclick = function (e) {
+                    chontatcaphancongmon.setAttribute(
+                        "data-giaovien",
+                        giaovienchon
+                    );
                     // hien danh sach phan cong
                     bangdanhsachphancongchomonhoc.innerHTML = "";
 
@@ -385,7 +417,8 @@ function hienthiDanhsach(danhsach) {
                             let inputChon = document.createElement("input");
                             inputChon.setAttribute("type", "checkbox");
                             inputChon.setAttribute("value", item.id);
-
+                            inputChon.setAttribute("class", "chkChonlop");
+                            inputChon.setAttribute("data-chon", "khongchon");
                             // Kiem tra xem co giao vien nao da day mon nay hay chua neu co thi hien thi giao vien dang duoc phan cong day mon nay ra và không cho phép click vào checkbox để chọn phân công môn này cho giáo viên hiện tại
 
                             let findGiaovien = danhsachphancong.findIndex(
@@ -403,14 +436,21 @@ function hienthiDanhsach(danhsach) {
                                             .magiaovien
                                 );
 
+                                inputChon.setAttribute(
+                                    "data-giaovien",
+                                    danhsachGiaovien[indexGiaovien].id
+                                );
+                                inputChon.setAttribute("data-chon", "chon");
                                 giaovien = creatTd(
                                     `${
                                         danhsachGiaovien[indexGiaovien].ho !=
                                         undefined
                                             ? danhsachGiaovien[indexGiaovien]
-                                                  .ten
+                                                  .hovaten
                                             : ""
-                                    } ${danhsachGiaovien[indexGiaovien].ten}`
+                                    } ${
+                                        danhsachGiaovien[indexGiaovien].hovaten
+                                    }`
                                 );
                                 // Kiem tra xem giao vien trong danh sach co trung voi giao vien dang duoc chon khong neu trung thi hien thi la da duoc chon va hien thi cac lop ma giao vien dc phan cong day mon nay
                                 if (
@@ -418,6 +458,7 @@ function hienthiDanhsach(danhsach) {
                                     ttgiaovien.id
                                 ) {
                                     inputChon.checked = true;
+
                                     sotietchuaphancong.textContent = "";
                                 } else {
                                     // kiem tra xem giao vien dang duoc xet co phai la giao vien hien tai duoc chon khong neu la giao vien khac thi vo hieu hoa nut chon
@@ -441,7 +482,7 @@ function hienthiDanhsach(danhsach) {
 
                                 if (inputChon.checked) {
                                     lopdachon.push(idLop);
-                                    giaovien.textContent = `${ttgiaovien.hovaten} ${ttgiaovien.ten}`;
+                                    giaovien.textContent = `${ttgiaovien.hovaten}`;
                                     sotietchuaphancong.textContent = "";
 
                                     let checkPhancong = bangphancongTam.findIndex(
@@ -590,7 +631,7 @@ function hienthiDanhsach(danhsach) {
                 sotiet.setAttribute("data-mon", item.id);
                 sotiet.setAttribute("class", "txtSotietmon");
                 // tr.appendChild(stt);
-                tr.appendChild(mon);               
+                tr.appendChild(mon);
                 tr.appendChild(chon);
                 tr.appendChild(lopday);
                 tr.appendChild(sotiet);

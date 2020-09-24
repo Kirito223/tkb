@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\monhoc;
 use App\Objects\HTTPCode;
 use App\Objects\PhancongGiaovien;
+use App\Objects\SessionInfo;
 use App\phancongchuyenmon;
 use App\sotietmonhoc;
 use Carbon\Carbon;
@@ -17,6 +18,12 @@ use stdClass;
 
 class PhanconggiaovienDayController extends Controller
 {
+
+    private $SessionInfo;
+    public function __construct()
+    {
+        $this->SessionInfo = new SessionInfo();
+    }
     public function index()
     {
         return view('phanconggiaovien\index');
@@ -24,11 +31,11 @@ class PhanconggiaovienDayController extends Controller
 
     public function all()
     {
-        $danhsachphancong = phancongchuyenmon::all();
-        $danhsachGiaovien = danhsachgv::all();
-        $danhsachmonhoc = monhoc::all();
-        $danhsachlop = danhsachlophoc::all();
-        $sotiet = sotietmonhoc::all();
+        $danhsachphancong = phancongchuyenmon::where('matruong', $this->SessionInfo->getSchoolId())->get();
+        $danhsachGiaovien = danhsachgv::where('matruong', $this->SessionInfo->getSchoolId())->get();
+        $danhsachmonhoc = monhoc::where('matruong', $this->SessionInfo->getSchoolId())->get();
+        $danhsachlop = danhsachlophoc::where('matruong', $this->SessionInfo->getSchoolId())->get();
+        $sotiet = sotietmonhoc::where('matruong', $this->SessionInfo->getSchoolId())->get();
 
         $Result = new PhancongGiaovien($danhsachphancong, $danhsachGiaovien, $danhsachmonhoc, $danhsachlop, $sotiet);
 
@@ -53,7 +60,8 @@ class PhanconggiaovienDayController extends Controller
             }
 
             // Tim danh sach phan cong giao vien lien quan
-            $danhsachcu = phancongchuyenmon::where('magiaovien', $giaovien)->select('id')->get();
+            $danhsachcu = phancongchuyenmon::where('magiaovien', $giaovien)
+                ->select('id')->get();
             phancongchuyenmon::destroy($danhsachcu->toArray());
 
             // Them data moi
@@ -65,13 +73,14 @@ class PhanconggiaovienDayController extends Controller
                     unset($danhsach[$key]);
                 }
             }
-
+            $matruong = $this->SessionInfo->getSchoolId();
             foreach ($danhsach as $key => $value) {
                 $phancong = new phancongchuyenmon();
                 $phancong->magiaovien = $value->magiaovien;
                 $phancong->mamonhoc = $value->mamonhoc;
                 $phancong->malop = $value->malop;
                 $phancong->sotiet = $value->sotiet;
+                $phancong->matruong = $matruong;
                 $phancong->save();
             }
             return response()->json(["code" => HTTPCode::$CODE_SUCCESS, "message" => "Phân công giáo viên thành công"]);
@@ -100,6 +109,7 @@ class PhanconggiaovienDayController extends Controller
     public function laydanhsachMonPhancong($monhoc)
     {
         $danhsachPhancong = phancongchuyenmon::where('phancongchuyenmon.mamonhoc', $monhoc)
+            ->where('matruong', $this->SessionInfo->getSchoolId())
             ->join('sotietmonhoc', 'sotietmonhoc.mamonhoc', 'phancongchuyenmon.mamonhoc')
             ->join('danhsachlophoc', 'danhsachlophoc.id', 'phancongchuyenmon.malop')
             ->join('danhsachgv', 'danhsachgv.id', 'phancongchuyenmon.magiaovien')
