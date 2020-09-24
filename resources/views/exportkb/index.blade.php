@@ -277,8 +277,8 @@
 
 											</div>
 
-											<div class="col-md-12 col-sm-12 col-xl-12 hidden" style="overflow: scroll"
-												id="listTeacher">
+											<div class="col-md-12 col-sm-12 col-xl-12 hidden"
+												style="overflow-x: scroll; height: 330px;" id="listTeacher">
 												<table class="table table-bordered">
 													<thead class="">
 														<tr>

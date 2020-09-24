@@ -33,7 +33,8 @@ var listTeacherBody,
     emailContent,
     searchTeacher,
     progressbarTitle,
-    savetkb, exportTkb;
+    savetkb,
+    exportTkb;
 
 var tkbCode = "";
 
@@ -83,9 +84,7 @@ function initControl() {
     emailContent = document.getElementById("emailContent");
     searchTeacher = document.getElementById("searchTeacher");
     exportTkb = document.getElementById("exportTkb");
-    savetkb = document.getElementById(
-        "savetkb"
-    );
+    savetkb = document.getElementById("savetkb");
 }
 
 async function initListTeacher() {
@@ -109,23 +108,31 @@ function initData() {
     initListTeacher();
 }
 function initEvent() {
-    exportTkb.onclick = function(e){
+    exportTkb.onclick = function (e) {
         downLoadTKBEvent();
-    }
+    };
     searchTeacher.oninput = function (e) {
         Search("tdTeacherName", searchTeacher);
     };
 
-    savetkb.onclick = function(e){
+    savetkb.onclick = async function (e) {
         if (tkbCode == "") {
             await exportExcel();
             if (tkbCode != "") {
-              Swal.fire("Đã lưu thời khóa biểu", "Lưu thời khóa biểu thành công", "sucess");
+                Swal.fire(
+                    "Đã lưu thời khóa biểu",
+                    "Lưu thời khóa biểu thành công",
+                    "sucess"
+                );
             }
         } else {
-            Swal.fire("Đã lưu thời khóa biểu", "Lưu thời khóa biểu thành công", "sucess");
+            Swal.fire(
+                "Đã lưu thời khóa biểu",
+                "Lưu thời khóa biểu thành công",
+                "sucess"
+            );
         }
-    }
+    };
     sendTKBwithEmail.onclick = async function (e) {
         let emails = [];
 

@@ -702,8 +702,17 @@ class rangbuocController extends Controller
 			$khoi = new stdClass();
 			$khoi->makhoi = $itemKhoi->id;
 			$khoi->tenkhoi = $itemKhoi->tenkhoi;
-			$lop = danhsachlophoc::where('khoi', '=',  $itemKhoi->id)->get();
-			$khoi->danhsachlop = $lop;
+			$lop = danhsachlophoc::where('khoi', '=', substr($itemKhoi->tenkhoi, 0, 1))->get();
+			$arrLop = array();
+			foreach ($lop as $item) {
+				$lops = new stdClass();
+				$lops->id = $item->id;
+				$lops->tenlop = $item->tenlop;
+				$lops->khoi = $itemKhoi->tenkhoi;
+				array_push($arrLop, $lops);
+			}
+
+			$khoi->danhsachlop = $arrLop;
 			array_push($danhsachKhoi, $khoi);
 		}
 		return response()->json(["monhoc" => $danhSachMonHoc, "khoihoc" => $danhsachKhoi, "bangphantiet" => $bangphantiet], Response::HTTP_OK);
