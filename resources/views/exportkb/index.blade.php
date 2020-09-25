@@ -1,5 +1,5 @@
 @extends('master')
-@section('title','Thiết lập CSDL')
+@section('title','Xuất thời khóa biểu')
 @section('content')
 
 <div class="card">
@@ -13,62 +13,17 @@
 			</ul>
 		</div>
 		<hr>
-		<div class="row">
-			<div class="col-md-3">
-				<div class="form-group row">
-					<label class="col-md-6 label-control" for="tkbNo" style="text-align: right;">Thời khóa biểu
-						sô:</label>
-					<div class="col-md-5" style="padding-left: 0">
-						<input type="text" id="tkbNo" class="form-control border-primary input-sm" name="tkbNo">
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="form-group row">
-					<label class="col-md-6 label-control" for="dateprocess" style="text-align: right;">Thực hiện từ
-						ngày:</label>
-					<div class="col-md-6" style="padding-left: 0">
-						<div id="dateprocess"></div>
-						<span class="add-on"><i class="icon-th"></i></span>
-					</div>
-				</div>
-			</div>
-		</div>
+
 	</div>
 	<div class="card-content collpase show">
 		<div class="card-body">
 			<form class="form">
 				<div class="form-body">
 					<div class="row">
-						<div class="col-md-7">
-
+						<div class="col-md-4">
 							<div class="card box-shadow-0 border-info bg-transparent" id="khaibao">
 								<div class="card-header bg-transparent" style="padding: 10px">
-									<div class="form-group">
-										<div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-											<button type="button" id="btnDownloadTKB" class="btn btn-success">Tải
-												thời khóa biểu</button>
-											<button id="sendTKBwithEmail" type="button" class="btn btn-danger">Gửi tkb
-												cho GV qua
-												email</button>
-											<button id="savetkb" type="button" class="btn btn-primary">
-												Lưu tkb trực tuyến</button>
-											<button id="exportTkb" type="button" class="btn btn-info"> Xuất tkb để tra
-												cứu</button>
-										</div>
 
-									</div>
-									<div class="form-group">
-										<div class="progress hidden">
-											<div id="progressbarTitle"
-												class="progress-bar progress-bar-striped progress-bar-animated"
-												role="progressbar" aria-valuenow="75" aria-valuemin="0"
-												aria-valuemax="100" style="width:100%">Đang xuất thời khóa biểu vui
-												lòng đợi trong giây lát</div>
-										</div>
-									</div>
-									<a class="heading-elements-toggle"><i
-											class="fa fa-ellipsis-v font-medium-3"></i></a>
 									<div class="heading-elements">
 										<ul class="list-inline mb-0">
 											<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -77,175 +32,54 @@
 								</div>
 								<div class="card-content collapse show" style="">
 									<div class="card-body">
-										<hr>
+										<!-- <hr> -->
 										<div class="form-group">
-											<label for="projectinput1">Sheet: TKB trường</label>
-											<div class="row" style="padding-left: 10px;padding-right: 10px">
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input checked type="radio" name="radioSchool" value=""
-															id="chkTKBSchollMVDuo">
-														Môn, GV (riêng 2 cột)
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioSchool" value=""
-															id="chkTKBSchollMV">
-														Môn, GV (trong 1 cột)
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioSchool" value=""
-															id="chkTKBSchollMVDuoLine">
-														Môn/GV (2 dòng)
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioSchool" value=""
-															id="chkTKBSchollM">
-														Môn
-													</label>
-												</fieldset>
-											</div>
+											<label for="projectinput1">Xuất thời khóa biểu</label>
+											<fieldset class="checkbox" style="padding-right: 10px;">
+												<label>
+													<input type="checkbox" name="checkbox" value=""
+														id="xuattkbtongquat">
+													Xuất thời khóa biểu trường
+												</label>
+											</fieldset>
+											<fieldset class="checkbox" style="padding-right: 10px;">
+												<label>
+													<input type="checkbox" name="checkbox" value="" id="xuattkblop">
+													Xuất thời khóa biểu lớp
+												</label>
+											</fieldset>
+											<fieldset class="checkbox" style="padding-right: 10px;">
+												<label>
+													<input type="checkbox" name="checkbox" value=""
+														id="xuattkbgiaovien">
+													Xuất thời khóa biểu giáo viên
+												</label>
+											</fieldset>
+											<fieldset class="checkbox" style="padding-right: 10px;">
+												<label>
+													<input type="checkbox" name="checkbox" value=""
+														id="xuattkbphancongcm">
+													Xuất thời khóa biểu phân công chuyên môn
+												</label>
+											</fieldset>
+											<fieldset class="checkbox" style="padding-right: 10px;">
+												<label>
+													<input type="checkbox" name="checkbox" value="" id="xuattkbphong">
+													Xuất thời khóa biểu theo phòng
+												</label>
+											</fieldset>
 											<hr>
-											<label for="projectinput1">Sheet: TKB lớp</label>
-											<div class="row" style="padding-left: 10px;padding-right: 10px">
-
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input checked type="radio" name="radioClass" value=""
-															id="chkTKBLopMGV">
-														Môn, GV
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioClass" value="" id="chkTKBLopM">
-														Môn
-													</label>
-												</fieldset>
-											</div>
-
-											<hr>
-											<label for="projectinput1">Sheet: TKB GV</label>
-											<div class="row" style="padding-left: 10px;padding-right: 10px">
-
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>TKB GV1:</label>
-													<label>
-														<input checked type="radio" name="radioTeacherOne" value=""
-															id="chkTKBGV1ML">
-														Môn, lớp
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioTeacherOne" value=""
-															id="chkTKBGV1M">
-														Môn
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioTeacherOne" value=""
-															id="chkTKBGV1L">
-														Lớp
-													</label>
-												</fieldset>
-												<div class="break"></div>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>TKB GV2:</label>
-													<label>
-														<input checked type="radio" name="radioTeacherTwo" value=""
-															id="chkTKBGV2ML">
-														Môn, lớp
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioTeacherTwo" value=""
-															id="chkTKBGV2M">
-														Môn
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioTeacherTwo" value=""
-															id="chkTKBGV2L">
-														Lớp
-													</label>
-												</fieldset>
-												<div class="break"></div>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>TKB GV3:</label>
-													<label>
-														<input checked type="radio" name="radioTeacherThree" value=""
-															id="chkTKBGV3ML">
-														Môn, lớp
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioTeacherThree" value=""
-															id="chkTKBGV3M">
-														Môn
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioTeacherThree" value=""
-															id="chkTKBGV3L">
-														Lớp
-													</label>
-												</fieldset>
-											</div>
-											<hr>
-											<label for="projectinput1">Sheet: TKB phòng bộ môn</label>
-											<div class="row" style="padding-left: 10px;padding-right: 10px">
-
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input checked type="radio" name="radioRoom" value=""
-															id="chkTKBPBMML">
-														Môn, lớp
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioRoom" value="" id="chkTKBPBMMGV">
-														Môn, GV
-													</label>
-												</fieldset>
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input type="radio" name="radioRoom" value="" id="chkTKBPBMGVL">
-														GV, lớp
-													</label>
-												</fieldset>
-											</div>
-											<hr>
-											<label for="projectinput1">Sheet: TKB tổ nhóm</label>
-											<div class="row" style="padding-left: 10px;padding-right: 10px">
-
-												<fieldset class="radio" style="padding-right: 10px;">
-													<label>
-														<input checked type="radio" name="radio" value=""
-															id="chkTKBTNML">
-														Môn, lớp
-													</label>
-												</fieldset>
-											</div>
+											<button type="button" class="btn btn-success" id="xuattkb">Xuất thời khóa
+												biểu</button>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-md-5">
+						<div class="col-md-8">
 							<div class="card box-shadow-0 border-info bg-transparent" id="khaibao">
 								<div class="card-header bg-transparent" style="padding: 10px">
+									<h5 class="card-title" id="basic-layout-form">Gửi Email</h5>
 									<a class="heading-elements-toggle"><i
 											class="fa fa-ellipsis-v font-medium-3"></i></a>
 									<div class="heading-elements">
@@ -256,49 +90,81 @@
 								</div>
 								<div class="card-content collapse show" style="">
 									<div class="card-body">
-										<div class="row">
-											<div class="col-md-6 col-sm-6 col-xl-6"><b>Chủ đề Email</b></div>
-											<div class="col-md-6 col-sm-6 col-xl-6 justify-content-end d-flex">Email gửi
-												TKB: Email của hệ thống
+										<form class="form">
+											<div class="form-body">
+												<h6 class="form-section"><i class="ft-user"></i> Thông tin email gửi
+												</h6>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<input type="text" id="projectinput1"
+																class="form-control input-sm" placeholder="Email"
+																name="fname">
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<input type="password" id="projectinput2"
+																class="form-control input-sm" placeholder="Mật khẩu"
+																name="lname">
+														</div>
+													</div>
+												</div>
 											</div>
-											<div class="col-md-12 col-sm-12 col-xs-12">
-												<textarea id="emailTitle"
-													placeholder="Thời khóa biểu thực hiện từ ngày....">
+										</form>
+										<form class="form">
+											<div class="form-body">
+												<h6 class="form-section"><i class="ft-calendar"></i> Thời khóa biểu</h6>
+												<div class="row">
+													<div class="col-md-3">
+														<div class="form-group">
+															<label>Tháng</label>
+															<select type="text" id="projectinput1"
+																class="form-control input-sm"></select>
+														</div>
+													</div>
+													<div class="col-md-3">
+														<div class="form-group">
+															<label>Tuần</label>
+															<select type="text" id="projectinput1"
+																class="form-control input-sm"></select>
+														</div>
+													</div>
+													<div class="col-md-3">
+														<div class="form-group">
+															<label>File đính kèm (Ký số)</label>
+															<button type="button"
+																class="btn mr-1 mb-1 btn-info btn-sm">File đính
+																kèm</button>
+														</div>
+													</div>
+													<div class="col-md-1">
+														<div class="form-group">
+															<label>Gửi mail</label>
+															<button type="button"
+																class="btn mr-1 mb-1 btn-success btn-sm">Gửi</button>
+														</div>
+													</div>
 
-																																																				</textarea>
+												</div>
 											</div>
-											<div class="col-md-12 col-sm-12 col-xl-12">
-												<b>Nội dung Emall</b>
-												<textarea id="emailContent"></textarea>
-											</div>
-											<div class="col-md-7 col-sm-7 col-xl-7">
-												<label><input id="chkSelectTeacher" type="checkbox" />Chọn giáo viên gửi
-													email</label>
+										</form>
 
+										<form class="form">
+											<div class="form-body">
+												<h6 class="form-section"><i class="ft-calendar"></i> Danh sách giáo viên
+													cần gửi</h6>
+												<div class="row">
+													<div class="col-md-12">
+														<div id="dsgiaovienguimail"></div>
+													</div>
+												</div>
 											</div>
+										</form>
 
-											<div class="col-md-12 col-sm-12 col-xl-12 hidden"
-												style="overflow-x: scroll; height: 330px;" id="listTeacher">
-												<table class="table table-bordered">
-													<thead class="">
-														<tr>
-															<th rowspan="2">STT</th>
-															<th rowspan="2"><input id="selectAllEmail"
-																	type="checkbox" /></th>
-															<th><label>Chọn giáo
-																	viên</label></th>
-															<th rowspan="2">Email</th>
-														</tr>
-														<tr>
-															<th><input id="searchTeacher" type="text" /></th>
-														</tr>
-													</thead>
-													<tbody id="listTeacherBody">
 
-													</tbody>
-												</table>
-											</div>
-										</div>
+
+
 									</div>
 								</div>
 							</div>
@@ -308,20 +174,90 @@
 			</form>
 		</div>
 	</div>
+
+
+
 </div>
 
-<script type="module" src="{{asset('js\xuattkb\xuattkb.js')}}"></script>
-<style>
-	.break {
-		width: 100%;
-	}
+<script type="text/javascript">
+	window.onload = function() {
+		danhsachgv();
+	};
 
-	textarea {
-		width: 100%;
-	}
 
-	#listTeacher {
-		margin-top: 5px;
+
+	function danhsachgv(){
+		var data = axios.get('getdanhsachgv').then(function (response) {
+			var data1 = response.data;
+			var datas = data1.map(function (value, label) {
+				let data = value;
+				let stt = label + 1;
+				var datas = Object.assign(data, {stt: stt.toString()});
+				return datas;
+			});	
+			if(datas == ""){
+				Swal.fire({
+					title: 'Có lỗi!',
+					text: 'Đã có lối xảy ra! Vui lòng kiểm tra và thử lại',
+					icon: 'error',
+					confirmButtonText: 'OK'
+				})
+			}
+			$("#dsgiaovienguimail").dxDataGrid({
+				dataSource: datas,
+				showBorders: true,
+				// remoteOperations: true,
+				scrolling: {
+					mode: "virtual",
+					rowRenderingMode: "virtual"
+				},
+				// paging: {
+				// 	pageSize: 10
+				// },
+				/* xap xep */
+				sorting: {
+					mode: "multiple"
+				},
+				/* loc du lieu */
+				filterRow: {
+					visible: true,
+					applyFilter: "auto"
+				},
+				searchPanel: {
+					visible: true,
+					width: 240,
+					placeholder: "Tìm kiếm..."
+				},
+				// pager: {
+				// 	showPageSizeSelector: true,
+				// 	allowedPageSizes: [5, 10, 20],
+				// 	showInfo: true
+				// },
+				/* headerFilter: {
+					visible: true
+				}, */
+				/*chon row*/
+				selection: {
+					mode: "multiple",
+					recursive: true
+				},
+				/* co dan cot */
+				allowColumnResizing: true,
+				columnResizingMode: "widget",
+				columns: [{
+					caption: "Tên",
+					dataField: "hovaten",
+				},{
+					caption: "Email",
+					dataField: "email",
+				}],
+				// select data row
+				onSelectionChanged: function (selectedItems) {
+
+				},
+			});
+		});
 	}
-</style>
+</script>
+<script type="module" src="js/xuattkb/xuattkb.js"></script>
 @endsection
