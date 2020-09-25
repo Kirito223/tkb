@@ -40,6 +40,8 @@ Route::post('sotietngay/savedata', 'rangbuoc\rangbuocController@saveData');
 Route::get('sotietbuoi/getdata', 'rangbuoc\rangbuocController@getDataBuoi');
 Route::post('sotietbuoi/savedata', 'rangbuoc\rangbuocController@saveDataBuoi');
 
+
+
 // Xuat excel
 
 Route::get('xuattkb/listTeacher', 'export\exportExcelController@listTeacher');
