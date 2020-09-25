@@ -1412,16 +1412,18 @@ class exportExcelController extends Controller
         $contentRequest = $request->getContent();
         $contentRequest = json_decode($contentRequest);
         $listMail = $contentRequest->listMail;
-        $tkbNo = $contentRequest->tkbNo;
-        $title = $contentRequest->emailTitle;
-        $content = $contentRequest->emailContent;
+        $fileAttack = $contentRequest->fileAttack;
+        $week = $contentRequest->week;
+        $month = $contentRequest->month;
         $arrFail = array();
         foreach ($listMail as $mail) {
-            if ($mail != "null") {
-                Mail::send(array(), array(), function ($message) use ($mail, $tkbNo, $title, $content) {
-                    $message->to($mail, 'Tutorials Point')->subject($title);
-                    $message->attach(public_path('export') . "/thoikhoabieu.xlsx");
-                    $message->from('hacker11357@gmail.com', 'Thời khóa biểu ' . $this->sessionInfo->getSchoolName());
+            if ($mail != null) {
+                Mail::send(array(), array(), function ($message) use ($mail, $fileAttack, $week, $month) {
+                    $message->to($mail, 'Phần mềm thời khóa biểu')->subject('Thời khóa biểu ' . $this->sessionInfo->getSchoolName());
+                    foreach ($fileAttack as $file) {
+                        $message->attach(public_path('export/') . $file . ".xlsx");
+                    }
+                    $message->from('hacker11357@gmail.com', 'Thời khóa biểu ' . $this->sessionInfo->getSchoolName() . "Tuần " . $week . "Tháng " . $month);
                 });
             } else {
                 array_push($arrFail, $mail);

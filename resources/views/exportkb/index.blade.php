@@ -90,7 +90,7 @@
 								</div>
 								<div class="card-content collapse show" style="">
 									<div class="card-body">
-										<form class="form">
+										{{-- <form class="form">
 											<div class="form-body">
 												<h6 class="form-section"><i class="ft-user"></i> Thông tin email gửi
 												</h6>
@@ -111,7 +111,7 @@
 													</div>
 												</div>
 											</div>
-										</form>
+</form> --}}
 										<form class="form">
 											<div class="form-body">
 												<h6 class="form-section"><i class="ft-calendar"></i> Thời khóa biểu</h6>
@@ -119,14 +119,14 @@
 													<div class="col-md-3">
 														<div class="form-group">
 															<label>Tháng</label>
-															<select type="text" id="projectinput1"
+															<select type="text" id="monthSelect"
 																class="form-control input-sm"></select>
 														</div>
 													</div>
 													<div class="col-md-3">
 														<div class="form-group">
 															<label>Tuần</label>
-															<select type="text" id="projectinput1"
+															<select type="text" id="weekSelect"
 																class="form-control input-sm"></select>
 														</div>
 													</div>
@@ -141,7 +141,7 @@
 													<div class="col-md-1">
 														<div class="form-group">
 															<label>Gửi mail</label>
-															<button type="button"
+															<button id="sendEmail" type="button"
 																class="btn mr-1 mb-1 btn-success btn-sm">Gửi</button>
 														</div>
 													</div>

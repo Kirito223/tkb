@@ -8,22 +8,12 @@ var listTeacherBody,
     xuattkbphancongcm,
     xuattkbphong,
     xuattkb,
-    dateprocess,
-    chkSelectTeacher,
-    selectAllEmail,
-    progress,
-    listTeacher,
-    sendTKBwithEmail,
-    emailTitle,
-    emailContent,
-    searchTeacher,
-    progressbarTitle,
-    savetkb,
-    exportTkb;
-
-var tkbCode = "";
+    sendEmail,
+    monthSelect,
+    weekSelect;
 
 var arrFile = [];
+var arrFileAttack = [];
 window.onload = function () {
     initControl();
     initData();
@@ -31,15 +21,15 @@ window.onload = function () {
 };
 
 function initControl() {
-    listTeacherBody = document.getElementById("listTeacherBody");
-    listTeacher = document.getElementById("listTeacher");
     xuattkbtongquat = document.getElementById("xuattkbtongquat");
     xuattkblop = document.getElementById("xuattkblop");
     xuattkbgiaovien = document.getElementById("xuattkbgiaovien");
     xuattkbphancongcm = document.getElementById("xuattkbphancongcm");
     xuattkbphong = document.getElementById("xuattkbphong");
     xuattkb = document.getElementById("xuattkb");
-    progressbarTitle = document.getElementById("progressbarTitle");
+    monthSelect = document.getElementById("monthSelect");
+    weekSelect = document.getElementById("weekSelect");
+
     const now = new Date();
     $("#dateprocess").dxDateBox({
         type: "date",
@@ -47,93 +37,49 @@ function initControl() {
         min: new Date(1900, 0, 1),
         value: now,
     });
-    selectAllEmail = document.getElementById("selectAllEmail");
-    progress = document.getElementsByClassName("progress");
-    sendTKBwithEmail = document.getElementById("sendTKBwithEmail");
-    emailTitle = document.getElementById("emailTitle");
-    emailContent = document.getElementById("emailContent");
-    searchTeacher = document.getElementById("searchTeacher");
+    sendEmail = document.getElementById("sendEmail");
 }
 
-// async function initListTeacher() {
-//     let listTeacher = await xuattkbapi.getListTeacher();
-//     let html = "";
-//     let stt = 1;
-//     listTeacher.forEach((element) => {
-//         html += `<tr>
-//         <td class="">${stt}</td>
-//         <td><input type="checkbox" data-email="${
-//             element.email
-//         }" class="emailTeacher" /></td>
-//         <td class="tdTeacherName">${element.hovaten}</td>
-//         <td>${element.email != null ? element.email : ""}</td>
-//         </tr>`;
-//         stt++;
-//     });
-//     listTeacherBody.innerHTML = html;
-// }
+async function initListTeacher() {
+    let listTeacher = await xuattkbapi.getListTeacher();
+    $("#dsgiaovienguimail").dxDataGrid({
+        dataSource: listTeacher,
+        selection: {
+            mode: "multiple",
+            allowSelectAll: true,
+        },
+        columns: [
+            { dataField: "hovaten", caption: "Tên giáo viên" },
+            { dataField: "email", caption: "Tên giáo viên" },
+        ],
+    });
+}
 
 function initData() {
-    //  initListTeacher();
+    initListTeacher();
+
+    for (let month = 1; month < 13; month++) {
+        $("#monthSelect").append(`<option value=${month}>${month}</option>`);
+    }
+    for (let week = 1; week < 55; week++) {
+        $("#weekSelect").append(`<option value=${week}>${week}</option>`);
+    }
 }
 
 function initEvent() {
+    sendEmail.onclick = function (e) {
+        let emailSelect = $("#dsgiaovienguimail")
+            .dxDataGrid("instance")
+            .getSelectedRowsData();
+        let email = emailSelect.map((e) => {
+            return e.email;
+        });
+        sendMail(email);
+        // console.log(email);
+    };
     xuattkb.onclick = function (e) {
         downLoadTKBEvent();
     };
-    // searchTeacher.oninput = function (e) {
-    //     Search("tdTeacherName", searchTeacher);
-    // };
-
-    // // // sendTKBwithEmail.onclick = async function (e) {
-    // // //     let emails = [];
-
-    // // //     if (chkSelectTeacher.checked) {
-    // // //         progress[0].classList.remove("hidden");
-    // // //         progressbarTitle.textContent =
-    // // //             "Đang gửi thời khóa biểu cho giáo viên xin vui lòng chờ cho đến khi hoàn tất";
-    // // //         let chkEmail = document.querySelectorAll(".emailTeacher:checked");
-    // // //         for (const email of chkEmail) {
-    // // //             emails.push(email.dataset.email);
-    // // //         }
-    // // //         if (tkbCode == "") {
-    // // //             await exportExcel();
-    // // //             if (tkbCode != "") {
-    // // //                 sendMail(emails);
-    // // //             }
-    // // //         } else {
-    // // //             sendMail(emails);
-    // // //         }
-    // // //     } else {
-    // // //         let chkEmail = document.querySelectorAll(".emailTeacher");
-    // // //         for (const email of chkEmail) {
-    // // //             emails.push(email.dataset.email);
-    // // //         }
-    // // //         if (tkbCode == "") {
-    // // //             await exportExcel();
-    // // //             if (tkbCode != "") {
-    // // //                 sendMail(emails);
-    // // //             }
-    // // //         } else {
-    // // //             sendMail(emails);
-    // // //         }
-    // // //     }
-    // // //     progress[0].classList.add("hidden");
-    // // // };
-    // // chkSelectTeacher.onclick = function (e) {
-    // //     if (!e.target.checked) {
-    // //         listTeacher.classList.add("hidden");
-    // //     } else {
-    // //         listTeacher.classList.remove("hidden");
-    // //     }
-    // // };
-
-    // selectAllEmail.onclick = function (e) {
-    //     let emailList = document.querySelectorAll(".emailTeacher");
-    //     for (const chk of emailList) {
-    //         chk.checked = e.target.checked;
-    //     }
-    // };
 
     xuattkb.onclick = function (e) {
         downLoadTKBEvent();
@@ -148,8 +94,9 @@ async function downLoadTKBEvent() {
 async function sendMail(listMail) {
     let result = await xuattkbapi.sendEmail({
         listMail: listMail,
-        emailTitle: emailTitle.value,
-        emailContent: emailContent.value,
+        fileAttack: arrFileAttack,
+        week: weekSelect.value,
+        month: monthSelect.value,
     });
     if (result.msg == "OK") {
         Swal.fire(
@@ -202,20 +149,10 @@ async function exportExcel() {
 }
 
 function downloadTkb() {
+    arrFileAttack.length = 0;
     arrFile.forEach((file) => {
         window.open(`${baseURl}xuattkb/export/${file}.xlsx`);
+        arrFileAttack.push(file);
     });
     arrFile.length = 0;
-}
-function Search(tdClass, searchTxt) {
-    let td = document.getElementsByClassName(tdClass);
-    let textSearch = searchTxt.value.toUpperCase();
-    for (const item of td) {
-        let tdValue = item.textContent || item.innerText;
-        if (tdValue.toUpperCase().indexOf(textSearch) > -1) {
-            item.parentElement.style.display = "";
-        } else {
-            item.parentElement.style.display = "none";
-        }
-    }
 }
