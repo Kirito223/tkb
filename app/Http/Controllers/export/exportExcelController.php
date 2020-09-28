@@ -548,7 +548,7 @@ class exportExcelController extends Controller
 
     private function exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet)
     {
-        $rowTitle = 5;
+        $rowTitle = 1;
         $columnTitle = 3;
         $matruong = $this->sessionInfo->getSchoolId();
         $listClassRoom = danhsachlophoc::where('matruong', $matruong)->get();
@@ -566,9 +566,9 @@ class exportExcelController extends Controller
         $titleLenght = count($listClassRoom) * 2 + 2;
         $indexcolum = 3;
         while ($indexcolum < $titleLenght) {
-            $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, 6, "Môn");
+            $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, 2, "Môn");
             $indexcolum++;
-            $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, 6, "Giáo viên");
+            $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, 2, "Giáo viên");
             $indexcolum++;
         }
 
@@ -614,7 +614,7 @@ class exportExcelController extends Controller
         $totalRow = 70;
         $indexTable = 0;
         $lastColumn = 0;
-        for ($indexRowbody = 7; $indexRowbody < $totalRow; $indexRowbody++) {
+        for ($indexRowbody = 3; $indexRowbody < $totalRow; $indexRowbody++) {
             // Loop follow class and insert data to cell in excel
 
             $indexcolum = 3;
@@ -657,7 +657,7 @@ class exportExcelController extends Controller
         }
 
         // Render
-        $rowTeacher = 7;
+        $rowTeacher = 3;
         foreach ($arrteacherRest as $restItem) {
             // Merge row
             $sheetTKBSchool->mergeCellsByColumnAndRow($lastColumn, $rowTeacher, $lastColumn, $rowTeacher + 9);
@@ -666,9 +666,6 @@ class exportExcelController extends Controller
         }
         $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn, $totalRow - 4)->getCoordinate();
 
-        $this->sign($sheetTKBSchool, $lastColumn, $totalRow);
-
-        $this->headerRow($sheetTKBSchool, $lastColumn, $lastCellAddress);
         $styleArray = [
             'borders' => [
                 'outline' => [
@@ -683,12 +680,8 @@ class exportExcelController extends Controller
             ],
         ];
 
-        $sheetTKBSchool->getStyle('A5:' . $lastCellAddress)->applyFromArray($styleArray);
-
-        $sheetTKBSchool->mergeCells("A1:G1");
-        $sheetTKBSchool->setCellValue("A1", $this->sessionInfo->getSchoolName());
-
-        $sheetTKBSchool->getStyle("A1")->getFont()->setBold(true);
+        $sheetTKBSchool->getStyle('A1:' . $lastCellAddress)->applyFromArray($styleArray);
+        $this->sign($sheetTKBSchool, $lastColumn, $totalRow);
         $this->autoSiezColumn($sheet);
         $this->saveExcel($sheet, "thoikhoabieutruong");
     }
