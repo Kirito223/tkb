@@ -13,7 +13,11 @@ const xuattkbapi = {
         return result;
     },
     sendEmail: async function (params) {
-        let result = await axiosClient.post("xuattkb/sendEmail", params);
+        let result = await axiosClient.post("xuattkb/sendEmail", params, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
         return result;
     },
 };

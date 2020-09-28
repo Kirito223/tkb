@@ -10,10 +10,14 @@ var listTeacherBody,
     xuattkb,
     sendEmail,
     monthSelect,
-    weekSelect;
+    weekSelect,
+    btnAttachFile,
+    fileInput,
+    listFileAttach;
 
 var arrFile = [];
-var arrFileAttack = [];
+var arrFileAttack = null;
+
 window.onload = function () {
     initControl();
     initData();
@@ -29,6 +33,9 @@ function initControl() {
     xuattkb = document.getElementById("xuattkb");
     monthSelect = document.getElementById("monthSelect");
     weekSelect = document.getElementById("weekSelect");
+    btnAttachFile = document.getElementById("btnAttachFile");
+    fileInput = document.getElementById("fileInput");
+    listFileAttach = document.getElementById("listFileAttach");
 
     const now = new Date();
     $("#dateprocess").dxDateBox({
@@ -67,6 +74,19 @@ function initData() {
 }
 
 function initEvent() {
+    fileInput.onchange = function (e) {
+        let file = fileInput.files;
+        for (const f of file) {
+            let li = document.createElement("li");
+            li.textContent = f.name;
+            listFileAttach.appendChild(li);
+        }
+    };
+
+    btnAttachFile.onclick = function (e) {
+        fileInput.click();
+    };
+
     sendEmail.onclick = function (e) {
         let emailSelect = $("#dsgiaovienguimail")
             .dxDataGrid("instance")
@@ -92,19 +112,29 @@ async function downLoadTKBEvent() {
 }
 
 async function sendMail(listMail) {
-    let result = await xuattkbapi.sendEmail({
-        listMail: listMail,
-        fileAttack: arrFileAttack,
-        week: weekSelect.value,
-        month: monthSelect.value,
-    });
-    if (result.msg == "OK") {
+    let mailFormData = new FormData();
+    mailFormData.append("listMail", JSON.stringify(listMail));
+    for (var i = 0; i < fileInput.files.length; i++) {
+        let file = fileInput.files[i];
+        mailFormData.append(`files[${i}]`, file);
+    }
+
+    if (listMail.length == 0) {
         Swal.fire(
-            "Đã gửi email thành công",
-            "Hoàn tất gửi mail! Số email gửi không thành công: " +
-                result.fail.length,
-            "success"
+            "Chưa chọn danh sách giáo viên muốn gửi",
+            "Chọn danh sách giáo viên",
+            "warning"
         );
+    } else {
+        let result = await xuattkbapi.sendEmail(mailFormData);
+        if (result.msg == "OK") {
+            Swal.fire(
+                "Đã gửi email thành công",
+                "Hoàn tất gửi mail! Số email gửi không thành công: " +
+                    result.fail.length,
+                "success"
+            );
+        }
     }
 }
 
@@ -132,7 +162,7 @@ async function exportExcel() {
         arrFile.push("tkbpccm");
     }
     if (xuattkbphong.checked) {
-        arrFile.push("tkblop");
+        arrFile.push("tkblophoc");
         tkbphong = 1;
     }
 
@@ -149,10 +179,8 @@ async function exportExcel() {
 }
 
 function downloadTkb() {
-    arrFileAttack.length = 0;
     arrFile.forEach((file) => {
         window.open(`${baseURl}xuattkb/export/${file}.xlsx`);
-        arrFileAttack.push(file);
     });
     arrFile.length = 0;
 }
