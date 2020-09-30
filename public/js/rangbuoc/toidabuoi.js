@@ -194,7 +194,7 @@ for (const iterator of danhsachkhoihoc) {
     var chkbox = document.createElement("input");
     chkbox.setAttribute("type", "checkbox");
     chkbox.setAttribute("id", iterator.makhoi);
-    chkbox.setAttribute("data-khoibuoi", iterator.makhoi);
+    chkbox.setAttribute("data-khoibuoi", iterator.khoibuoi);
     chkbox.onclick = function (e) {
         let chkClass = document.querySelectorAll(
             `.classRoom[data-khoibuoi="${e.target.dataset.khoibuoi}"]`

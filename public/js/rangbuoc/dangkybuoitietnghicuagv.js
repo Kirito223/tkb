@@ -15,7 +15,7 @@ function loaddatadanhsachgvthamgiagiangday1() {
 		var data2 = [];
 		var lucky1 = data1.filter(function(items){
 			if(items.monhoc != ''){
-				data2.push({ id:items.id,ten:items.ten,bidanh:items.bidanh,thutuhienthi:items.thutuhienthi,monhoc:items.monhoc,rangbuocdangkybuoitietnghigv:items.rangbuocdangkybuoitietnghigv});	
+				data2.push({ id:items.id,ten:items.hovaten,bidanh:items.bidanh,thutuhienthi:items.thutuhienthi,monhoc:items.monhoc,rangbuocdangkybuoitietnghigv:items.rangbuocdangkybuoitietnghigv});	
 			}
 		});
 		var data3 = [];
@@ -841,10 +841,10 @@ $('#btnluudangkybuoinghicuagv').click(function (){
 			}else if(checkboxes[i].id == 9){
 				// tiet.push({idt: 5});
 				data_buoi_mrb.push({idbuoi: 1,idthu: 6,idmrb: select[i].value});
-			}else if(checkboxes[i].id == 4){
+			}else if(checkboxes[i].id == 10){
 				// tiet.push({idt: 5});
 				data_buoi_mrb.push({idbuoi: 0,idthu: 7,idmrb: select[i].value});
-			}else if(checkboxes[i].id == 4){
+			}else if(checkboxes[i].id == 11){
 				// tiet.push({idt: 5});
 				data_buoi_mrb.push({idbuoi: 1,idthu: 7,idmrb: select[i].value});
 			}

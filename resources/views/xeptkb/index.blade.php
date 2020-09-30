@@ -18,15 +18,14 @@
 			</div>
 			<div class="card-content collpase show">
 				<div class="card-body">
+					<button type="button" class="btn mr-1 mb-1 btn-danger btn-sm" id="dungxeptkb">Dừng xếp thời khóa biểu</button>
+					<button type="button" class="btn mr-1 mb-1 btn-success btn-sm" id="capnhattkb">Cập nhật thời khóa biểu</button>
+					<br>
 					<form class="form">
 						<div class="form-body">
-							<section>
-								<div class="container">
 									<table id="example" class="table table-striped table-bordered dataex-key-basic table-responsive display nowrap" width="100%">
 									</table>
 								</div>
-							</section>
-						</div>
 					</form>
 				</div>
 			</div>

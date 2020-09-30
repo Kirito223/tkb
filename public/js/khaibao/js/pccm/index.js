@@ -166,7 +166,7 @@ function initEvent() {
         // Cap nhat thong tin phan cong chuyen mon cho giao vien
         luuPhancong(bangphancongTam, giaovienchon, xoaPhancong).then((res) => {
             if (res["code"] == http.CODE_SUCCESS) {
-                // window.location.reload();
+                window.location.reload();
             } else {
                 Swal.fire(
                     "Đã có lỗi xảy ra vui lòng thử lại sau",

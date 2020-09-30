@@ -280,8 +280,8 @@ for (const iterator of danhsachkhoihoc) {
 for (const iterator of danhsachkhoihoc) {
     var chkbox = document.createElement("input");
     chkbox.setAttribute("type", "checkbox");
-    chkbox.setAttribute("id", iterator.makhoi);
-    chkbox.setAttribute("data-khoi", iterator.makhoi);
+    chkbox.setAttribute("id", iterator.tenkhoi);
+    chkbox.setAttribute("data-khoi", iterator.tenkhoi);
     chkbox.onclick = function (e) {
         let chkClass = document.querySelectorAll(
             `.classRoom[data-khoi="${e.target.dataset.khoi}"]`
@@ -426,8 +426,8 @@ for (const iterator of danhsachkhoihocBuoi) {
 for (const iterator of danhsachkhoihocBuoi) {
     var chkbox = document.createElement("input");
     chkbox.setAttribute("type", "checkbox");
-    chkbox.setAttribute("id", iterator.makhoi);
-    chkbox.setAttribute("data-khoibuoi", iterator.makhoi);
+    chkbox.setAttribute("id", iterator.tenkhoi);
+    chkbox.setAttribute("data-khoibuoi", iterator.tenkhoi);
     chkbox.onclick = function (e) {
         let chkClass = document.querySelectorAll(
             `.classRoom[data-khoibuoi="${e.target.dataset.khoibuoi}"]`

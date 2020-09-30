@@ -273,6 +273,35 @@ function danhsachgvcuatochuyenmon(idtocm) {
                 // 	allowEditing: false,	
                 // },
                 ],
+			
+					
+					                onContextMenuPreparing: function(data) {
+                    if (data.target == "content") {
+                        if (!data.items) data.items = [];
+                        data.items.push({
+                            template: function() {
+                                return $("<i class='fa fa-remove'>").text(" Xóa");
+                            },
+                            onItemClick: function() {
+                                var dataxoa = data.row.data.magiaovien;
+                                xoadsgvphancong(dataxoa);
+                            }
+                        });
+                        data.items.push({
+                            template: function() {
+                                return $("<i class='fa fa-remove'>").text(" Xóa toàn bộ");
+                            },
+                            onItemClick: function() {
+                                var dataxoahet = datas;
+                                xoadsgvphancongall(dataxoahet);
+                            }
+                        });
+                    }
+                },
+			
+					
+			
+					
             // select data row
             onSelectionChanged: function(selectedItems) {},
             onRowUpdating: function(e) {
@@ -392,4 +421,62 @@ function tagBoxEditorTemplate2(cellElement, cellInfo) {
 	});
 }
 });
+}
+
+
+
+
+function xoadsgvphancong(dataxoa) {
+  Swal.fire({
+    title: 'Lưu',
+    text: "Bạn có muốn xóa phân công giáo viên này không",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes'
+  }).then((result) => {
+    if (result.value) {
+      axios.post('deldanhsachgvphancong',{id:dataxoa}).then(function (response) {
+        var data = response.data;
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          text: 'Đã xóa thành công',
+          showConfirmButton: false,
+          timer: 1000
+        });   
+        reloaddsgvtocm();
+      });
+    }           
+  })
+}
+
+
+
+
+function xoadsgvphancongall(dataxoahet) {
+  Swal.fire({
+    title: 'Lưu',
+    text: "Bạn có muốn xóa phân công giáo viên này không",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes'
+  }).then((result) => {
+    if (result.value) {
+      axios.post('deldanhsachgvphancongall',{id:dataxoahet}).then(function (response) {
+        var data = response.data;
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          text: 'Đã xóa thành công',
+          showConfirmButton: false,
+          timer: 1000
+        });   
+        reloaddsgvtocm();
+      });
+    }           
+  })
 }

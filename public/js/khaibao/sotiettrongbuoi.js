@@ -1,3 +1,17 @@
+$('#capnhatsotietbuoi').click(function(){   
+ var buoi= $('#chonbuoisotietbuoi').val();
+ var malop=$('#lopsotietbuoi').val();
+ var sotiet=$('#sotietsttrongbuoi').val();
+ axios.post('updatesotiettrongbuoi', {
+    id: 0,
+    malop: malop,
+    buoi: buoi,
+    thu: 0,
+    sotiet: sotiet
+}).then(function(response) {var data = response.data;reload_sotiet_trongbuoi();});
+});
+
+
 function reload_sotiet_trongbuoi() {
     sotiet_trongbuoi();
     var dataGrid = $("#girddanhsach_sotiettrongbuoi").dxDataGrid("instance");
@@ -22,7 +36,20 @@ function sotiet_trongbuoi() {
 
 
     var data = axios.get('getdanhsachsotiettrongbuoi').then(function(response) {
-        var data1 = response.data;
+        var data1 = response.data[0];
+        var datalop = response.data[1];
+               $("#lopsotietbuoi").select2({closeOnSelect : false,
+            placeholder : "Chọn lớp",
+            allowHtml: true,
+            allowClear: true,
+            tags: true,
+            width: '100%'});
+        let htmllophoc = datalop.map(function(item) {
+            return ('<option value="' +item.id +'">' +item.tenlop +"</option>");
+        });
+        $("#lopsotietbuoi").html('<option value="0">Chọn tất cả</option>' + htmllophoc);
+
+
         var datas = data1.map(function(value, label) {
             let data = value;
             let stt = label + 1;
@@ -82,7 +109,7 @@ function sotiet_trongbuoi() {
                 columns: [{
                     caption: "sáng T2",
                     dataField: "tietsangt2",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.sang;
                         var lucky = buoi.filter(function(number) {
@@ -99,7 +126,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "chiều T2",
                     dataField: "tietchieut2",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.chieu;
                         var lucky = buoi.filter(function(number) {
@@ -117,7 +144,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "sáng T3",
                     dataField: "tietsangt3",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.sang;
                         var lucky = buoi.filter(function(number) {
@@ -135,7 +162,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "chiều T3",
                     dataField: "tietchieut3",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.chieu;
                         var lucky = buoi.filter(function(number) {
@@ -153,7 +180,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "sáng T4",
                     dataField: "tietsangt4",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.sang;
                         var lucky = buoi.filter(function(number) {
@@ -171,7 +198,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "chiều T4",
                     dataField: "tietchieut4",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.chieu;
                         var lucky = buoi.filter(function(number) {
@@ -189,7 +216,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "sáng T5",
                     dataField: "tietsangt5",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.sang;
                         var lucky = buoi.filter(function(number) {
@@ -207,7 +234,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "chiều T5",
                     dataField: "tietchieut5",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.chieu;
                         var lucky = buoi.filter(function(number) {
@@ -225,7 +252,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "sáng T6",
                     dataField: "tietsangt6",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.sang;
                         var lucky = buoi.filter(function(number) {
@@ -243,7 +270,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "chiều T6",
                     dataField: "tietchieut6",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.chieu;
                         var lucky = buoi.filter(function(number) {
@@ -261,7 +288,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "sáng T7",
                     dataField: "tietsangt7",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.sang;
                         var lucky = buoi.filter(function(number) {
@@ -279,7 +306,7 @@ function sotiet_trongbuoi() {
                 }, {
                     caption: "chiều T7",
                     dataField: "tietchieut7",
-                    width: 70,
+                    // width: 70,
                     calculateCellValue: function(rowData) {
                         var buoi = rowData.buoi.chieu;
                         var lucky = buoi.filter(function(number) {

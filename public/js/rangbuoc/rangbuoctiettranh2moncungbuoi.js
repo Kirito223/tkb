@@ -99,8 +99,14 @@ function chonmon(idmon,datarb,datas){
 			return items;
 		}
 	});
+	var id = idmon.id;
+	var datass = datas.filter(function(items){
+		if(items.id != id){
+			return items;
+		}
+	});
 	$("#girdchonmon").dxDataGrid({
-		dataSource: datas,
+		dataSource: datass,
 		showBorders: true,
 		sorting: {
 			mode: "multiple"

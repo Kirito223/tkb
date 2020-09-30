@@ -168,6 +168,9 @@
 			var xa = response.data[0].xa;
 			var truong = response.data[0].truong;
 			var quyen = response.data[0].quyen;
+			var gvcount = response.data[0].gvcount;
+			var lopcount = response.data[0].lopcount;
+
 			var datas = data1.map(function(value, label) {
 				let data = value;
 				let stt = label + 1;
@@ -253,6 +256,34 @@
 						valueExpr: "id",
 						displayExpr: "name"
 					},
+				},{
+					caption: "Số lớp học",
+					cellTemplate: function (container, options) {
+						var idlop = options.data.matruong;
+						var luckylop = lopcount.filter(function (e){
+							if(idlop == ""){
+								return e;
+							}else if(idlop == e.matruong){
+								return e;
+							}
+						});
+						var countlop = luckylop.length;
+						$("<div>").html(countlop).appendTo(container);
+					},
+				},{
+					caption: "Số giáo viên",
+					cellTemplate: function (container, options) {
+						var idgv = options.data.matruong;
+						var luckygv = gvcount.filter(function (e){
+							if(idgv == ""){
+								return e;
+							}else if(idgv == e.matruong){
+								return e;
+							}
+						});
+						var countgv = luckygv.length;
+						$("<div>").html(countgv).appendTo(container);
+					},
 				}],
 				onRowUpdating: function(e) {
 					var id = e.oldData.id;
@@ -322,11 +353,22 @@
 						if (!data.items) data.items = [];
 						data.items.push({
 							template: function () {
+								return $("<i class='fa fa-repeat'>").text(" Reset dữ liệu");                  
+							},
+							onItemClick: function() {
+								var datamatruong = data.row.data.matruong;
+								resetdata(datamatruong);
+							}
+						});
+						
+						data.items.push({
+							template: function () {
 								return $("<i class='fa fa-remove'>").text(" Xóa");                  
 							},
 							onItemClick: function() {
 								var dataxoa = data.row.data.id;
-								xoataikhoan(dataxoa);
+								var matruong = data.row.data.matruong;
+								xoataikhoan(dataxoa,matruong);
 							}
 						});
 						data.items.push({
@@ -378,7 +420,17 @@
 });
 };
 
-function xoataikhoan(id) {
+	function resetdata(datamatruong) {
+	var datare = axios.post('resetdata',{matruong:datamatruong}).then(function(response) {
+		loadtaikhoan();
+		var dataGrid = $("#getlisttaikhoan").dxDataGrid("instance");
+		dataGrid.refresh();
+
+	});
+
+}
+	
+function xoataikhoan(id,matruong) {
 	Swal.fire({
 		title: 'Lưu',
 		text: "Bạn có muốn xóa tài khoản này không",
@@ -389,7 +441,7 @@ function xoataikhoan(id) {
 		confirmButtonText: 'Lưu'
 	}).then((result) => {
 		if (result.value == true) {
-			axios.post('deltaikhoan', {id: id}).then(function(response) {
+			axios.post('deltaikhoan', {id: id,matruong:matruong}).then(function(response) {
 				loadtaikhoan();
 				var dataGrid = $("#getlisttaikhoan").dxDataGrid("instance");
 				dataGrid.refresh();
@@ -494,6 +546,6 @@ window.onload = function() {
 };
 </script>
 
-<script src="public/theme/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
+<script src="theme/app-assets/vendors/js/forms/select/select2.full.min.js"></script>
 
 @endsection

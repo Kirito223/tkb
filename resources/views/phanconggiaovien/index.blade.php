@@ -153,5 +153,5 @@
         min-width: 90%;
     }
 </style>
-<script type="module" src="{{asset('js\pccm\index.js')}}"></script>
+<script type="module" src="{{asset('public\js\pccm\index.js')}}"></script>
 @endsection

@@ -64,12 +64,6 @@ class exportExcelController extends Controller
             array_push($fileExport, "thoikhoabieutruong");
         }
         if ($param->tkblop == 1) {
-            //tkb lớp
-            // $sheet = $this->loadSheetExcel('mautkblop.xlsx');
-            // $sheet->setActiveSheetIndex(0);
-            // $sheetTKBTeacherTypeThree = $sheet->getActiveSheet();
-            // $this->exportTKBClass($sheetTKBTeacherTypeThree, $sheet);
-            // array_push($fileExport, "tkblop");
             $sheet = $this->loadSheetExcel('mautkbphonghoc.xlsx');
             $sheet->setActiveSheetIndex(0);
             $sheetTKBTeacherClass = $sheet->getActiveSheet();
@@ -548,10 +542,10 @@ class exportExcelController extends Controller
 
     private function exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet)
     {
-        $rowTitle = 1;
+        $rowTitle = 5;
         $columnTitle = 3;
         $matruong = $this->sessionInfo->getSchoolId();
-        $listClassRoom = danhsachlophoc::where('matruong', $matruong)->get();
+        $listClassRoom = danhsachlophoc::where('matruong', $matruong)->orderBy('tenlop', 'ASC')->get();
         // Render Class at header
         foreach ($listClassRoom as $class) {
             // Merge cell
@@ -566,9 +560,9 @@ class exportExcelController extends Controller
         $titleLenght = count($listClassRoom) * 2 + 2;
         $indexcolum = 3;
         while ($indexcolum < $titleLenght) {
-            $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, 2, "Môn");
+            $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, 6, "Môn");
             $indexcolum++;
-            $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, 2, "Giáo viên");
+            $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, 6, "Giáo viên");
             $indexcolum++;
         }
 
@@ -614,13 +608,10 @@ class exportExcelController extends Controller
         $totalRow = 70;
         $indexTable = 0;
         $lastColumn = 0;
-        for ($indexRowbody = 3; $indexRowbody < $totalRow; $indexRowbody++) {
-            // Loop follow class and insert data to cell in excel
-
+        for ($indexRowbody = 7; $indexRowbody < $totalRow; $indexRowbody++) {
             $indexcolum = 3;
             while ($indexcolum < $titleLenght) {
                 // if indexTable == titleLenght/2 then new row and indexcolum == 24 indexRowbody + 1
-
                 $tableItem = $tableTime[$indexTable];
                 if ($tableItem != null) {
                     $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, $tableItem->getSubject());
@@ -657,7 +648,7 @@ class exportExcelController extends Controller
         }
 
         // Render
-        $rowTeacher = 3;
+        $rowTeacher = 7;
         foreach ($arrteacherRest as $restItem) {
             // Merge row
             $sheetTKBSchool->mergeCellsByColumnAndRow($lastColumn, $rowTeacher, $lastColumn, $rowTeacher + 9);
@@ -666,6 +657,9 @@ class exportExcelController extends Controller
         }
         $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn, $totalRow - 4)->getCoordinate();
 
+        $this->sign($sheetTKBSchool, $lastColumn, $totalRow);
+
+        $this->headerRow($sheetTKBSchool, $lastColumn, $lastCellAddress);
         $styleArray = [
             'borders' => [
                 'outline' => [
@@ -680,8 +674,12 @@ class exportExcelController extends Controller
             ],
         ];
 
-        $sheetTKBSchool->getStyle('A1:' . $lastCellAddress)->applyFromArray($styleArray);
-        $this->sign($sheetTKBSchool, $lastColumn, $totalRow);
+        $sheetTKBSchool->getStyle('A5:' . $lastCellAddress)->applyFromArray($styleArray);
+
+        $sheetTKBSchool->mergeCells("A1:G1");
+        $sheetTKBSchool->setCellValue("A1", $this->sessionInfo->getSchoolName());
+
+        $sheetTKBSchool->getStyle("A1")->getFont()->setBold(true);
         $this->autoSiezColumn($sheet);
         $this->saveExcel($sheet, "thoikhoabieutruong");
     }
@@ -1430,4 +1428,5 @@ class exportExcelController extends Controller
         }
         return response()->json(['msg' => "OK", 'fail' => $arrFail]);
     }
+
 }

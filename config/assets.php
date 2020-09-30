@@ -12,13 +12,16 @@ return [
         'js-macdinh',
         'js-dev',
         'js-custom',
-        'js-datatable'
+        'js-datatable',
+		'js-datepicker',
+        'js-moment',
     ],
     'styles'         => [
         // Các thư viện css mặc định
         'style-macdinh',
         'style-dev',
         'style-datatable',
+		'style-datepicker',
     ],
     'resources'      => [
         // Định nghĩa tất cả đường dẫn tới assets.
@@ -31,12 +34,10 @@ return [
                 // Vị trí chèn, trên header hay dưới footer, có thể là top hoặc bottom
                 'src'      => [
                     'local' => [
-                        'theme/app-assets/vendors/js/vendors.min.js',
+                        'theme/app-assets/vendors/js/vendors.min.js',                          
                         'theme/app-assets/js/core/app-menu.min.js',
                         'theme/app-assets/js/core/app.min.js',
                         'theme/app-assets/js/scripts/customizer.min.js',
-                        'dx/js/dx.all.js',
-                        '/moment/moment.min.js',
                     ],
                     // Đường dẫn tới thư viện
                 ],
@@ -45,10 +46,11 @@ return [
                 'use_cdn'  => false,
                 'location' => 'footer',
                 'src'      => [
-                    'local' => [
+                    'local' => [   
                         'assets/axios/dist/axios.min.js',
                         'assets/sweetalert2/dist/sweetalert2.all.min.js',
                         'theme/app-assets/vendors/js/forms/select/select2.full.min.js',
+
                     ],
                 ],
             ],
@@ -57,7 +59,7 @@ return [
                 'location' => 'footer',
                 'src'      => [
                     'local' => [
-                        'dx/js/dx.all.js',
+                        'dx/js/dx.all.js',                        
                     ],
                 ],
             ],
@@ -71,6 +73,35 @@ return [
                         'theme/app-assets/vendors/js/tables/datatable/dataTables.select.min.js',
                         'theme/app-assets/js/scripts/tables/datatables-extensions/datatable-select.min.js',
                         'theme/app-assets/vendors/js/tables/datatable/dataTables.keyTable.min.js',
+                    ],
+                ],
+            ],
+			'js-datepicker' => [
+                'use_cdn'  => false,
+                'location' => 'footer',
+                'src'      => [
+                    'local' => [
+                        'assets/js/bootstrap-datepicker.min.js',
+                        'assets/js/bootstrap-datepicker.vi.min.js',
+                    ],
+                ],
+            ],
+            'js-media' => [
+                'use_cdn'  => false,
+                'location' => 'footer',
+                'src'      => [
+                    'local' => [
+                        'assets/js/jquery.media.js',
+                        'assets/js/jquery.metadata.js',
+                    ],
+                ],
+            ],
+            'js-moment' => [
+                'use_cdn'  => false,
+                'location' => 'footer',
+                'src'      => [
+                    'local' => [
+                        'assets/js/moment.min.js',
                     ],
                 ],
             ],
@@ -109,11 +140,19 @@ return [
                         'theme/app-assets/css/plugins/forms/wizard.min.css',
                         'theme/assets/css/style.css',
                         'theme/app-assets/vendors/css/forms/selects/select2.min.css',
-                        'dx/css/dx.common.css',
-                        'dx/css/dx.material.blue.light.compact.css',
                     ],
                 ],
-                'attributes' => [],
+                'attributes' => [
+                ],
+            ],
+			            'style-datepicker' => [
+                'use_cdn'    => false,
+                'location'   => 'header',
+                'src'        => [
+                    'local' => [
+                        'assets/css/bootstrap-datepicker.min.css',
+                    ],
+                ],
             ],
         ],
     ],

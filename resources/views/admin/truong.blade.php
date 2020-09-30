@@ -122,7 +122,7 @@
                             valueExpr: "id",
                         }
                     },{
-                        caption: "Loại trường",
+                        caption: "Điểm trường",
                         dataField: "loaitruong",
                         dataType: "number"
                     },{

@@ -704,7 +704,7 @@
 
 
 
-			</div>
+			
 
 
 			<!-- modal thêm tiết học -->
@@ -1027,6 +1027,23 @@
 				</div>
 			</div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 			<!-- script -->
 			<script type="text/javascript">
 
@@ -1056,6 +1073,7 @@ $("#sotiettoidatrongngaycuamon").change(function () {
 	document.getElementById("formtietgvbuocphaico").style.display = "none";
 	document.getElementById("formrangbuocsotiet5sang").style.display = "none";
 	document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+	document.getElementById("formrangbuoctietcodinh").style.display = "none";
 });
 $("#sotiettoidatrongbuoicuamon").change(function () {
 	document.getElementById("formsotiettoidatrongmoibuoi").style.display = "block";
@@ -1066,7 +1084,8 @@ $("#sotiettoidatrongbuoicuamon").change(function () {
 	document.getElementById("formtietgvbuocphaico").style.display = "none";
 	document.getElementById("formrangbuocsotiet5sang").style.display = "none";
 	document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-	
+	document.getElementById("formrangbuoctietcodinh").style.display = "none";
+
 });
 	//ràng buộc tiết cố định
 	$("#rangbuoctietcodinh").change(function () {
@@ -1076,6 +1095,8 @@ $("#sotiettoidatrongbuoicuamon").change(function () {
 		document.getElementById("formtietgvbuocphaico").style.display = "none";
 		document.getElementById("formrangbuocsotiet5sang").style.display = "none";
 		document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+		document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+		document.getElementById("formsotiettoidatrongngay").style.display = "none";
 		$("#rangbuoctietcodinhtiettrong").prop( "checked", false);
 		$("#rangbuoctietcodinhtiethoc").prop( "checked", false);
 		$("#apdungtoantruongrbtcd").prop( "checked", false);
@@ -1116,7 +1137,20 @@ $("#sotiettoidatrongbuoicuamon").change(function () {
 		document.getElementById("formsotiettoidatrongngay").style.display = "none";
 		document.getElementById("formrangbuocsotiet5sang").style.display = "none";	
 		rangbuoctiettranh();
+
 	});
+				
+
+
+ 
+				
+
+
+
+
+
+
+
 	//tranh 2 mon xep cung buoi
 	$("#tranhhaimonxepcungbuoi").change(function () {
 		document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "block";
@@ -1200,6 +1234,7 @@ $("#sotiettoidatrongbuoicuamon").change(function () {
 <script type="text/javascript" src="js/rangbuoc/rangbuocsotiet5sangtiet1chieu.js"></script>
 
 <!-- a duc -->
+<!-- <script type="module" src="js\rangbuoc\toidabuoi.js"></script> -->
 <script type="module" src="js\rangbuoc\toidangay.js"></script>
 
 @endsection

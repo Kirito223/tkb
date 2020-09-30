@@ -15,7 +15,7 @@ function loaddatadanhsachgvthamgiagiangday() {
 		var data2 = [];
 		var lucky1 = data1.filter(function(items){
 			if(items.monhoc != ''){
-				data2.push({ id:items.id,ten:items.ten,bidanh:items.bidanh,thutuhienthi:items.thutuhienthi,monhoc:items.monhoc,rangbuoctietgvbuocphaico:items.rangbuoctietgvbuocphaico});	
+				data2.push({ id:items.id,ten:items.hovaten,bidanh:items.bidanh,thutuhienthi:items.thutuhienthi,monhoc:items.monhoc,rangbuoctietgvbuocphaico:items.rangbuoctietgvbuocphaico});	
 			}
 		});
 		var data3 = [];

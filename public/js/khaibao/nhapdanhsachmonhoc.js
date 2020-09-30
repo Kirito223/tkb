@@ -17,19 +17,12 @@ function nhapdanhsachmonhoc(){
 		$("#girdnhapdanhsachmonhoc").dxDataGrid({
 			dataSource: datas,
 			showBorders: true,
-				// remoteOperations: true,
-				// scrolling: {
-				// 	mode: "virtual",
-				// 	rowRenderingMode: "virtual"
-				// },
 				paging: {
 					pageSize: 10
 				},
-				/* xap xep */
 				sorting: {
 					mode: "multiple"
 				},
-				/* loc du lieu */
 				filterRow: {
 					visible: true,
 					applyFilter: "auto"
@@ -44,10 +37,9 @@ function nhapdanhsachmonhoc(){
 					allowedPageSizes: [5, 10, 20],
 					showInfo: true
 				},
-				/* headerFilter: {
-					visible: true
-				}, */
-				/*chon row*/
+				scrolling: {
+					mode: 'infinite'
+				},
 				selection: {
 					mode: "single"
 				},

@@ -10,6 +10,6 @@ class khoihoc extends Model
 
     public function danhsachlophoc()
 	{	
-		return $this->hasMany('App\danhsachlophoc','khoi');
+		return $this->hasMany('App\danhsachlophoc','khoi','tenkhoi');
 	}
 }

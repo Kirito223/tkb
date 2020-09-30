@@ -1,11 +1,12 @@
 import {baseURl} from './api.js';
 
+// Set up default config for http requests here
+// Please have a look at here `https://github.com/axios/axios#request- config` for the full list of configs
 const axiosClient = axios.create({
-    baseURL: baseURl,
-    headers: {
-        "content-type": "application/json",
-        // "X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),
-    },
+  baseURL: baseURl,
+  headers: {
+    'content-type': 'application/json',
+  },
 });
 axiosClient.interceptors.response.use((response) => {
     if (response && response.data) {

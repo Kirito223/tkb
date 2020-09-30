@@ -3,8 +3,8 @@ function reload_rangbuoctietcodinh() {
         loaddatarangbuoctietcodinh();
         var dataGrid = $("#girdrangbuoctietcodinh").dxDataGrid("instance");
         dataGrid.clearSelection();
-        // dataGrid.refresh();
-        dataGrid.reload();
+        dataGrid.refresh();
+        // dataGrid.reload();
     }
 
 function loadselectmonhoc() {
@@ -67,22 +67,30 @@ function rangbuoctietcodinh() {
             var chkbox = document.createElement('input');
             chkbox.setAttribute("type", "checkbox");
             chkbox.setAttribute("value", iterator.id);
-            chkbox.setAttribute("data-khoi", iterator.id);
+            chkbox.setAttribute("data-khoi", iterator.tenkhoi);
             var text = document.createTextNode(' ' + iterator.tenkhoi);
-            let th = document.createElement("th");
+            var th = document.createElement("th");
 
-            chkbox.onclick = function(e) {
-                let chkClass = document.querySelectorAll(`.classRoom[data-khoi="${e.target.dataset.khoi}"]`);
-                for (const classRoom of chkClass) {
-                    classRoom.checked = e.target.checked;
-                }
-            };
+
 
             th.setAttribute("data-khoi", iterator.id);
             th.appendChild(chkbox);
             th.appendChild(text);
             headTable.appendChild(th);
+			
+					            chkbox.onclick = function(e) {
+									
+									let khoi = e.target.dataset.khoi;
+                var chkClass = document.querySelectorAll(`.classRoom[data-khoi="${e.target.dataset.khoi}"]`);
+                for (const classRoom of chkClass) {
+                    classRoom.checked = e.target.checked;
+                }
+            };
         }
+		
+
+		
+		
         // Render phan than(tbody)
         let className = [];
         // Lap theo so lop hoc lon nhat
@@ -123,8 +131,9 @@ function rangbuoctietcodinh() {
         for (const iterator of data1) {
             var chkbox = document.createElement('input');
             chkbox.setAttribute("type", "checkbox");
+            chkbox.setAttribute("class", "classchas");
             chkbox.setAttribute("value", iterator.id);
-            chkbox.setAttribute("data-khois", iterator.id);
+            chkbox.setAttribute("data-khois", iterator.tenkhoi);
             var text = document.createTextNode(' ' + iterator.tenkhoi);
             let th = document.createElement("th");
 
@@ -196,9 +205,8 @@ function rangbuoctietcodinh() {
 function loaddatarangbuoctietcodinh() {
     var data = axios.get('getrangbuoctietcodinh').then(function(response) {
         var data1 = response.data;
-        // console.log(data1);          
         var data2 = [];
-        var lucky1 = data1.filter(function(items) {
+        data1.filter(function(items) {
             if (items.danhsachlophocrb != '') {
                 data2.push({
                     id: items.id,
@@ -207,41 +215,41 @@ function loaddatarangbuoctietcodinh() {
                 });
             }
         });
-        var data3 = [];
-        var lucky2 = data2.filter(function(items1) {
-            var mamonhoc = items1.id;
-            var data4 = [];
-            data3.push({
-                id: items1.id,
-                tenmonhoc: items1.tenmonhoc,
-                danhsachlophocrb: data4
-            });
-            var datadslhrb = items1.danhsachlophocrb;
-            var lucky3 = datadslhrb.filter(function(items2) {
-                if (mamonhoc == items2.mamonhoc) {
-                    var mamucrangbuoc = items2.mamucrangbuoc;
-                    var datamrb = items2.mucrangbuoc;
-                    var lucky4 = datamrb.filter(function(items3) {
-                        if (mamucrangbuoc == items3.id) {
-                            data4.push({
-                                id: items2.id,
-                                tenlop: items2.tenlop,
-                                khoi: items2.khoi,
-                                idrbtcd: items2.idrbtcd,
-                                mamonhoc: items2.mamonhoc,
-                                mamucrangbuoc: items2.mamucrangbuoc,
-                                buoi: items2.buoi,
-                                thu: items2.thu,
-                                tiet: items2.tiet,
-                                mucrangbuoc: items3.mucrangbuoc
-                            });
-                        }
-                    });
-                }
-            });
-        });
+        // var data3 = [];
+        // var lucky2 = data2.filter(function(items1) {
+        //     var mamonhoc = items1.id;
+        //     var data4 = [];
+        //     data3.push({
+        //         id: items1.id,
+        //         tenmonhoc: items1.tenmonhoc,
+        //         danhsachlophocrb: data4
+        //     });
+        //     var datadslhrb = items1.danhsachlophocrb;
+        //     var lucky3 = datadslhrb.filter(function(items2) {
+        //         if (mamonhoc == items2.mamonhoc) {
+        //             var mamucrangbuoc = items2.mamucrangbuoc;
+        //             var datamrb = items2.mucrangbuoc;
+        //             var lucky4 = datamrb.filter(function(items3) {
+        //                 if (mamucrangbuoc == items3.id) {
+        //                     data4.push({
+        //                         id: items2.id,
+        //                         tenlop: items2.tenlop,
+        //                         khoi: items2.khoi,
+        //                         idrbtcd: items2.idrbtcd,
+        //                         mamonhoc: items2.mamonhoc,
+        //                         mamucrangbuoc: items2.mamucrangbuoc,
+        //                         buoi: items2.buoi,
+        //                         thu: items2.thu,
+        //                         tiet: items2.tiet,
+        //                         mucrangbuoc: items3.mucrangbuoc
+        //                     });
+        //                 }
+        //             });
+        //         }
+        //     });
+        // });
         // console.log(data3);
-        var datas = data3.map(function(value, label) {
+        var datas = data2.map(function(value, label) {
             let data = value;
             let stt = label + 1;
             var datas = Object.assign(data, {
@@ -276,9 +284,9 @@ function dsrangbuoctietcodinh(datas) {
         },
 
         /*chon row*/
-        selection: {
-            mode: "single"
-        },
+        // selection: {
+        //     mode: "single"
+        // },
         /* co dan cot */
         allowColumnResizing: true,
         columnResizingMode: "widget",
@@ -407,18 +415,19 @@ function dsrangbuoctietcodinh(datas) {
                             return $('<i class="fa fa-pencil-square-o"></i>');
                         },
                         onClick: function(e) {
-                            var data1 = options.data.danhsachlophocrb;
-                            var idrbtcdloc1 = [];
-                            data1.filter(function(items) {
-                                var i = idrbtcdloc1.findIndex(x => x.idrbtcd == items.idrbtcd);
-                                if (i <= -1) {
-                                    idrbtcdloc1.push(items);
-                                }
-                                return null;
+                            var datarb = options.data.danhsachlophocrb;
+                            var datarbtcd = [];
+                            datarb.filter(function(items){
+                                // var i = datarbtcd.findIndex(x => x.id == items.id);
+                                // if (i <= -1) {
+                                    datarbtcd.push(items);
+                                // }
+                                // return null;
                             });
-                            suarangbuoctietcodinh(idrbtcdloc1);
+                            suarangbuoctietcodinh(datarbtcd);
                         },
                     })
+                    .css('background-color', 'green')
                     .appendTo(container);
             },
             width: 50,
@@ -437,14 +446,10 @@ function dsrangbuoctietcodinh(datas) {
                             var data = options.data.danhsachlophocrb;
                             var idrbtcdloc = [];
                             data.filter(function(items) {
-                                var i = idrbtcdloc.findIndex(x => x.idrbtcd == items.idrbtcd);
-                                if (i <= -1) {
-                                    idrbtcdloc.push({
-                                        idrbtcd: items.idrbtcd
-                                            // tenlop: items.tenlop
-                                    });
-                                }
-                                return null;
+                                idrbtcdloc.push({
+                                    idrbtcd: items.idrbtcd
+                                        // tenlop: items.tenlop
+                                });
                             });
                             var idrbtcd = JSON.stringify(idrbtcdloc);
                             Swal.fire({
@@ -461,17 +466,21 @@ function dsrangbuoctietcodinh(datas) {
                                         idrbtcd: idrbtcd
                                     }).then(function(response) {
                                         var data = response.data;
-                                        Swal.fire(
-                                            'Xoá!',
-                                            'Xoá thành công.',
-                                            'success'
-                                        )
-                                        reload_rangbuoctietcodinh();
+                                        if(data == 1){
+                                            Swal.fire(
+                                                'Xoá!',
+                                                'Xoá thành công.',
+                                                'success'
+                                            )
+                                            reload_rangbuoctietcodinh();
+                                        }
+                                        
                                     });
                                 }
                             })
                         },
                     })
+                    .css('background-color', 'red')
                     .appendTo(container);
             },
             width: 50,
@@ -486,6 +495,7 @@ function dsrangbuoctietcodinh(datas) {
     });
 }
 
+$('#btnthemtiethoc').unbind("click");
 $('#btnthemtiethoc').click(function() {
     var idmon = $("#monSelect2").val();
     var idbuoi = $("#buoiSelect2").val();
@@ -501,8 +511,15 @@ $('#btnthemtiethoc').click(function() {
             id.push({id: ids});
         }
     }
-    var idkhoilopapdung = JSON.stringify(id);
-    var idapdungtoantruong = $('#apdungtoantruongid').val();
+    var idkhoilopapdung;
+    var idapdungtoantruong;
+    if ($("#apdungtoantruongrbtcd").prop("checked")) {
+        idapdungtoantruong = $('#apdungtoantruongid').val();
+        idkhoilopapdung = '';
+    }else{
+        idapdungtoantruong = '';
+        idkhoilopapdung = JSON.stringify(id);
+    }
     axios.post('addrangbuoctietcodinhtiethoc', {
         idmon: idmon,
         idbuoi: idbuoi,
@@ -513,27 +530,27 @@ $('#btnthemtiethoc').click(function() {
         idapdungtoantruong: idapdungtoantruong
     }).then(function(response) {
         var data = response.data;
-        Swal.fire({
-            title: 'Lưu',
-            text: 'Đã lưu thành công',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        })
-        $('#modaltiethoc').modal("hide");
-        $('#modaltiethoc').on('hidden.bs.modal', function() {
-            $(this).find('#formthemmoirangbuoctietcodinhtiethoc')[0].reset();
-            // $(this).find('#formthemmoirangbuoctietcodinhtiethoc').trigger("reset");
-        })
-        reload_rangbuoctietcodinh();
+        if(data == 1){
+            Swal.fire({
+                title: 'Lưu',
+                text: 'Đã lưu thành công',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });         
+            $('#modaltiethoc').modal("hide");
+            $('#modaltiethoc').on('hidden.bs.modal', function() {
+                $(this).find('#formthemmoirangbuoctietcodinhtiethoc')[0].reset();
+                // $(this).find('#formthemmoirangbuoctietcodinhtiethoc').trigger("reset");
+            });
+            reload_rangbuoctietcodinh(); 
+        }       
     });
-    // reload_rangbuoctietcodinh();
 
 });
 
+function suarangbuoctietcodinh(datarbtcd) {
 
-function suarangbuoctietcodinh(idrbtcdloc1) {
-
-    var datarblh = idrbtcdloc1;
+    var datarblh = datarbtcd;
     $('#monSelect2s option').each(function(value) {
         var idmhold = datarblh[0].mamonhoc;
         if (idmhold == $(this).val()) {
@@ -574,21 +591,80 @@ function suarangbuoctietcodinh(idrbtcdloc1) {
             $(this).removeAttr('selected','selected');
         }
     });
-    $('#modalsuatiethoc').modal("show");
-    if($("#chonkhoilopapdungrbtcds").prop( "checked", true)){
-        document.getElementById("formchonkhoilopapdungs").style.display = "block";  
-    }
+    
     var grid = document.getElementById("tables");
     var checkBoxes = grid.getElementsByClassName("classRooms");
+    var checkBoxescha = grid.getElementsByClassName("classchas");
+
+    var lopcheck = [];
     datarblh.map(function(items){
         for (var i = 0; i < checkBoxes.length; i++) {
             var id = checkBoxes[i].defaultValue;
-            if (id == items.id) {
+            var idk = checkBoxes[i].dataset.khois;
+            if (id == items.id) {               
                 checkBoxes[i].checked=true;
+                lopcheck.push(idk);           
             }
         }
     });
 
+    lopcheck.sort();
+
+    var current = null;
+    var cnt = 0;
+    var demlopcheck=[];
+    for (var i = 0; i < lopcheck.length; i++) {
+        if (lopcheck[i] != current) {
+            if (cnt > 0) {
+                demlopcheck.push({idkhoi:current,sllopcheck:cnt});
+            }
+            current = lopcheck[i];
+            cnt = 1;
+        } else {
+            cnt++;
+        }
+    }
+    if (cnt > 0) {
+        demlopcheck.push({idkhoi:current,sllopcheck:cnt});
+    }
+  
+    axios.get('getkhoihoc').then(function(response) {
+        var demsllopkhoi=[];
+        var getdatakhoi = response.data;     
+        for(var k=0;k<checkBoxescha.length;k++){
+            var datakhoicha = checkBoxescha[k].dataset.khois;
+            for(var m=0;m<getdatakhoi.length;m++){
+                if(datakhoicha == getdatakhoi[m].id){
+                    var demlop = getdatakhoi[m].danhsachlophoc.length;
+                    demsllopkhoi.push({idkhoi:datakhoicha,sllop:demlop});
+                }    
+            }
+            
+        }
+        for(var n=0;n<checkBoxescha.length;n++){
+            var idkhoicha = checkBoxescha[n].dataset.khois;
+            for(x=0;x<demlopcheck.length;x++){
+                var idkhoi = demlopcheck[x].idkhoi;
+                var sllopcheck= demlopcheck[x].sllopcheck;
+                for(y=0;y<demsllopkhoi.length;y++){
+                    if(idkhoi == demsllopkhoi[y].idkhoi && sllopcheck == demsllopkhoi[y].sllop && idkhoicha == idkhoi && idkhoicha == demsllopkhoi[y].idkhoi){
+                        checkBoxescha[n].checked = true;
+                    }
+                }
+            }
+        }
+
+    });
+
+    setTimeout(function() {
+        $('#modalsuatiethoc').modal("show");
+    }, 1500);
+    // $('#modalsuatiethoc').modal("show");
+    if($("#chonkhoilopapdungrbtcds").prop( "checked", true)){
+        document.getElementById("formchonkhoilopapdungs").style.display = "block";  
+    }
+    
+    $('#btncapnhattiethoc').unbind("click");
     $('#btncapnhattiethoc').click(function() {
         var idmon = $("#monSelect2s").val();
         var idbuoi = $("#buoiSelect2s").val();
@@ -604,7 +680,6 @@ function suarangbuoctietcodinh(idrbtcdloc1) {
                 id.push({id: ids});
             }
         }
-        var idkhoilopapdung = JSON.stringify(id);
         var idrbtcdlocs = [];
         datarblh.filter(function(items) {
             idrbtcdlocs.push({
@@ -612,7 +687,15 @@ function suarangbuoctietcodinh(idrbtcdloc1) {
             });
         });
         var idrbtcds = JSON.stringify(idrbtcdlocs);
-        var idapdungtoantruong = $('#apdungtoantruongids').val();
+        var idkhoilopapdung;
+        var idapdungtoantruong;
+        if ($("#apdungtoantruongrbtcds").prop("checked")) {
+            idapdungtoantruong = $('#apdungtoantruongids').val();
+            idkhoilopapdung = '';
+        }else{
+            idapdungtoantruong = '';
+            idkhoilopapdung = JSON.stringify(id);
+        }
         axios.post('updaterangbuoctietcodinhtiethoc', {
             idrbtcds: idrbtcds,
             idmon: idmon,
@@ -624,22 +707,23 @@ function suarangbuoctietcodinh(idrbtcdloc1) {
             idapdungtoantruong: idapdungtoantruong
         }).then(function(response) {
             var data = response.data;
-            Swal.fire({
-                title: 'Cập nhật',
-                text: 'Cập nhật thành công',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            })
-            var success = 1;
-            $('#modalsuatiethoc').modal("hide");
-            $('#modalsuatiethoc').on('hidden.bs.modal', function() {
-                $(this).find('#formsuarangbuoctietcodinhtiethoc')[0].reset();
-                // $(this).find('#formthemmoirangbuoctietcodinhtiethoc').trigger("reset");
-            })
-            reload_rangbuoctietcodinh();
+            if(data == 1){
+                Swal.fire({
+                    title: 'Cập nhật',
+                    text: 'Cập nhật thành công',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+                $('#modalsuatiethoc').modal("hide");
+                $('#modalsuatiethoc').on('hidden.bs.modal', function() {
+                    $(this).find('#formsuarangbuoctietcodinhtiethoc')[0].reset();
+                    // $('#tables').empty();
+                    // $(this).find('#formthemmoirangbuoctietcodinhtiethoc').trigger("reset");
+                });
+                reload_rangbuoctietcodinh();
+            }
+            
         });
-        // reload_rangbuoctietcodinh();
-
     });
 
 }
@@ -668,6 +752,7 @@ $('#btnthemmoitiethoc').on('click',function(){
     // clearitemtiethoc();
     // $('#modaltiethoc').find('#formthemmoirangbuoctietcodinhtiethoc')[0].reset();
     $('#modaltiethoc').modal("show");
+    
 });
 
 $("#apdungtoantruongrbtcd").change(function () {
@@ -685,3 +770,16 @@ $("#chonkhoilopapdungrbtcd").change(function () {
 $("#chonkhoilopapdungrbtcds").change(function () {
     document.getElementById("formchonkhoilopapdungs").style.display = "block";
 });
+
+jQuery(document).ready(function () {
+    jQuery('#modaltiethoc').on('hidden.bs.modal', function (e) {
+        $("#apdungtoantruongrbtcd").prop( "checked", false);
+        $("#chonkhoilopapdungrbtcd").prop( "checked", false);
+        if($("#chonkhoilopapdungrbtcd").prop( "checked", false)){
+            document.getElementById("formchonkhoilopapdung").style.display = "none";
+        }
+        
+    });
+});
+
+

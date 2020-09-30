@@ -1,7 +1,4 @@
-import {
-    layDulieu
-}
-from "../api/xeptkbApi.js";
+import {layDulieu} from "../api/xeptkbApi.js";
 
 // Chuong trinh sap xep thoi khoa bieu
 var tainguyen = null;
@@ -25,7 +22,7 @@ BangThoikhoabieu,
 btnTepTucxepTKB,
 girdChondanhsach,
 tieudeChon,
-chkChontatca, btnxemtkb;
+chkChontatca,btnxemtkb,dungxeptkb,capnhattkb;
 
 // Nha kho noi chua toan bo du lieu cua thoi khoa bieu
 var kho = null;
@@ -222,6 +219,9 @@ function initControl() {
     tieudeChon = document.getElementById("tieudeChon");
     chkChontatca = document.getElementById("chkChontatca");
     btnxemtkb = document.getElementById("btnxemtkb");
+	
+	dungxeptkb = document.getElementById("dungxeptkb");
+    capnhattkb = document.getElementById("capnhattkb");
 }
 
 function ControlEvent() {
@@ -238,6 +238,13 @@ function ControlEvent() {
         console.log("stop");
         dungxepTKB();
     };
+	    dungxeptkb.onclick = function(e) {
+        document.getElementById("btnxepthoikhoabieu").style.display = "block";
+        document.getElementById("btnDungxepthoikhoabieu").style.display = "none";
+        document.getElementById("btnTepTucxepTKB").style.display = "block";
+        console.log("stop");
+        dungxepTKB();
+    };
     btnTepTucxepTKB.onclick = function(e) {
         document.getElementById("btnxepthoikhoabieu").style.display = "none";
         document.getElementById("btnDungxepthoikhoabieu").style.display = "block";
@@ -248,6 +255,9 @@ function ControlEvent() {
     btnxemtkb.onclick = function() {
         document.getElementById("cardxeptkb").style.display = "block";
         // document.getElementById("card").style.display = "block";
+    };
+	    capnhattkb.onclick = function() {
+        btncapnhattkb();
     };
 
 
@@ -307,7 +317,7 @@ function batDauxepTKB() {
 
 
 
-
+var datatkb;
 function CapnhatTKB(event) {
     let data = event.data;
 
@@ -320,7 +330,7 @@ function CapnhatTKB(event) {
     var locdatasort = locdata.sort(function(a, b) {
         return a.tenlop.localeCompare(b.tenlop);
     });
-
+    datatkb = locdatasort;
 
     // Cap nhat thoi khoa bieu len giao dien
     // tabletkb(data.tkb);
@@ -1344,6 +1354,465 @@ function CapnhatTKB(event) {
     // console.log(datatkb);
 }
 
+function btncapnhattkb(){
+   let datas = datatkb;
+   var datastkb = [];
+    //t2 tiet 1
+    let lucky2t1 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 0 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t1);
+    //t3 tiet 1
+    let lucky3t1 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 0 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t1);
+    //t4 tiet 1
+    let lucky4t1 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 0 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t1);
+    //t5 tiet 1
+    let lucky5t1 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 0 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t1);
+    //t6 tiet 1
+    let lucky6t1 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 0 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t1);
+    //t7 tiet 1
+    let lucky7t1 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 0 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t1);
+
+
+    //t2 tiet 2
+    let lucky2t2 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 0 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t2);
+    //t3 tiet 2
+    let lucky3t2 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 0 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t2);
+    //t4 tiet 2
+    let lucky4t2 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 0 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t2);
+    //t5 tiet 2
+    let lucky5t2 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 0 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t2);
+    //t6 tiet 2
+    let lucky6t2 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 0 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t2);
+    //t7 tiet 2
+    let lucky7t2 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 0 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t2);
+
+
+    //t2 tiet 3
+    let lucky2t3 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 0 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t3);
+    //t3 tiet 3
+    let lucky3t3 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 0 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t3);
+    //t4 tiet 3
+    let lucky4t3 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 0 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t3);
+    //t5 tiet 3
+    let lucky5t3 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 0 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t3);
+    //t6 tiet 3
+    let lucky6t3 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 0 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t3);
+    //t7 tiet 3
+    let lucky7t3 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 0 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t3);
+
+
+    //t2 tiet 4
+    let lucky2t4 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 0 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t4);
+    //t3 tiet 4
+    let lucky3t4 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 0 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t4);
+    //t4 tiet 4
+    let lucky4t4 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 0 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t4);
+    //t5 tiet 4
+    let lucky5t4 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 0 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t4);
+    //t6 tiet 4
+    let lucky6t4 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 0 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t4);
+    //t7 tiet 4
+    let lucky7t4 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 0 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t4);
+
+
+    //t2 tiet 5
+    let lucky2t5 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 0 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t5);
+    //t3 tiet 5
+    let lucky3t5 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 0 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t5);
+    //t4 tiet 5
+    let lucky4t5 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 0 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t5);
+    //t5 tiet 5
+    let lucky5t5 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 0 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t5);
+    //t6 tiet 5
+    let lucky6t5 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 0 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t5);
+    //t7 tiet 5
+    let lucky7t5 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 0 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t5);
+
+
+    //t2 tiet 6
+    let lucky2t6 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 1 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t6);
+    //t3 tiet 6
+    let lucky3t6 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 1 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t6);
+    //t4 tiet 6
+    let lucky4t6 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 1 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t6);
+    //t5 tiet 6
+    let lucky5t6 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 1 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t6);
+    //t6 tiet 6
+    let lucky6t6 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 1 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t6);
+    //t7 tiet 6
+    let lucky7t6 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 1 && number.tiet == 1) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t6);
+
+
+    //t2 tiet 7
+    let lucky2t7 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 1 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t7);
+    //t3 tiet 7
+    let lucky3t7 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 1 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t7);
+    //t4 tiet 7
+    let lucky4t7 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 1 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t7);
+    //t5 tiet 7
+    let lucky5t7 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 1 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t7);
+    //t6 tiet 7
+    let lucky6t7 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 1 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t7);
+    //t7 tiet 7
+    let lucky7t7 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 1 && number.tiet == 2) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t7);
+
+
+    //t2 tiet 8
+    let lucky2t8 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 1 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t8);
+    //t3 tiet 8
+    let lucky3t8 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 1 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t8);
+    //t4 tiet 8
+    let lucky4t8 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 1 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t8);
+    //t5 tiet 8
+    let lucky5t8 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 1 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t8);
+    //t6 tiet 8
+    let lucky6t8 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 1 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t8);
+    //t7 tiet 8
+    let lucky7t8 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 1 && number.tiet == 3) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t8);
+
+
+    //t2 tiet 9
+    let lucky2t9 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 1 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t9);
+    //t3 tiet 9
+    let lucky3t9 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 1 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t9);
+    //t4 tiet 9
+    let lucky4t9 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 1 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t9);
+    //t5 tiet 9
+    let lucky5t9 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 1 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t9);
+    //t6 tiet 9
+    let lucky6t9 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 1 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t9);
+    //t7 tiet 9
+    let lucky7t9 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 1 && number.tiet == 4) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t9);
+
+
+    //t2 tiet 10
+    let lucky2t10 = datas.filter(function(number) {
+        if (number.thu == 2 && number.buoi == 1 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky2t10);
+    //t3 tiet 10
+    let lucky3t10 = datas.filter(function(number) {
+        if (number.thu == 3 && number.buoi == 1 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky3t10);
+    //t4 tiet 10
+    let lucky4t10 = datas.filter(function(number) {
+        if (number.thu == 4 && number.buoi == 1 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky4t10);
+    //t5 tiet 10
+    let lucky5t10 = datas.filter(function(number) {
+        if (number.thu == 5 && number.buoi == 1 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky5t10);
+    //t6 tiet 10
+    let lucky6t10 = datas.filter(function(number) {
+        if (number.thu == 6 && number.buoi == 1 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky6t10);
+    //t7 tiet 10
+    let lucky7t10 = datas.filter(function(number) {
+        if (number.thu == 7 && number.buoi == 1 && number.tiet == 5) {
+            return number;
+        }
+    });
+    datastkb.push(lucky7t10);
+
+    var locdata = datastkb.filter(function(number) {
+        if (number != "") {
+            return number;
+        }
+    });
+
+    axios.post('capnhatthoikhoabieu',locdata).then(function (response) {
+        var status = response.status;
+						Swal.fire({
+					title: 'Lưu',
+					text: 'Đã lưu thành công',
+					icon: 'success',
+					confirmButtonText: 'OK'
+				});
+    });
+}
+
 function TaoTd(giatri) {
     let td = document.createElement("td");
     let text = document.createTextNode(giatri);
@@ -1487,7 +1956,7 @@ function danhsachgv() {
             columnResizingMode: "widget",
             columns: [{
                 caption: "Tên",
-                dataField: "ten",
+                dataField: "hovaten",
             }],
             // select data row
             onSelectionChanged: function(selectedItems) {
