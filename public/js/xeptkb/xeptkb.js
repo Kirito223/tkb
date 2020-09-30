@@ -266,7 +266,7 @@ function ControlEvent() {
 // Sap xep thoi khoa bieu cac lop bang cach tao nhieu theard worker de sap xep cung luc
 
 function taoThoikhoabieu() {
-    Tientrinhxepthoikhoabieu = new Worker("public/js/xeptkb/woker.js");
+    Tientrinhxepthoikhoabieu = new Worker("js/xeptkb/woker.js");
     // Thiet lap ham sap xep thoi khoa bieu
 
     // Nhận tin nhắn từ worker trả về và gọi hàm cập nhật dữ liệu len ui
