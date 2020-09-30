@@ -695,10 +695,10 @@ class exportExcelController extends Controller
             $arrAfternoon = array();
 
             // Get morning
-            for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$AFTERNOON; $sessionMorning++) {
+            for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
                     $table = thoikhoabieu::where('thu', $day)
-                        ->where('buoi', 1)
+                        // ->where('buoi', 1)
                         ->where('tiet', $sessionMorning)
                         ->where('thoikhoabieu.malop', $room->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
@@ -710,10 +710,11 @@ class exportExcelController extends Controller
                 }
             }
             // Get afternoon
-            for ($sessionAfterNoon = Day::$MORNING; $sessionAfterNoon < Day::$MIDDAY; $sessionAfterNoon++) {
+            $after = Day::$MIDDAY + 1;
+            for ($sessionAfterNoon = $after; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
                     $table = thoikhoabieu::where('thu', $day)
-                        ->where('buoi', 2)
+                        // ->where('buoi', 2)
                         ->where('tiet', $sessionAfterNoon)
                         ->where('magiaovien', $room->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
@@ -788,10 +789,6 @@ class exportExcelController extends Controller
             $cell = $sheetTKBClass->getCellByColumnAndRow(1, $row)->getCoordinate();
             $sheetTKBClass->getStyle($cell)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
             $sheetTKBClass->getStyle($cell)->getFont()->setBold(true);
-
-            // Render Morning
-            // Redner session
-
             $sessions = 1;
             for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
                 if ($sessions == 6) {
@@ -829,9 +826,9 @@ class exportExcelController extends Controller
         $rowTableBody = 4;
         foreach ($tableTime as $item) {
             // Export Morning
-            if ($rowTableBody > 13) {
-                $rowTableBody -= 3;
-            }
+            // if ($rowTableBody > 12) {
+            //     $rowTableBody -= 7;
+            // }
             $tableMorning = $item->getTableTimeMorning();
             foreach ($tableMorning as $key => $table) {
                 if ($table != null) {
@@ -863,8 +860,7 @@ class exportExcelController extends Controller
                     $columnTableTime++;
                 }
             }
-            $row += 12;
-            $rowTableBody = $rowTableBody + 8;
+            $rowTableBody = $rowTableBody + 9;
         }
         $this->autoSiezColumn($sheet);
         $this->saveExcel($sheet, "tkblophoc");
@@ -1428,5 +1424,4 @@ class exportExcelController extends Controller
         }
         return response()->json(['msg' => "OK", 'fail' => $arrFail]);
     }
-
 }
