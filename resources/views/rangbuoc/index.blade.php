@@ -118,35 +118,6 @@
 	<dir class="col-md-9" style="margin: 0;padding: 2px">
 
 
-		<div class="card" style="margin-bottom: 10px;">
-			<div class="card-header" style="padding: 10px">	
-				<h4 class="card-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>			
-				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-				<div class="heading-elements" style="padding-top: 10px">
-					<ul class="list-inline mb-0">
-						<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-						<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="card-content collpase show">
-				<div class="card-body">
-					<div class="row">
-						<div class="col-md-12">
-							<h4 class="card-title"  style="text-align: center;">KHAI BÁO DỮ LIỆU XẾP TKB TRƯỜNG THCS TEST 12: TKB CHÍNH KHÓA</h4>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-2">
-							<!-- <button type="button" class="btn mr-1 mb-1 btn-light btn-sm">Xem hướng dẫn</button> -->
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-
 		<!-- ràng buộc tiết cố định -->
 		<div class="card" id="formrangbuoctietcodinh" style="display: none">
 			<div class="card-header">

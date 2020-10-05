@@ -15,6 +15,7 @@ function nhapdanhsachgv() {
       paging: {
        pageSize: 30
      },
+			height: 800,
      scrolling: {
       mode: 'infinite'
     },
@@ -32,12 +33,6 @@ function nhapdanhsachgv() {
      width: 240,
      placeholder: "Tìm kiếm..."
    },
-   pager: {
-     showPageSizeSelector: true,
-     allowedPageSizes: [10, 30,50],
-     showInfo: true
-   },
-
    selection: {
      mode: "single"
    },

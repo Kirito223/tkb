@@ -19,7 +19,9 @@ class XepTKB
     private $giaovienchuyenmon;
     private $tietcodinh;
 	private $sotiettrongbuoi;
-    public function __construct($giaovien, $monhoc, $lophoc, $danhsachrangbuoc, $tiethoc, $tietnghigiaovien, $tietghep, $sotietmonhoc, $phonghoc, $phong_mon_lop, $phancongchuyenmon, $giaovienmonlop, $giaovienchuyenmon,$tietcodinh,$sotiettrongbuoi)
+	private $rangbuocdangkybuoitietnghigv;
+	private $caphoc;
+    public function __construct($giaovien, $monhoc, $lophoc, $danhsachrangbuoc, $tiethoc, $tietnghigiaovien, $tietghep, $sotietmonhoc, $phonghoc, $phong_mon_lop, $phancongchuyenmon, $giaovienmonlop, $giaovienchuyenmon,$tietcodinh,$sotiettrongbuoi,$rangbuocdangkybuoitietnghigv,$caphoc)
     {
         $this->giaovien = $giaovien;
         $this->monhoc = $monhoc;
@@ -36,6 +38,8 @@ class XepTKB
         $this->giaovienchuyenmon = $giaovienchuyenmon;
         $this->tietcodinh = $tietcodinh;
 		$this->sotiettrongbuoi=$sotiettrongbuoi;
+		$this->rangbuocdangkybuoitietnghigv=$rangbuocdangkybuoitietnghigv;
+		$this->caphoc=$caphoc;
     }
 
     public function jsonSerialize()

@@ -18,6 +18,9 @@ use App\tiethoc;
 use App\tietnghigiaovien;
 use App\tietcodinh;
 use App\sotiettrongbuoi;
+use App\rangbuoctietcodinh;
+use App\rangbuocdangkybuoitietnghigv;
+use App\truong;
 use stdClass;
 use Session; 
 use App\thoikhoabieu;
@@ -57,9 +60,13 @@ class xeptkbController extends Controller
 		$giaovienmonlop = giaovienmonlop::where('matruong',$matruong)->get();
 		$giaovienchuyenmon = giaovienchuyenmon::where('matruong',$matruong)->get();
 		$lophoc = danhsachlophoc::where('matruong',$matruong)->get();
-		$tietcodinh = tietcodinh::where('matruong',$matruong)->get();
+		$tietcodinh = rangbuoctietcodinh::where('matruong',$matruong)->get();
 		$sotiettrongbuoi = sotiettrongbuoi::where('matruong',$matruong)->get();
-		$tainguyen = new XepTKB($giaovien, $monhoc, $lophoc, $danhsachrangbuoc, $tiethoc, $tietnghigiaovien, $tietghep, $sotietmonhoc, $phonghoc, $phongmonlop, $phancongchuyenmon, $giaovienmonlop, $giaovienchuyenmon,$tietcodinh,$sotiettrongbuoi);
+		$rangbuocdangkybuoitietnghigv=rangbuocdangkybuoitietnghigv::where('matruong',$matruong)->get();
+		$truonghoc=truong::where('matruong',$matruong)->first();
+		$caphoc=$truonghoc['caphoc'];
+		if($caphoc==null)$caphoc=1;
+		$tainguyen = new XepTKB($giaovien, $monhoc, $lophoc, $danhsachrangbuoc, $tiethoc, $tietnghigiaovien, $tietghep, $sotietmonhoc, $phonghoc, $phongmonlop, $phancongchuyenmon, $giaovienmonlop, $giaovienchuyenmon,$tietcodinh,$sotiettrongbuoi,$rangbuocdangkybuoitietnghigv,$caphoc);
 
 		return response()->json($tainguyen->jsonSerialize());
 	}	

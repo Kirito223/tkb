@@ -61,11 +61,10 @@ function chongvthamgiagiangday(datas){
 			width: 240,
 			placeholder: "Tìm kiếm...",
 		},
-		pager: {
-			showPageSizeSelector: true,
-			allowedPageSizes: [10,30,50],
-			showInfo: true
-		},
+            height: 800,
+            scrolling: {
+                mode: 'infinite'
+            },
 		selection: {
 			mode: "multiple",
 			deferred: true,

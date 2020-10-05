@@ -106,6 +106,12 @@
 											<div class="card-body">
 												<fieldset class="radio">
 													<label>
+<input type="radio" name="radio" value="" id="diemtruong">
+														Điểm trường
+														</label>
+														</fieldset>
+														<fieldset class="radio">
+															<label>
 														<input type="radio" name="radio" value="" id="chongvthamgiagiangday">
 														Chọn GV tham gia giảng dạy
 													</label>
@@ -165,7 +171,7 @@
 		</div>
 	</dir>
 	<dir class="col-md-9" style="margin: 0;padding: 2px">
-		<div class="card" style="margin-bottom: 10px;">
+<div class="card" style="margin-bottom: 10px;display:none" id="cardhead">
 			<div class="card-header" style="padding: 10px">	
 				<h4 class="card-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>			
 				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
@@ -177,23 +183,12 @@
 				</div>
 			</div>
 			<div class="card-content collpase show">
-				<div class="card-body">
+<div class="card-body">
 					<div class="row">
-						<div class="col-md-12">
-							<h4 class="card-title"  style="text-align: center;">KHAI BÁO DỮ LIỆU XẾP TKB TRƯỜNG THCS TEST 12: TKB CHÍNH KHÓA</h4>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-2">
-							<button type="button" class="btn mr-1 mb-1 btn-light btn-sm">Xem hướng dẫn</button>
-						</div>
-						<div class="col-md-2">
+<div class="col-md-2">
 							<button type="button" class="btn mr-1 mb-1 btn-success btn-sm" id="btnimportexcel" style="display: none"><i class="fa fa-file-excel-o"></i> Nhập dữ liệu excel</button>
-						</div>
-
-					</div>
-
+</div>
+</div>
 				</div>
 			</div>
 		</div>
@@ -546,32 +541,61 @@
 				</div>
 				<div class="card-content collapse show">
 					<div class="card-body">
-																<div class="row">
-						<div class="col-md-4">
-							<fieldset class="form-group position-relative">
-								<select class="form-control input-sm" id="loaitruongsotietmoimon">
-									<option selected="">Chọn loại trường
-									</option><option value="1">Tiểu học
-									</option><option value="2">THCS
-									</option><option value="3">THPT
-									</option></select>
-								</fieldset>
+						<div class="row">
+							<div class="col-md-4">
+								<fieldset class="form-group position-relative">
+									<select class="form-control input-sm" id="loaitruongsotietmoimon">
+										<option selected="">Chọn loại trường
+										</option><option value="1">Tiểu học
+										</option><option value="2">THCS
+										</option><option value="3">THPT
+										</option></select>
+									</fieldset>
+								</div>
+								<div class="col-md-3">
+									<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="khoitaodulieusotietmoimon">Khởi tạo dữ liệu mẫu</button>
+								</div>
 							</div>
-							<div class="col-md-3">
-								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="khoitaodulieusotietmoimon">Khởi tạo dữ liệu mẫu</button>
+<div class="row">
+								<div class="col-md-2">
+									<select class="form-control input-sm" id="sotietmoimonlop" multiple="multiple"></select>
+								</div>
+								<div class="col-md-3">
+									<select class="form-control input-sm" id="sotietmoimonmon"></select>
+								</div>
+								<div class="col-md-2">
+									<input type="number" class="form-control input-sm" id="sotietmoimonsotiet" placeholder="Số tiết">
+								</div>
+								<div class="col-md-3">
+									<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="capnhatsotietmoimon">Cập nhật</button>
+								</div>
 							</div>
+							<div id="capnhat_sotietmoimon"></div>
+							<input type="text" id="sotietmoimonid" class="form-control input-sm" hidden>
+							<hr>
+							<div id="girddanhsach_sotietmoimon"></div>
 						</div>
-						
-						<div id="capnhat_sotietmoimon"></div>
-						<input type="text" id="sotietmoimonid" class="form-control input-sm" hidden>
-						<hr>
-						<div id="girddanhsach_sotietmoimon"></div>
 					</div>
 				</div>
-			</div>
 
 
-
+<!-- diem truong -->
+				<div class="card" id="formdiemtruong" style="display: none">
+					<div class="card-header">
+						<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+						<div class="heading-elements" style="padding-top: 10px">
+							<ul class="list-inline mb-0">
+								<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+								<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="card-content collapse show">
+						<div class="card-body">
+							<div id="girddiemtruong"></div>
+						</div>
+					</div>
+				</div>
 
 
 
@@ -598,29 +622,8 @@
 										<!-- 									<button id="btnTaipccm" class="btn btn-sm btn-info"><i class="fa fa-download"></i> Tải PCCCM</button> -->
 										{{-- <button class="btn btn-sm btn-primary">Nhận PCCM từ TKB</button> --}}
 										{{-- <select></select> --}}
-									</section>
-									<section style="margin-top: 10px;">
-										<p style="font-weight: bold; color:red;"><i style="cursor: pointer;" id="showchitietchuapc"
-											class="fa fa-arrow-circle-right" aria-hidden="true"></i> Tổng số tiết chưa được phân công giáo viên
-											dạy: <span id="tongsotietcp"></span></p>
-											<section id="tableChuaphancong" class="hidden" style="overflow: scroll; height: 300px;">
-												<table class="table table-bordered table-light">
-													<thead class="thead-default">
-														<tr>
-															<th rowspan="2">STT</th>
-															<th rowspan="2">Lớp</th>
-															<th style="text-align: center;" id="thMonhoc">Môn học</th>
-														</tr>
-														<tr id="trDanhsachmonhoc">
+</section>
 
-														</tr>
-													</thead>
-													<tbody id="bangSotietchuaphancongs">
-
-													</tbody>
-												</table>
-											</section>
-										</section>
 										<section>
 											<table class="table table-bordered table-light">
 												<thead class="thead-default">
@@ -932,12 +935,15 @@
 			document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 			document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
 			document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("cardhead").style.display = "block";
+			document.getElementById("formdiemtruong").style.display = "none";
 			clearcheckbox();
 		}
 	});
 
 	$('#btnimportexcel').click(function () {
 		document.getElementById("formimportexcel").style.display = "block";
+
 	});
 
 
@@ -949,6 +955,7 @@
 			document.getElementById("khaibao").style.display = "block";
 			document.getElementById("btnimportexcel").style.display = "none";
 			document.getElementById("formimportexcel").style.display = "none";
+document.getElementById("cardhead").style.display = "none";
 			clearcheckbox();
 		}
 	});
@@ -969,6 +976,7 @@
 		$("#sotiet_trongbuoi").prop( "checked", false);
 		$("#sotiet_moimon").prop( "checked", false);
 		$("#phancong_giaovienday").prop( "checked", false);
+$("#diemtruong").prop( "checked", false);
 	}
 
 
@@ -989,6 +997,8 @@
 		document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		nhapdanhsachgv();
 	});
 
@@ -1008,6 +1018,7 @@
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		nhapdanhsachmonhoc();
 	});
 	//nhập danh sach lop hoc
@@ -1025,6 +1036,7 @@
 		document.getElementById("formdanhsach_tochuyenmon").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
 		nhapdanhsachlophoc();
 	});
@@ -1044,6 +1056,7 @@
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		nhapdanhsachtochuyenmon();
 	});
 
@@ -1063,6 +1076,7 @@
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		locgvcuamatochuyenmon();
 	});
 
@@ -1083,6 +1097,7 @@
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		nhapdanhsachphonghocbomon();
 	});
 
@@ -1102,6 +1117,7 @@
 		document.getElementById("formdanhsach_tochuyenmon").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		chon_monhoc();
 	});
 	//chọn lớp học
@@ -1120,6 +1136,7 @@
 		document.getElementById("formdanhsach_tochuyenmon").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		chon_lophoc();
 	});
 
@@ -1139,6 +1156,7 @@
 		document.getElementById("formdanhsach_tochuyenmon").style.display = "block";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		chon_tochuyenmon();
 	});
 
@@ -1158,6 +1176,7 @@
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "block";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		chon_phonghoc();
 	});
 
@@ -1179,6 +1198,7 @@
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		loaddatadanhsachgvthamgiagiangday();
 	});
 
@@ -1201,6 +1221,7 @@
 			document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "block";
 			document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
 			document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 			sotiet_trongbuoi();
 		});
 	//số tiết ở mỗi môn của mỗi mon
@@ -1219,6 +1240,7 @@
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_sotietmoimon").style.display = "block";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+document.getElementById("formdiemtruong").style.display = "none";
 		sotiet_moimon();
 	});
 	//phân công giáo viên dạy
@@ -1237,9 +1259,29 @@
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "block";
+document.getElementById("formdiemtruong").style.display = "none";
 		// phancong_giaovienday();
 	});
-
+		
+//diem truong
+	$("#diemtruong").change(function () {
+	document.getElementById("formnhapdanhsachgv").style.display = "none";
+	document.getElementById("formnhapdanhsachmonhoc").style.display = "none";
+	document.getElementById("formnhapdanhsachlophoc").style.display = "none";
+	document.getElementById("formdanhsachgvtochuyenmon").style.display = "none";
+	document.getElementById("formnhapdanhsachtochuyenmon").style.display = "none";
+	document.getElementById("formnhapdanhsachphonghocbomon").style.display = "none";
+	document.getElementById("formdanhsachgvthamgiagiangday").style.display = "none";
+	document.getElementById("formdanhsach_monhoc").style.display = "none";
+	document.getElementById("formdanhsach_lophoc").style.display = "none";
+	document.getElementById("formdanhsach_tochuyenmon").style.display = "none";
+	document.getElementById("formdanhsach_phonghoc").style.display = "none";
+	document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
+	document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
+	document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+	document.getElementById("formdiemtruong").style.display = "block";
+	danhsachdiemtruong();
+	});
 
 
 </script>
@@ -1260,6 +1302,7 @@
 <script type="text/javascript" src="js/khaibao/sotiettrongbuoi.js"></script>
 <script type="text/javascript" src="js/khaibao/sotietmoimon.js"></script>
 <script type="module" src="js/khaibao/js\pccm\index.js"></script>
+<script type="text/javascript" src="js/khaibao/diemtruong.js"></script>
 <script type="text/javascript" src='dx/js/jszip/dist/xlsx.full.min.js'></script>
 
 

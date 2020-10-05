@@ -362,52 +362,54 @@ $('#btnsua').click(function() {
 });
 
 function loaddatamodalthongtinchung(data){
-  var datattc = data;
-  var tenloai;
-  if(datattc.loai == 1){
-    tenloai = "Công tác quản lý";
-  }else if(datattc.loai == 2){
-    tenloai = "Công tác chuyên môn";
-  }else if(datattc.loai == 3){
-    tenloai = "Lịch kiểm tra";
-  }else if(datattc.loai == 4){
-    tenloai = "Thông báo khác";
-  }
-  var ngaytao = datattc.ngaytao;
-  var formatngaytao = moment(ngaytao).format('DD-MM-YYYY');
-  var ngaygui = datattc.ngaygui;
-  if(ngaygui != null){
-    $('#formngaygui').show();
-  }else{
-    $('#formngaygui').hide();
-  }
-  var formatngaygui = moment(ngaygui).format('DD-MM-YYYY');
-  $('#idloaixem').val(tenloai);
-  $('#idsohieuxem').val(datattc.sohieu);
-  $('#idtieudexem').val(datattc.tieude);
-  $('#idngaytaoxem').val(formatngaytao);
-  $('#idngayguixem').val(formatngaygui);
-  $('#idnoidungxem').text(datattc.noidung);
-  var bodytruong = document.getElementById("bodytruong");
-  var datatruong = datattc.truong;
-  var counttruong = datatruong.length;
-  for (var i = 0; i < counttruong; i++) {
+    var datattc = data;
+    var tenloai;
+    if (datattc.loai == 1) {
+        tenloai = "Công tác quản lý";
+    } else if (datattc.loai == 2) {
+        tenloai = "Công tác chuyên môn";
+    } else if (datattc.loai == 3) {
+        tenloai = "Lịch kiểm tra";
+    } else if (datattc.loai == 4) {
+        tenloai = "Thông báo khác";
+    }
+    var ngaytao = datattc.ngaytao;
+    var formatngaytao = moment(ngaytao).format("DD-MM-YYYY");
+    var ngaygui = datattc.ngaygui;
+    if (ngaygui != null) {
+        $("#formngaygui").show();
+    } else {
+        $("#formngaygui").hide();
+    }
+    var formatngaygui = moment(ngaygui).format("DD-MM-YYYY");
+    $("#idloaixem").val(tenloai);
+    $("#idsohieuxem").val(datattc.sohieu);
+    $("#idtieudexem").val(datattc.tieude);
+    $("#idngaytaoxem").val(formatngaytao);
+    $("#idngayguixem").val(formatngaygui);
+    $("#idnoidungxem").text(datattc.noidung);
+    var bodytruong = document.getElementById("bodytruong");
+    var datatruong = datattc.truong;
+    var counttruong = datatruong.length;
+    for (var i = 0; i < counttruong; i++) {
         tr = document.createElement("tr");
-        tr.appendChild(document.createElement('td'));
-        tr.appendChild(document.createElement('td'));
+        tr.appendChild(document.createElement("td"));
+        tr.appendChild(document.createElement("td"));
 
-        tr.cells[0].appendChild(document.createTextNode(i+1));
-        tr.cells[1].appendChild(document.createTextNode(datatruong[i][0].tentruong));
-        bodytruong.appendChild(tr); 
+        tr.cells[0].appendChild(document.createTextNode(i + 1));
+        tr.cells[1].appendChild(
+            document.createTextNode(datatruong[i][0].tentruong)
+        );
+        bodytruong.appendChild(tr);
     }
     var tenfile = datattc.file;
-      // var url = url('public/uploads/thongbao/'+tenfile);
-      var divfile = document.getElementById("filedinhkem");
-      var a = document.createElement('a');
-      a.textContent= tenfile;
-      a.href = "uploads/thongbao/"+tenfile+"";
-      // a.target = '_blank';
-      divfile.appendChild(a);
+    // var url = url('uploads/thongbao/'+tenfile);
+    var divfile = document.getElementById("filedinhkem");
+    var a = document.createElement("a");
+    a.textContent = tenfile;
+    a.href = "uploads/thongbao/" + tenfile + "";
+    // a.target = '_blank';
+    divfile.appendChild(a);
 }
 
 function loadmodalsua(data){

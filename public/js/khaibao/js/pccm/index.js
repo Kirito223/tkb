@@ -63,7 +63,7 @@ function initControl() {
         "bangSotietchuaphancongs"
     );
     tongsotietcp = document.getElementById("tongsotietcp");
-    showchitietchuapc = document.getElementById("showchitietchuapc");
+   // fshowchitietchuapc = document.getElementById("showchitietchuapc");
     tableChuaphancong = document.getElementById("tableChuaphancong");
     btnXoatatcaPCCMtaimon = document.getElementById("btnXoatatcaPCCMtaimon");
     btnTaipccm = document.getElementById("btnTaipccm");
@@ -150,7 +150,7 @@ function initEvent() {
             );
         }
     };
-    showchitietchuapc.onclick = function (e) {
+  /*  showchitietchuapc.onclick = function (e) {
         if (tableChuaphancong.classList.contains("hidden")) {
             showchitietchuapc.classList.remove("fa-arrow-circle-right");
             showchitietchuapc.classList.add("fa-arrow-circle-down");
@@ -160,7 +160,7 @@ function initEvent() {
             showchitietchuapc.classList.add("fa-arrow-circle-right");
             tableChuaphancong.classList.add("hidden");
         }
-    };
+    };*/
 
     btncapnhatpccmgiaovien.onclick = function (e) {
         // Cap nhat thong tin phan cong chuyen mon cho giao vien
@@ -178,14 +178,14 @@ function initEvent() {
     };
 }
 function hienthidanhsachMonhoc() {
-    danhsachmonhoc.forEach((item) => {
+   /* danhsachmonhoc.forEach((item) => {
         let th = document.createElement("th");
         let textTh = document.createTextNode(item.tenmonhoc);
         th.appendChild(textTh);
         trDanhsachmonhoc.appendChild(th);
-    });
-    thMonhoc.colSpan = danhsachmonhoc.length;
-    let ts = 0;
+    });*/
+    //thMonhoc.colSpan = danhsachmonhoc.length;
+   /* let ts = 0;
     let sott = 1;
     danhsachLop.forEach((lop) => {
         // Lap qua tung mon va tinh toan so tiet da duoc phan o tung mon tuong ung voi tung lop
@@ -226,7 +226,7 @@ function hienthidanhsachMonhoc() {
         bangSotietchuaphancongs.appendChild(tr);
         sott++;
     });
-    tongsotietcp.textContent = ts;
+    tongsotietcp.textContent = ts;*/
 }
 
 async function laydanhsach() {

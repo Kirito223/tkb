@@ -15,6 +15,7 @@ use App\tochuyenmon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
+use PhpParser\Node\Expr\FuncCall;
 use stdClass;
 use ZipArchive;
 
@@ -583,15 +584,22 @@ class exportExcelController extends Controller
 
         $tableTime = array();
         for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+            $swicth = 0;
+            $ss = 1;
             for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
+                if ($session > 5) {
+                    $swicth = 1;
+                    $ss = 1;
+                }
                 foreach ($listClassRoom as $class) {
                     // get table time of morning
                     $table = thoikhoabieu::where('malop', $class->id)
                         ->where('thu', $day)
-                        ->where('tiet', $session)
+                        ->where('buoi', $swicth)
+                        ->where('tiet', $ss)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
-                        ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'thoikhoabieu.malop')
+                        ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'thoikhoabieu.malop', 'thoikhoabieu.tiet')
                         ->first();
 
                     if ($table != null) {
@@ -601,6 +609,7 @@ class exportExcelController extends Controller
                         array_push($tableTime, null);
                     }
                 }
+                $ss++;
             }
         }
 
@@ -1424,4 +1433,6 @@ class exportExcelController extends Controller
         }
         return response()->json(['msg' => "OK", 'fail' => $arrFail]);
     }
+
+  
 }

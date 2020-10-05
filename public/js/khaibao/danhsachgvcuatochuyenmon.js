@@ -122,7 +122,7 @@ function danhsachgvcuatochuyenmon(idtocm) {
             scrolling: {
                 mode: 'infinite'
             },
-            height:600,
+            height:800,
             // paging: {
             //     pageSize: 10
             // },

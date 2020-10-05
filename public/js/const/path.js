@@ -1,1 +1,1 @@
-export const public_path="public/";
+export const public_path = "";

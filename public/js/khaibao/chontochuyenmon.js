@@ -35,11 +35,10 @@ function chon_tochuyenmon(){
 				width: 240,
 				placeholder: "Tìm kiếm..."
 			},
-			pager: {
-				showPageSizeSelector: true,
-				allowedPageSizes: [5, 10, 20],
-				showInfo: true
-			},
+            height: 800,
+            scrolling: {
+                mode: 'infinite'
+            },
 			/*chon row*/
 			selection: {
 				mode: "multiple",

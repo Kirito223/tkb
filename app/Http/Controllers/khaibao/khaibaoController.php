@@ -17,6 +17,8 @@ use App\phancongchuyenmon;
 use App\sotietmonhoc;
 use App\sotiettrongbuoi;
 use App\sotietmonhoc_temp;
+use App\diemtruong;
+use App\giaovien_diemtruong;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 use Session; 
@@ -167,6 +169,78 @@ class khaibaoController extends Controller
 			
 		}
 		return json_encode($danhsachlophoc, JSON_UNESCAPED_UNICODE);		
+	}
+	
+	
+	
+	//diem truong
+	public function getdanhsachdiemtruong(){
+		$matruong = Session::get('matruong');
+		$data =  diemtruong::where('matruong',$matruong)->get();
+		$gvdiemtruong =  giaovien_diemtruong::where('matruong',$matruong)->get();
+		$gv =  danhsachgv::where('matruong',$matruong)->get();
+		$lop =  danhsachlophoc::where('matruong',$matruong)->orderBy('tenlop', 'ASC')->get();
+		$mon =  monhoc::where('matruong',$matruong)->get();
+		return json_encode([$data,$gvdiemtruong,$gv,$lop,$mon], JSON_UNESCAPED_UNICODE);
+	}
+	public function updatediemtruong(Request $rq){
+		$matruong = Session::get('matruong');
+		$data = diemtruong::find($rq->id);
+		$data->tendiemtruong = $rq->tendiemtruong;
+		$data->matruong = $matruong;
+		$success = $data->save();
+		return json_encode($success, JSON_UNESCAPED_UNICODE);
+	}
+	public function adddiemtruong(Request $rq){
+		$matruong = Session::get('matruong');
+		$data =  new diemtruong();
+		$data->tendiemtruong = $rq->tendiemtruong;
+		$data->matruong = $matruong;
+		$success = $data->save();
+		return json_encode($success, JSON_UNESCAPED_UNICODE);
+	}
+	public function deldiemtruong(Request $rq){
+		$matruong = Session::get('matruong');
+		$iddt = $rq->id;
+		$data = diemtruong::destroy($rq->id);
+		$gvdiemtruong = giaovien_diemtruong::where(function($query)use($iddt,$matruong) {
+			$query->where('madiemtruong',$iddt);
+			$query->where('matruong',$matruong);
+		})->delete();
+		return json_encode([$data,$gvdiemtruong], JSON_UNESCAPED_UNICODE);
+	}
+	public function updategvdiemtruong(Request $rq){
+		$matruong = Session::get('matruong');
+		$data = giaovien_diemtruong::find($rq->id);
+		$data->madiemtruong = $rq->madiemtruong;
+		$data->magiaovien = $rq->magiaovien;
+		$data->malop = $rq->malop;
+		$data->mamonhoc = $rq->mamonhoc;
+		$data->buoi = $rq->buoi;
+		$data->sotietthucte = $rq->sotietthucte;
+		$data->sotietphancong = $rq->sotietphancong;
+		$data->matruong = $matruong;
+		$success = $data->save();
+		return json_encode($success, JSON_UNESCAPED_UNICODE);
+	}
+	public function addgvdiemtruong(Request $rq){
+		$matruong = Session::get('matruong');
+		$data =  new giaovien_diemtruong();
+		$data->madiemtruong = $rq->madiemtruong;
+		$data->magiaovien = $rq->magiaovien;
+		$data->malop = $rq->malop;
+		$data->mamonhoc = $rq->mamonhoc;
+		$data->buoi = $rq->buoi;
+		$data->sotietthucte = $rq->sotietthucte;
+		$data->sotietphancong = $rq->sotietphancong;
+		$data->matruong = $matruong;
+		$success = $data->save();
+		return json_encode($success, JSON_UNESCAPED_UNICODE);
+	}
+	public function delgvdiemtruong(Request $rq){
+		$matruong = Session::get('matruong');
+		$data = giaovien_diemtruong::destroy($rq->id);
+		return json_encode($data, JSON_UNESCAPED_UNICODE);
 	}
 
 
@@ -528,7 +602,7 @@ class khaibaoController extends Controller
 				$new_data[] = array('tenlop' => $k, 'buoi'=> $v);
 			}
 		}
-		$lop = danhsachlophoc::where('matruong',$matruong)->orderBy('danhsachlophoc.tenlop', 'ASC')->get();
+		$lop = danhsachlophoc::where('matruong',$matruong)->orderBy('tenlop', 'ASC')->get();
 		return json_encode([$new_data,$lop], JSON_UNESCAPED_UNICODE);
 	}
 
@@ -721,8 +795,57 @@ class khaibaoController extends Controller
 		}])
 		->orderBy('danhsachlophoc.tenlop', 'ASC')->select('id','tenlop')
 		->get();
-		//$datadel = sotietmonhoc::query()->delete();
-		return json_encode($data, JSON_UNESCAPED_UNICODE);
+
+		$datalop = danhsachlophoc::where('matruong',$matruong)->orderBy('tenlop', 'ASC')->get();
+		$datamon = monhoc::where('matruong',$matruong)->get();
+		return json_encode([$data,$datalop,$datamon], JSON_UNESCAPED_UNICODE);
+	}
+	
+	public function capnhatsotietmoimon(Request $rq){
+		$matruong = Session::get('matruong');
+		$lop = $rq->lop;
+		$mon = $rq->mon;
+		$sotiet = $rq->sotiet;
+		if($lop[0] == "0"){
+			$ml = danhsachlophoc::where('matruong',$matruong)->get();
+			foreach($ml as $keys){
+				$datasotietmonhoc = sotietmonhoc::where(function($query)use($matruong,$keys,$mon){				
+					$query->where('matruong',$matruong);
+					$query->where('malop',$keys->id);
+					$query->where('mamonhoc',$mon);
+				})->delete();			
+				$sotietmonhoc= new sotietmonhoc;
+				$sotietmonhoc->malop = $keys->id;
+				$sotietmonhoc->mamonhoc = $mon;
+				$sotietmonhoc->sotiet = $sotiet;
+				$sotietmonhoc->matruong = $matruong;
+				$sotietmonhoc->save();
+			}
+			$success = 1;
+		}else{
+			foreach ($lop as $key) {
+				$datasotietmonhoc = sotietmonhoc::where(function($query)use($matruong,$key,$mon){				
+					$query->where('matruong',$matruong);
+					$query->where('malop',$key);
+					$query->where('mamonhoc',$mon);
+				})->first();
+
+				if($datasotietmonhoc != null){
+					$datasotietmonhoc->sotiet = $sotiet;
+					$datasotietmonhoc->update();
+					$success = 1;
+				}else{
+					$sotietmonhoc= new sotietmonhoc;
+					$sotietmonhoc->malop = $key;
+					$sotietmonhoc->mamonhoc = $mon;
+					$sotietmonhoc->sotiet = $sotiet;
+					$sotietmonhoc->matruong = $matruong;
+					$sotietmonhoc->save();
+					$success = 1;	
+				}			
+			}	
+		}
+		return json_encode($success, JSON_UNESCAPED_UNICODE);
 	}
 
 	//update s? ti?t ? m?i môn c?a m?i l?p

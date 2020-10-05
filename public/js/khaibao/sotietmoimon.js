@@ -15,12 +15,17 @@ $('#khoitaodulieusotietmoimon').click(function() {
                 icon: 'success',
                 confirmButtonText: 'OK'
             });
-
-        }
-        
+        }        
     });
-
 });
+
+$('#capnhatsotietmoimon').click(function(){   
+ var lop = $('#sotietmoimonlop').val();
+ var mon = $('#sotietmoimonmon').val();
+ var sotiet = $('#sotietmoimonsotiet').val();
+ axios.post('capnhatsotietmoimon', {lop:lop,mon:mon,sotiet:sotiet}).then(function(response) {var data = response.data;reload_sotiet_moimon();});
+});
+
 
 
 
@@ -32,7 +37,9 @@ function reload_sotiet_moimon() {
 
 function sotiet_moimon() {
     var data = axios.get('getdanhsachsotietmoimon').then(function(response) {
-        var data1 = response.data;
+        var data1 = response.data[0];
+        var datalop = response.data[1];
+        var datamon = response.data[2];
         var datas = data1.map(function(value, label) {
             let data = value;
             let stt = label + 1;
@@ -42,15 +49,43 @@ function sotiet_moimon() {
             return datas;
         });
 
+        //chọn lớp
+        $("#sotietmoimonlop").select2({closeOnSelect : false,
+            placeholder : "Chọn lớp",
+            allowHtml: true,
+            allowClear: true,
+            tags: true,
+            width: '100%'});
+        let htmllophoc = datalop.map(function(item) {
+            return ('<option value="' +item.id +'">' +item.tenlop +"</option>");
+        });
+        $("#sotietmoimonlop").html('<option value="0">Chọn tất cả</option>' + htmllophoc);
+
+
+        //chọn môn 
+        $("#sotietmoimonmon").select2({
+            placeholder : "Chọn môn",
+            width: '100%'});
+        let htmlmon = datamon.map(function(item) {
+            return ('<option value="' +item.id +'">' +item.tenmonhoc +"</option>");
+        });
+        $("#sotietmoimonmon").html('<option value=""></option>' + htmlmon);
+		
+		
+		
+		
+		
+
         $("#girddanhsach_sotietmoimon").dxDataGrid({
-            dataSource: datas,
+           dataSource: datas,
             showBorders: true,
-			loadPanel: {
+            loadPanel: {
             enabled: true
-        	},
-			scrolling: {
+            },
+            height: 800,
+            scrolling: {
             mode: "virtual"
-        	},
+            },
 
             sorting: {
                 mode: "multiple"
@@ -89,16 +124,20 @@ function sotiet_moimon() {
                 }
             },
             columns: [{
-                    type: "buttons",
-                    buttons: ["edit"]
+                     type: "buttons",
+                    buttons: ["edit"],
+                    fixed: true,
+                    fixedPosition: "left"                  
                 }, {
                     caption: "STT",
                     dataField: "stt",
-                    width: 50
+                    width: 50,
+                    fixed: true,
                 }, {
                     caption: "Lớp",
                     dataField: "tenlop",
-                    width: 50
+                    width: 50,
+                    fixed: true,
                 },
 
             ],

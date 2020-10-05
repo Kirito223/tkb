@@ -54,7 +54,7 @@ function nhapdanhsachlophoc(){
 			paging: {
 				pageSize: 10
 			},
-			height:700,
+			height:800,
 			/* xap xep */
 			sorting: {
 				mode: "multiple"
@@ -108,6 +108,12 @@ function nhapdanhsachlophoc(){
                 	caption: "Thứ tự hiển thị",
                 	dataField: "thutuhienthi",
                 }, 
+				{
+                	caption: "Thời gian",
+                	dataField: "updated_at",
+                	dataType: "date",
+                	format: 'dd/MM/yyyy'  
+                },
                 ],
 				// select data row
 				onSelectionChanged: function (selectedItems) {

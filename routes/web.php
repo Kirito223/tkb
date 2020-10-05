@@ -67,6 +67,10 @@ Route::group(['middleware' => 'auth'], function(){
 
 //tinhchinh
 	Route::get('tinhchinh','tinhchinh\tinhchinhController@index');
+	Route::get('getdanhgiagv','tinhchinh\tinhchinhController@getdanhgiagv');
+	Route::post('adddanhgiagv','tinhchinh\tinhchinhController@adddanhgiagv');
+	Route::post('updatedanhgiagv','tinhchinh\tinhchinhController@updatedanhgiagv');
+	Route::post('delldanhgiagv','tinhchinh\tinhchinhController@delldanhgiagv');
 
 
 //xemtkb
@@ -153,6 +157,16 @@ Route::group(['middleware' => 'auth'], function(){
 	//danh sách số tiết ở mỗi môn của mỗi lớp
 	Route::get('getdanhsachsotietmoimon','khaibao\khaibaoController@getdanhsachsotietmoimon');
 	Route::post('updatesotietmoimon','khaibao\khaibaoController@updatesotietmoimon');
+	Route::post('capnhatsotietmoimon','khaibao\khaibaoController@capnhatsotietmoimon');
+	
+	//diem truong
+	Route::get('getdanhsachdiemtruong','khaibao\khaibaoController@getdanhsachdiemtruong');
+	Route::post('updatediemtruong','khaibao\khaibaoController@updatediemtruong');
+	Route::post('adddiemtruong','khaibao\khaibaoController@adddiemtruong');
+	Route::post('deldiemtruong','khaibao\khaibaoController@deldiemtruong');
+	Route::post('updategvdiemtruong','khaibao\khaibaoController@updategvdiemtruong');
+	Route::post('addgvdiemtruong','khaibao\khaibaoController@addgvdiemtruong');
+	Route::post('delgvdiemtruong','khaibao\khaibaoController@delgvdiemtruong');
 
 
 

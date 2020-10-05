@@ -32,11 +32,10 @@ function nhapdanhsachmonhoc(){
 					width: 240,
 					placeholder: "Tìm kiếm..."
 				},
-				pager: {
-					showPageSizeSelector: true,
-					allowedPageSizes: [5, 10, 20],
-					showInfo: true
-				},
+			            height: 800,
+            scrolling: {
+                mode: 'infinite'
+            },
 				scrolling: {
 					mode: 'infinite'
 				},

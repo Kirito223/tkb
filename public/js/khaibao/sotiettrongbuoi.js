@@ -59,11 +59,12 @@ function sotiet_trongbuoi() {
             return datas;
         });
         $("#girddanhsach_sotiettrongbuoi").dxDataGrid({
-            dataSource: datas,
+         dataSource: datas,
             showBorders: true,
             paging: {
-                pageSize: 30
+                pageSize: 10
             },
+            height: 800,
             /* xap xep */
             sorting: {
                 mode: "multiple"
@@ -78,10 +79,8 @@ function sotiet_trongbuoi() {
                 width: 240,
                 placeholder: "Tìm kiếm..."
             },
-            pager: {
-                showPageSizeSelector: true,
-                allowedPageSizes: [10,30,50],
-                showInfo: true
+            scrolling: {
+                mode: 'infinite'
             },
             editing: {
                 mode: "row",

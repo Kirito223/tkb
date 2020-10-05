@@ -39,15 +39,10 @@ function nhapdanhsachtochuyenmon(){
 					width: 240,
 					placeholder: "Tìm kiếm..."
 				},
-				pager: {
-					showPageSizeSelector: true,
-					allowedPageSizes: [5, 10, 20],
-					showInfo: true
-				},
-				/* headerFilter: {
-					visible: true
-				}, */
-				/*chon row*/
+				            height: 800,
+            scrolling: {
+                mode: 'infinite'
+            },
 				selection: {
 					mode: "single"
 				},

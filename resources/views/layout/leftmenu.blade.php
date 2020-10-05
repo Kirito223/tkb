@@ -25,9 +25,9 @@
                </li>
                <li ><a href="xeptkb"><i class="fa fa-calendar-o"></i><span class="menu-title" data-i18n="nav.icons.main">Xếp TKB</span></a>
                </li>
-               <!-- <li ><a href="tinhchinh"><i class="fa fa-cog"></i><span class="menu-title" data-i18n="nav.icons.main">Tinh chỉnh </span></a>
+               <li ><a href="tinhchinh"><i class="fa fa-cog"></i><span class="menu-title" data-i18n="nav.icons.main">Tinh chỉnh </span></a>
                </li>
-               <li ><a href="xemtkb"><i class="fa fa-calendar-plus-o"></i><span class="menu-title" data-i18n="nav.icons.main">Xem TKB</span></a>
+               <!-- <li ><a href="xemtkb"><i class="fa fa-calendar-plus-o"></i><span class="menu-title" data-i18n="nav.icons.main">Xem TKB</span></a>
                </li>-->
                <li ><a href="exportkb"><i class="fa fa-download"></i><span class="menu-title" data-i18n="nav.icons.main">Lưu - Tải TKB</span></a>
                </li>
