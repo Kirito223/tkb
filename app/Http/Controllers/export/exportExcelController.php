@@ -1290,35 +1290,35 @@ class exportExcelController extends Controller
             $sheetSelect->setCellValue("A5", "Thứ 2");
 
             $sheetSelect->mergeCells("A10:A14");
-            $sheetSelect->setCellValue("A10", "Thứ 2");
+            $sheetSelect->setCellValue("A10", "Thứ 2 chiều");
 
 
             $sheetSelect->mergeCells("A15:A19");
             $sheetSelect->setCellValue("A15", "Thứ 3");
 
             $sheetSelect->mergeCells("A20:A24");
-            $sheetSelect->setCellValue("A20", "Thứ 3");
+            $sheetSelect->setCellValue("A20", "Thứ 3 chiều");
 
 
 
             $sheetSelect->mergeCells("A25:A29");
-            $sheetSelect->setCellValue("A25", "Thứ 4");
+            $sheetSelect->setCellValue("A25", "Thứ 4 chiều");
 
             $sheetSelect->mergeCells("A30:A34");
-            $sheetSelect->setCellValue("A30", "Thứ 4");
+            $sheetSelect->setCellValue("A30", "Thứ 4 chiều");
 
 
             $sheetSelect->mergeCells("A35:A39");
             $sheetSelect->setCellValue("A35", "Thứ 5");
 
             $sheetSelect->mergeCells("A40:A44");
-            $sheetSelect->setCellValue("A40", "Thứ 5");
+            $sheetSelect->setCellValue("A40", "Thứ 5 chiều");
 
             $sheetSelect->mergeCells("A45:A49");
             $sheetSelect->setCellValue("A45", "Thứ 6");
 
             $sheetSelect->mergeCells("A50:A54");
-            $sheetSelect->setCellValue("A50", "Thứ 6");
+            $sheetSelect->setCellValue("A50", "Thứ 6 chiều");
 
 
             $sheetSelect->mergeCells("A55:A59");
@@ -1354,11 +1354,15 @@ class exportExcelController extends Controller
             $tableTime = array();
 
             for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+                $ss = 1;
                 for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
+                    if ($session > 5) {
+                        $ss = 1;
+                    }
                     foreach ($listTeacher as $objTeacher) {
                         // get table time of morning
                         $table = thoikhoabieu::where('thu', $day)
-                            ->where('tiet', $session)
+                            ->where('tiet', $ss)
                             ->where('magiaovien', $objTeacher->id)
                             ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                             ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
@@ -1375,7 +1379,7 @@ class exportExcelController extends Controller
                 }
             }
 
-            // Render Tabletime
+          //  Render Tabletime
             $indexColum = 3;
             $totalRow = 64;
             $indexTable = 0;
