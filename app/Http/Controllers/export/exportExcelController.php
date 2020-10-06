@@ -704,11 +704,16 @@ class exportExcelController extends Controller
             $arrAfternoon = array();
 
             // Get morning
+            $ss = 1;
             for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
+                if ($sessionMorning > 5) {
+                    $ss = 1;
+                }
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+                  
                     $table = thoikhoabieu::where('thu', $day)
-                        // ->where('buoi', 1)
-                        ->where('tiet', $sessionMorning)
+                        ->where('buoi', 0)
+                        ->where('tiet', $ss)
                         ->where('thoikhoabieu.malop', $room->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
@@ -717,15 +722,20 @@ class exportExcelController extends Controller
                         ->first();
                     array_push($arrMorning, $table);
                 }
+                $ss++;
             }
             // Get afternoon
-            $after = Day::$MIDDAY + 1;
-            for ($sessionAfterNoon = $after; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
+            $ss = 1;
+            for ($sessionAfterNoon = 6; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
+                if ($sessionAfterNoon > 5) {
+                    $ss = 1;
+                }
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+                    
                     $table = thoikhoabieu::where('thu', $day)
-                        // ->where('buoi', 2)
-                        ->where('tiet', $sessionAfterNoon)
-                        ->where('magiaovien', $room->id)
+                        ->where('buoi', 1)
+                        ->where('tiet', $ss)
+                        ->where('thoikhoabieu.malop', $room->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
@@ -733,6 +743,7 @@ class exportExcelController extends Controller
                         ->first();
                     array_push($arrAfternoon, $table);
                 }
+                $ss++;
             }
             $itemTeacher = new TableTimeTypeTwo($room->tenlop, $arrMorning, $arrAfternoon);
             array_push($tableTime, $itemTeacher);
@@ -862,6 +873,9 @@ class exportExcelController extends Controller
                 } else {
                     $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
                 }
+                if($rowTableBody == 13){
+                    $f ="1";
+                }
                 if ($columnTableTime == 8) {
                     $rowTableBody++;
                     $columnTableTime = 3;
@@ -869,7 +883,7 @@ class exportExcelController extends Controller
                     $columnTableTime++;
                 }
             }
-            $rowTableBody = $rowTableBody + 9;
+            $rowTableBody = $rowTableBody + 8;
         }
         $this->autoSiezColumn($sheet);
         $this->saveExcel($sheet, "tkblophoc");
@@ -1433,6 +1447,4 @@ class exportExcelController extends Controller
         }
         return response()->json(['msg' => "OK", 'fail' => $arrFail]);
     }
-
-  
 }
