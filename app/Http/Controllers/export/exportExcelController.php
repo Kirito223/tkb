@@ -710,7 +710,7 @@ class exportExcelController extends Controller
                     $ss = 1;
                 }
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
-                  
+
                     $table = thoikhoabieu::where('thu', $day)
                         ->where('buoi', 0)
                         ->where('tiet', $ss)
@@ -726,12 +726,12 @@ class exportExcelController extends Controller
             }
             // Get afternoon
             $ss = 1;
-            for ($sessionAfterNoon = 6; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
+            for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
                 if ($sessionAfterNoon > 5) {
                     $ss = 1;
                 }
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
-                    
+
                     $table = thoikhoabieu::where('thu', $day)
                         ->where('buoi', 1)
                         ->where('tiet', $ss)
@@ -872,9 +872,6 @@ class exportExcelController extends Controller
                     $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->hovaten);
                 } else {
                     $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
-                }
-                if($rowTableBody == 13){
-                    $f ="1";
                 }
                 if ($columnTableTime == 8) {
                     $rowTableBody++;
@@ -1018,6 +1015,7 @@ class exportExcelController extends Controller
     //     $this->setBorder($sheetTKBTeacher, "A4:", $lastCellAddress);
     // }
 
+    # Ham xuat thoi khoa bieu cua giao vien
     private function exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $sheet)
     {
         $listTeacher = danhsachgv::where('matruong', $this->sessionInfo->getSchoolId())->get();
@@ -1028,29 +1026,33 @@ class exportExcelController extends Controller
             $arrAfternoon = array();
             for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
                 // Get tabletime morning
-
-                for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$AFTERNOON; $sessionMorning++) {
+                $ss = 1;
+                for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
                     $table = thoikhoabieu::where('thu', $day)
-                        ->where('tiet', $sessionMorning)
+                        ->where('buoi', 0)
+                        ->where('tiet', $ss)
                         ->where('magiaovien', $teacher->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                         ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
                         ->first();
                     array_push($arrMorning, $table);
+                    $ss++;
                 }
 
+                $ss = 1;
                 // Get tabletime afternoon
-
-                for ($sessionAfterNoon = Day::$MORNING; $sessionAfterNoon < Day::$MIDDAY; $sessionAfterNoon++) {
+                for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
                     $table = thoikhoabieu::where('thu', $day)
-                        ->where('tiet', $sessionAfterNoon)
+                        ->where('buoi', 1)
+                        ->where('tiet', $ss)
                         ->where('magiaovien', $teacher->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                         ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
                         ->first();
                     array_push($arrAfternoon, $table);
+                    $ss++;
                 }
             }
             $itemTeacher = new TableTimeTypeTwo($teacher->hovaten, $arrMorning, $arrAfternoon);
@@ -1061,8 +1063,11 @@ class exportExcelController extends Controller
         $columnName = 2;
         $columnTableTime = 4;
         $rowTime = 7;
-        foreach ($tableTime as $item) {
+        foreach ($tableTime as $key => $item) {
             // set Name to cell Name
+            if ($key == 2) {
+                $f = 1;
+            }
             $sheetTKBTeacherTypeTwo->setCellValueByColumnAndRow($columnName, $rowName, $item->getTeacher());
             // Render TableTime Morning
             $tableMorning = $item->getTableTimeMorning();
@@ -1097,8 +1102,9 @@ class exportExcelController extends Controller
                 }
                 $columnTableTime++;
             }
-            $rowName++;
-            $rowTime++;
+            $rowName += 2;
+            $rowTime += 2;
+            $columnTableTime = 4;
         }
         $this->autoSiezColumn($sheet);
         $this->saveExcel($sheet, "tkbgiaovien");
