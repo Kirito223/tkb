@@ -55,6 +55,14 @@
 									<div class="card-body">
 										<!-- <hr> -->
 										<div class="form-group">
+											<div id="progressExport" class="progress hidden">
+												<div class="progress-bar progress-bar-striped progress-bar-animated"
+													role="progressbar" aria-valuenow="75" aria-valuemin="0"
+													aria-valuemax="100" style="width: 65%">Đang xuất thời khóa biểu vui
+													lòng chờ</div>
+											</div>
+										</div>
+										<div class="form-group">
 											<label for="projectinput1">Xuất thời khóa biểu</label>
 											<fieldset class="radio" style="padding-right: 10px;">
 												<label>

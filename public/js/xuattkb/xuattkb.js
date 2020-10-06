@@ -13,7 +13,8 @@ var listTeacherBody,
     weekSelect,
     btnAttachFile,
     fileInput,
-    listFileAttach;
+    listFileAttach,
+    progressExport;
 
 var arrFile = [];
 var arrFileAttack = null;
@@ -36,6 +37,7 @@ function initControl() {
     btnAttachFile = document.getElementById("btnAttachFile");
     fileInput = document.getElementById("fileInput");
     listFileAttach = document.getElementById("listFileAttach");
+    progressExport = document.getElementById("progressExport");
 
     const now = new Date();
     $("#dateprocess").dxDateBox({
@@ -165,8 +167,8 @@ async function exportExcel() {
         arrFile.push("tkblophoc");
         tkbphong = 1;
     }
-
-    let result = await xuattkbapi.export(
+    progressExport.classList.remove("hidden");
+    await xuattkbapi.export(
         JSON.stringify({
             tkbtruong: tkbtruong,
             tkblop: tkblop,
@@ -176,6 +178,8 @@ async function exportExcel() {
             // date: date,
         })
     );
+    progressExport.setAttribute("aria-valuenow", "100");
+    progressExport.classList.add("hidden");
 }
 
 function downloadTkb() {
