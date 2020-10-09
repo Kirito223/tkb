@@ -712,7 +712,7 @@ class exportExcelController extends Controller
             // Get morning
             $ss = 1;
             for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
-                
+
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
 
                     $table = thoikhoabieu::where('thu', $day)
@@ -731,7 +731,7 @@ class exportExcelController extends Controller
             // Get afternoon
             $ss = 1;
             for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
-            
+
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
 
                     $table = thoikhoabieu::where('thu', $day)
@@ -1356,9 +1356,11 @@ class exportExcelController extends Controller
             $tableTime = array();
 
             for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+                $swicth = 0;
                 $ss = 1;
                 for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
                     if ($session == 6) {
+                        $swicth = 1;
                         $ss = 1;
                     }
                     foreach ($listTeacher as $objTeacher) {
@@ -1366,6 +1368,7 @@ class exportExcelController extends Controller
                         $table = thoikhoabieu::where('thu', $day)
                             ->where('tiet', $ss)
                             ->where('magiaovien', $objTeacher->id)
+                            ->where('thoikhoabieu.buoi', $swicth)
                             ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                             ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                             ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
@@ -1378,6 +1381,7 @@ class exportExcelController extends Controller
                             array_push($tableTime, null);
                         }
                     }
+                    $ss++;
                 }
             }
 
@@ -1390,8 +1394,8 @@ class exportExcelController extends Controller
             for ($indexRowbody = 5; $indexRowbody < $totalRow; $indexRowbody++) {
                 $indexColum = 3;
                 while ($indexColum < $titleLenght) {
-                    if ($indexColum == 35) {
-                        $p = 1;
+                    if ($indexColum == 3 && $indexRowbody== 6) {
+                        $p = $indexTable;
                     }
                     $tableItem = $tableTime[$indexTable];
                     if ($tableItem != null) {
