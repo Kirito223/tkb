@@ -1355,35 +1355,43 @@ class exportExcelController extends Controller
             // Get data
             $tableTime = array();
 
-            for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
-                $swicth = 0;
-                $ss = 1;
-                for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
-                    if ($session == 6) {
-                        $swicth = 1;
-                        $ss = 1;
-                    }
-                    foreach ($listTeacher as $objTeacher) {
-                        // get table time of morning
-                        $table = thoikhoabieu::where('thu', $day)
-                            ->where('tiet', $ss)
-                            ->where('magiaovien', $objTeacher->id)
-                            ->where('thoikhoabieu.buoi', $swicth)
+            foreach ($listTeacher as $teacher) {
+                $table = new stdClass();
+                $table->name = $teacher->id;
+                $arrTable = array();
+                for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+                    // Morning
+                    for ($seesion = DAY::$MORNING; $seesion < Day::$MIDDAY; $seesion++) {
+                        $tableMorning = thoikhoabieu::where('thu', $day)
+                            ->where('buoi', 0)
+                            ->where('tiet', $seesion)
+                            ->where('magiaovien', $teacher->id)
                             ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                             ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                             ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
                             ->first();
-
-                        if ($table != null) {
-                            $item = new TableTime($day, $session, $table->tenmonhoc, $table->tenlop);
-                            array_push($tableTime, $item);
-                        } else {
-                            array_push($tableTime, null);
-                        }
+                        array_push($arrTable, $tableMorning);
                     }
-                    $ss++;
+
+                    // Afternoon
+                    $ss = 1;
+                    for ($seesion = DAY::$MIDDAY; $seesion < Day::$AFTERNOON; $seesion++) {
+                        $tableAfterNoon = thoikhoabieu::where('thu', $day)
+                            ->where('buoi', 1)
+                            ->where('tiet', $ss)
+                            ->where('magiaovien', $teacher->id)
+                            ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+                            ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
+                            ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
+                            ->first();
+                        array_push($arrTable, $tableAfterNoon);
+                        $ss++;
+                    }
                 }
+                $table->table = $arrTable;
+                array_push($tableTime, $table);
             }
+
 
             //  Render Tabletime
             $indexColum = 3;
@@ -1391,25 +1399,21 @@ class exportExcelController extends Controller
             $indexTable = 0;
             $titleLenght = count($listTeacher);
 
-            for ($indexRowbody = 5; $indexRowbody < $totalRow; $indexRowbody++) {
-                $indexColum = 3;
-                while ($indexColum < $titleLenght) {
-                    if ($indexColum == 3 && $indexRowbody== 6) {
-                        $p = $indexTable;
-                    }
-                    $tableItem = $tableTime[$indexTable];
-                    if ($tableItem != null) {
-                        $sheetSelect->setCellValueByColumnAndRow($indexColum, $indexRowbody, $tableItem->getSubject() . "-" . $tableItem->getName());
-                        $indexColum++;
+            $indexColum = 3;
+            while ($indexColum < $titleLenght) {
+                $tableItem = $tableTime[$indexTable];
+                $table = $tableItem->table;
+                $row = 5;
+                foreach ($table as $item) {
+                    if ($item != null) {
+                        $sheetSelect->setCellValueByColumnAndRow($indexColum, $row, $item->tenmonhoc . "-" . $item->tenlop);
                     } else {
-                        $sheetSelect->setCellValueByColumnAndRow($indexColum, $indexRowbody, "");
-                        $indexColum++;
+                        $sheetSelect->setCellValueByColumnAndRow($indexColum, $row, "");
                     }
-                    $lastColumn = $indexColum;
-                    if ($indexTable < count($tableTime)) {
-                        $indexTable++;
-                    }
+                    $row++;
                 }
+                $indexColum++;
+                $indexTable++;
             }
             $lastCellAddress = $sheetSelect->getCellByColumnAndRow($titleLenght + 2, $totalRow)->getCoordinate();
             $this->setBorder($sheetSelect, "A4:", $lastCellAddress);
