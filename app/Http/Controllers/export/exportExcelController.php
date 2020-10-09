@@ -587,13 +587,16 @@ class exportExcelController extends Controller
             $swicth = 0;
             $ss = 1;
             for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
-                if ($session > 5) {
+                if ($session == 6) {
                     $swicth = 1;
                     $ss = 1;
                 }
+
+
                 foreach ($listClassRoom as $class) {
+
                     // get table time of morning
-                    $table = thoikhoabieu::where('malop', $class->id)
+                    $table = thoikhoabieu::where('malop', '=',  $class->id)
                         ->where('thu', $day)
                         ->where('buoi', $swicth)
                         ->where('tiet', $ss)
@@ -608,6 +611,9 @@ class exportExcelController extends Controller
                     } else {
                         array_push($tableTime, null);
                     }
+                }
+                if ($session == 6) {
+                    $f = 0;
                 }
                 $ss++;
             }
@@ -706,9 +712,7 @@ class exportExcelController extends Controller
             // Get morning
             $ss = 1;
             for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
-                if ($sessionMorning > 5) {
-                    $ss = 1;
-                }
+                
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
 
                     $table = thoikhoabieu::where('thu', $day)
@@ -727,9 +731,7 @@ class exportExcelController extends Controller
             // Get afternoon
             $ss = 1;
             for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
-                if ($sessionAfterNoon > 5) {
-                    $ss = 1;
-                }
+            
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
 
                     $table = thoikhoabieu::where('thu', $day)
@@ -1356,7 +1358,7 @@ class exportExcelController extends Controller
             for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
                 $ss = 1;
                 for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
-                    if ($session > 5) {
+                    if ($session == 6) {
                         $ss = 1;
                     }
                     foreach ($listTeacher as $objTeacher) {
@@ -1379,7 +1381,7 @@ class exportExcelController extends Controller
                 }
             }
 
-          //  Render Tabletime
+            //  Render Tabletime
             $indexColum = 3;
             $totalRow = 64;
             $indexTable = 0;
@@ -1456,5 +1458,18 @@ class exportExcelController extends Controller
             }
         }
         return response()->json(['msg' => "OK", 'fail' => $arrFail]);
+    }
+
+    public function viewDatabase()
+    {
+        $table = thoikhoabieu::where('malop', 1811)
+            ->where('thu', 2)
+            ->where('buoi', 1)
+            ->where('tiet', 5)
+            ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+            ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
+            ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'thoikhoabieu.malop', 'thoikhoabieu.tiet')
+            ->first();
+        return response()->json($table);
     }
 }

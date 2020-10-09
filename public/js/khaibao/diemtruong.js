@@ -6,8 +6,6 @@ function reloaddiemtruong() {
 
 
 
-
-
 function danhsachdiemtruong(){
 	var data = axios.get('getdanhsachdiemtruong').then(function (response) {
 		var datadiemtruong = response.data[0];
