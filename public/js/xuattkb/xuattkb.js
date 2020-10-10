@@ -167,19 +167,25 @@ async function exportExcel() {
         arrFile.push("tkblophoc");
         tkbphong = 1;
     }
-    progressExport.classList.remove("hidden");
-    await xuattkbapi.export(
-        JSON.stringify({
-            tkbtruong: tkbtruong,
-            tkblop: tkblop,
-            tkbGV: tkbGV,
-            tkbphong: tkbphong,
-            tkbphancongcm: tkbphancongcm,
-            // date: date,
-        })
-    );
-    progressExport.setAttribute("aria-valuenow", "100");
-    progressExport.classList.add("hidden");
+    try {
+        progressExport.classList.remove("hidden");
+        await xuattkbapi.export(
+            JSON.stringify({
+                tkbtruong: tkbtruong,
+                tkblop: tkblop,
+                tkbGV: tkbGV,
+                tkbphong: tkbphong,
+                tkbphancongcm: tkbphancongcm,
+                // date: date,
+            })
+        );
+        progressExport.setAttribute("aria-valuenow", "100");
+        progressExport.classList.add("hidden");
+    } catch (error) {
+        progressExport.setAttribute("aria-valuenow", "100");
+        progressExport.classList.add("hidden");
+        Swal.fire("Đã có lỗi xảy ra vui lòng thử lại sau", "Lỗi", "error");
+    }
 }
 
 function downloadTkb() {
