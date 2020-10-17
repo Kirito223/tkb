@@ -5,7 +5,10 @@ const xuattkbapi = {
         let result = await axiosClient.get("xuattkb/listTeacher");
         return result;
     },
-
+    getListClass: async function () {
+        let result = await axiosClient.get("xuattkb/listClass");
+        return result;
+    },
     export: async function (params) {
         let result = await axiosClient.post("xuattkb/export", {
             param: params,

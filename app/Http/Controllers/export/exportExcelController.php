@@ -30,7 +30,18 @@ class exportExcelController extends Controller
     public function listTeacher()
     {
         $matruong = $this->sessionInfo->getSchoolId();
-        $list =  danhsachgv::where('matruong', '=', $matruong)->get();
+        $list =  danhsachgv::where('matruong', '=', $matruong)
+            ->select('danhsachgv.id', 'danhsachgv.hovaten as name')
+            ->get();
+        return response()->json($list);
+    }
+
+    public function listClass()
+    {
+        $list = danhsachlophoc::where('matruong', '=', $this->sessionInfo->getSchoolId())
+            ->select('id', 'tenlop as name')
+            ->orderBy('tenlop', 'ASC')
+            ->get();
         return response()->json($list);
     }
 
@@ -65,17 +76,20 @@ class exportExcelController extends Controller
             array_push($fileExport, "thoikhoabieutruong");
         }
         if ($param->tkblop == 1) {
+            $classList = json_decode($param->arrSelect);
             $sheet = $this->loadSheetExcel('mautkbphonghoc.xlsx');
             $sheet->setActiveSheetIndex(0);
             $sheetTKBTeacherClass = $sheet->getActiveSheet();
-            $this->exportTKBClass($sheetTKBTeacherClass, $sheet);
+            $this->exportTKBClass($sheetTKBTeacherClass, $sheet, $classList);
         }
         if ($param->tkbGV == 1) {
             //tkb giáo vien
+            $teacherList  = json_decode($param->arrSelect);
+
             $sheet = $this->loadSheetExcel('mautkbgiaovien.xlsx');
             $sheet->setActiveSheetIndex(0);
             $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
-            $this->exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $sheet);
+            $this->exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $sheet, $teacherList);
             array_push($fileExport, "tkbgiaovien");
         }
         if ($param->tkbphong == 1) {
@@ -699,10 +713,9 @@ class exportExcelController extends Controller
         $this->saveExcel($sheet, "thoikhoabieutruong");
     }
 
-    private function exportTKBClass($sheetTKBClass, $sheet)
+    private function exportTKBClass($sheetTKBClass, $sheet, $listClassRoom)
     {
         $tableTime = array();
-        $listClassRoom = danhsachlophoc::where('matruong', $this->sessionInfo->getSchoolId())->get();
 
         // construction tableTime;
         foreach ($listClassRoom as $room) {
@@ -747,7 +760,7 @@ class exportExcelController extends Controller
                 }
                 $ss++;
             }
-            $itemTeacher = new TableTimeTypeTwo($room->tenlop, $arrMorning, $arrAfternoon);
+            $itemTeacher = new TableTimeTypeTwo($room->name, $arrMorning, $arrAfternoon);
             array_push($tableTime, $itemTeacher);
         }
         // Generate TimeTable
@@ -1018,9 +1031,8 @@ class exportExcelController extends Controller
     // }
 
     # Ham xuat thoi khoa bieu cua giao vien
-    private function exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $sheet)
+    private function exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $sheet, $listTeacher)
     {
-        $listTeacher = danhsachgv::where('matruong', $this->sessionInfo->getSchoolId())->get();
         // Get data
         $tableTime = array();
         foreach ($listTeacher as $teacher) {
@@ -1057,7 +1069,7 @@ class exportExcelController extends Controller
                     $ss++;
                 }
             }
-            $itemTeacher = new TableTimeTypeTwo($teacher->hovaten, $arrMorning, $arrAfternoon);
+            $itemTeacher = new TableTimeTypeTwo($teacher->name, $arrMorning, $arrAfternoon);
             array_push($tableTime, $itemTeacher);
         }
         // Export table

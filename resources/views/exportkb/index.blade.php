@@ -95,7 +95,25 @@
 												</label>
 											</fieldset>
 											<hr>
-											<button type="button" class="btn btn-success" id="xuattkb">Xuất thời khóa
+											<div style="height: 700px; margin-bottom:3px; overflow: scroll;"
+												id="tableList" class="hidden">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th><input type="checkbox" id="selectAll" /></th>
+															<th id="titleColumn"></th>
+														</tr>
+													</thead>
+													<tbody id="bodyTableList">
+
+													</tbody>
+												</table>
+
+											</div>
+
+
+											<button type="button" class="btn btn-success btn-sm" id="xuattkb">Xuất thời
+												khóa
 												biểu</button>
 										</div>
 									</div>

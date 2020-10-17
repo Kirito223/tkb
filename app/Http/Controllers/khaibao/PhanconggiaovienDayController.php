@@ -32,7 +32,6 @@ class PhanconggiaovienDayController extends Controller
     public function all()
     {
 
-    $matruong =  $this->SessionInfo->getSchoolId();
         $danhsachphancong = phancongchuyenmon::where('matruong', $this->SessionInfo->getSchoolId())->get();
         $danhsachGiaovien = danhsachgv::where('matruong', $this->SessionInfo->getSchoolId())->get();
         $danhsachmonhoc = monhoc::where('matruong', $this->SessionInfo->getSchoolId())->get();

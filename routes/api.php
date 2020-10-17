@@ -42,6 +42,8 @@ Route::post('sotietbuoi/savedata', 'rangbuoc\rangbuocController@saveDataBuoi');
 
 // Xuat excel
 Route::get('xuattkb/listTeacher', 'export\exportExcelController@listTeacher');
+Route::get('xuattkb/listClass', 'export\exportExcelController@listClass');
+
 Route::post('xuattkb/export', 'export\exportExcelController@export');
 Route::get('xuattkb/export/{file}', 'export\exportExcelController@downLoadTableTime');
 Route::post('xuattkb/sendEmail', 'export\exportExcelController@sendEmail');

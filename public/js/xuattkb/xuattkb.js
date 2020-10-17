@@ -14,7 +14,11 @@ var listTeacherBody,
     btnAttachFile,
     fileInput,
     listFileAttach,
-    progressExport;
+    progressExport,
+    tableList,
+    selectAll,
+    titleColumn,
+    bodyTableList;
 
 var arrFile = [];
 var arrFileAttack = null;
@@ -38,6 +42,10 @@ function initControl() {
     fileInput = document.getElementById("fileInput");
     listFileAttach = document.getElementById("listFileAttach");
     progressExport = document.getElementById("progressExport");
+    tableList = document.getElementById("tableList");
+    selectAll = document.getElementById("selectAll");
+    titleColumn = document.getElementById("titleColumn");
+    bodyTableList = document.getElementById("bodyTableList");
 
     const now = new Date();
     $("#dateprocess").dxDateBox({
@@ -75,7 +83,54 @@ function initData() {
     }
 }
 
+async function loadTeacher() {
+    let result = await xuattkbapi.getListTeacher();
+    showTable(result);
+}
+
+async function loadClass() {
+    let result = await xuattkbapi.getListClass();
+    showTable(result);
+}
+
+function showTable(data) {
+    let html = "";
+    data.forEach((item) => {
+        html += `<tr>
+        <td><input type="checkbox" class="chkSelect" value="${item.id}" data-name="${item.name}" /></td>
+        <td>${item.name}</td>
+        </tr>`;
+    });
+    bodyTableList.innerHTML = html;
+}
+
 function initEvent() {
+    selectAll.onclick = function () {
+        let chk = document.getElementsByClassName("chkSelect");
+        for (const chkSelect of chk) {
+            chkSelect.checked = selectAll.checked;
+        }
+    };
+
+    xuattkbgiaovien.onclick = function (e) {
+        tableList.classList.remove("hidden");
+        titleColumn.textContent = "Tên giáo viên";
+        loadTeacher();
+    };
+    xuattkblop.onclick = function () {
+        tableList.classList.remove("hidden");
+        titleColumn.textContent = "Lớp";
+        loadClass();
+    };
+    xuattkbphong.onclick = function () {
+        tableList.classList.add("hidden");
+    };
+    xuattkbtongquat.onclick = function () {
+        tableList.classList.add("hidden");
+    };
+    xuattkbphancongcm.onclick = function () {
+        tableList.classList.add("hidden");
+    };
     fileInput.onchange = function (e) {
         let file = fileInput.files;
         for (const f of file) {
@@ -169,6 +224,17 @@ async function exportExcel() {
     }
     try {
         progressExport.classList.remove("hidden");
+        let arrSelect = [];
+
+        if (!tableList.classList.contains("hidden")) {
+            if (xuattkbgiaovien.checked || xuattkblop.checked) {
+                let chkSelect = document.querySelectorAll(".chkSelect:checked");
+                for (const chk of chkSelect) {
+                    arrSelect.push({ id: chk.value, name: chk.dataset.name });
+                }
+            }
+        }
+
         await xuattkbapi.export(
             JSON.stringify({
                 tkbtruong: tkbtruong,
@@ -176,7 +242,7 @@ async function exportExcel() {
                 tkbGV: tkbGV,
                 tkbphong: tkbphong,
                 tkbphancongcm: tkbphancongcm,
-                // date: date,
+                arrSelect: JSON.stringify(arrSelect),
             })
         );
         progressExport.setAttribute("aria-valuenow", "100");
