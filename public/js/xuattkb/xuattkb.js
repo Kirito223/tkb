@@ -123,7 +123,8 @@ function initEvent() {
         loadClass();
     };
     xuattkbphong.onclick = function () {
-        tableList.classList.add("hidden");
+        loadClass();
+        tableList.classList.remove("hidden");
     };
     xuattkbtongquat.onclick = function () {
         tableList.classList.add("hidden");
