@@ -95,7 +95,7 @@
 												</label>
 											</fieldset>
 											<hr>
-											<div style="height: 700px; margin-bottom:3px; overflow: scroll;"
+											<div style="height: 300px; margin-bottom:3px; overflow: scroll;"
 												id="tableList" class="hidden">
 												<table class="table table-bordered">
 													<thead>

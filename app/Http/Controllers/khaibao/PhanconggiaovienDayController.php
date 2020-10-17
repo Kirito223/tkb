@@ -37,7 +37,6 @@ class PhanconggiaovienDayController extends Controller
         $danhsachmonhoc = monhoc::where('matruong', $this->SessionInfo->getSchoolId())->get();
         $danhsachlop = danhsachlophoc::where('matruong', $this->SessionInfo->getSchoolId())->get();
         $sotiet = sotietmonhoc::where('matruong', $this->SessionInfo->getSchoolId())->get();
-
         $Result = new PhancongGiaovien($danhsachphancong, $danhsachGiaovien, $danhsachmonhoc, $danhsachlop, $sotiet);
 
         return response()->json($Result->jsonSeriable());

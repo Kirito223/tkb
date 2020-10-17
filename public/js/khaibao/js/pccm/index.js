@@ -43,9 +43,11 @@ var xoaPhancong = [];
 var giaovienchon;
 
 window.onload = function () {
-    initControl();
-    initData();
-    initEvent();
+    document.getElementById("phancong_giaovienday").onclick = function () {
+        initControl();
+        initData();
+        initEvent();
+    };
 };
 
 function initControl() {
@@ -63,7 +65,7 @@ function initControl() {
         "bangSotietchuaphancongs"
     );
     tongsotietcp = document.getElementById("tongsotietcp");
-   // fshowchitietchuapc = document.getElementById("showchitietchuapc");
+    // fshowchitietchuapc = document.getElementById("showchitietchuapc");
     tableChuaphancong = document.getElementById("tableChuaphancong");
     btnXoatatcaPCCMtaimon = document.getElementById("btnXoatatcaPCCMtaimon");
     btnTaipccm = document.getElementById("btnTaipccm");
@@ -150,7 +152,7 @@ function initEvent() {
             );
         }
     };
-  /*  showchitietchuapc.onclick = function (e) {
+    /*  showchitietchuapc.onclick = function (e) {
         if (tableChuaphancong.classList.contains("hidden")) {
             showchitietchuapc.classList.remove("fa-arrow-circle-right");
             showchitietchuapc.classList.add("fa-arrow-circle-down");
@@ -178,14 +180,14 @@ function initEvent() {
     };
 }
 function hienthidanhsachMonhoc() {
-   /* danhsachmonhoc.forEach((item) => {
+    /* danhsachmonhoc.forEach((item) => {
         let th = document.createElement("th");
         let textTh = document.createTextNode(item.tenmonhoc);
         th.appendChild(textTh);
         trDanhsachmonhoc.appendChild(th);
     });*/
     //thMonhoc.colSpan = danhsachmonhoc.length;
-   /* let ts = 0;
+    /* let ts = 0;
     let sott = 1;
     danhsachLop.forEach((lop) => {
         // Lap qua tung mon va tinh toan so tiet da duoc phan o tung mon tuong ung voi tung lop
@@ -394,17 +396,19 @@ function hienthiDanhsach(danhsach) {
                         }
 
                         // Hien thi danh sach phan cong
-                        let indexSotiet = sotietmon.findIndex(
-                            (x) => x.mamonhoc == chk.value
-                        );
-                        let sotiet = 0;
-                        if (indexSotiet > -1) {
-                            sotiet = sotietmon[indexSotiet].sotiet;
-                        }
 
                         let sttIndex = 1;
                         // Render danh sach lop de chon phan cong
                         danhsachLop.forEach((item) => {
+                            let indexSotiet = sotietmon.findIndex(
+                                (x) =>
+                                    x.mamonhoc == chk.value &&
+                                    x.malop == item.id
+                            );
+                            let sotiet = 0;
+                            if (indexSotiet > -1) {
+                                sotiet = sotietmon[indexSotiet].sotiet;
+                            }
                             let tr = document.createElement("tr");
 
                             let stt = creatTd(sttIndex);
