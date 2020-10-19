@@ -158,10 +158,6 @@ function initEvent() {
     xuattkb.onclick = function (e) {
         downLoadTKBEvent();
     };
-
-    xuattkb.onclick = function (e) {
-        downLoadTKBEvent();
-    };
 }
 
 async function downLoadTKBEvent() {
@@ -244,6 +240,7 @@ async function exportExcel() {
                 tkbphong: tkbphong,
                 tkbphancongcm: tkbphancongcm,
                 arrSelect: JSON.stringify(arrSelect),
+                exportAll: selectAll.checked,
             })
         );
         progressExport.setAttribute("aria-valuenow", "100");
