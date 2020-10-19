@@ -1227,43 +1227,89 @@ class exportExcelController extends Controller
     {
         // Get data
         $tableTime = array();
+        // foreach ($listTeacher as $teacher) {
+        //     $arrMorning = array();
+        //     $arrAfternoon = array();
+        //     for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+        //         // Get tabletime morning
+        //         $ss = 1;
+        //         for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
+        //             $table = thoikhoabieu::where('thu', $day)
+        //                 ->where('buoi', 0)
+        //                 ->where('tiet', $ss)
+        //                 ->where('magiaovien', $teacher->id)
+        //                 ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+        //                 ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
+        //                 ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
+        //                 ->first();
+        //             array_push($arrMorning, $table);
+        //             $ss++;
+        //         }
+
+        //         $ss = 1;
+        //         // Get tabletime afternoon
+        //         for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
+        //             $table = thoikhoabieu::where('thu', $day)
+        //                 ->where('buoi', 1)
+        //                 ->where('tiet', $ss)
+        //                 ->where('magiaovien', $teacher->id)
+        //                 ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+        //                 ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
+        //                 ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
+        //                 ->first();
+        //             array_push($arrAfternoon, $table);
+        //             $ss++;
+        //         }
+        //     }
+        //     $itemTeacher = new TableTimeTypeTwo($teacher->name, $arrMorning, $arrAfternoon);
+        //     array_push($tableTime, $itemTeacher);
+        // }
         foreach ($listTeacher as $teacher) {
             $arrMorning = array();
             $arrAfternoon = array();
-            for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
-                // Get tabletime morning
-                $ss = 1;
-                for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
+
+            // Get morning
+            $ss = 1;
+            for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
+
+                for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+
                     $table = thoikhoabieu::where('thu', $day)
                         ->where('buoi', 0)
                         ->where('tiet', $ss)
-                        ->where('magiaovien', $teacher->id)
+                        ->where('thoikhoabieu.magiaovien', $teacher->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
-                        ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
+                        ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
+                        ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'danhsachlophoc.tenlop', 'thoikhoabieu.tiet')
                         ->first();
                     array_push($arrMorning, $table);
-                    $ss++;
                 }
+                $ss++;
+            }
+            // Get afternoon
+            $ss = 1;
+            for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
 
-                $ss = 1;
-                // Get tabletime afternoon
-                for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
+                for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+
                     $table = thoikhoabieu::where('thu', $day)
                         ->where('buoi', 1)
                         ->where('tiet', $ss)
-                        ->where('magiaovien', $teacher->id)
+                        ->where('thoikhoabieu.magiaovien', $teacher->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
-                        ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
+                        ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
+                        ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop', 'danhsachgv.hovaten', 'thoikhoabieu.tiet')
                         ->first();
                     array_push($arrAfternoon, $table);
-                    $ss++;
                 }
+                $ss++;
             }
             $itemTeacher = new TableTimeTypeTwo($teacher->name, $arrMorning, $arrAfternoon);
             array_push($tableTime, $itemTeacher);
         }
+
         // Export table
         $rowName = 7;
         $columnName = 2;
@@ -1271,39 +1317,26 @@ class exportExcelController extends Controller
         $rowTime = 7;
         foreach ($tableTime as $key => $item) {
             // set Name to cell Name
-            if ($key == 2) {
-                $f = 1;
-            }
             $sheetTKBTeacherTypeTwo->setCellValueByColumnAndRow($columnName, $rowName, $item->getTeacher());
             // Render TableTime Morning
             $tableMorning = $item->getTableTimeMorning();
+            $tableAfterNoon = $item->getTableTimeAfterNoon();
             $indexTable = 0;
-
             while ($columnTableTime < 31) {
 
                 $itemTable = $tableMorning[$indexTable];
+                $itemTableAfternoon = $tableAfterNoon[$indexTable];
                 if ($itemTable != null) {
                     $sheetTKBTeacherTypeTwo->setCellValueByColumnAndRow($columnTableTime, $rowTime, $itemTable->tenmonhoc . "-" . $itemTable->tenlop);
                 } else {
                     $sheetTKBTeacherTypeTwo->setCellValueByColumnAndRow($columnTableTime, $rowTime, "");
                 }
-                if ($indexTable < count($tableMorning)) {
-                    $indexTable++;
-                }
-                $columnTableTime++;
-            }
-            // Render TableTime AfterNoon
-            $indexTable = 0;
-            $columnTableTime = 4;
-            $tableAfterNoon = $item->getTableTimeAfterNoon();
-            while ($columnTableTime < 31) {
-                $itemTable = $tableAfterNoon[$indexTable];
-                if ($itemTable != null) {
-                    $sheetTKBTeacherTypeTwo->setCellValueByColumnAndRow($columnTableTime, $rowTime + 1, $itemTable->tenmonhoc . "-" . $itemTable->tenlop);
+                if ($itemTableAfternoon != null) {
+                    $sheetTKBTeacherTypeTwo->setCellValueByColumnAndRow($columnTableTime, $rowTime + 1, $itemTableAfternoon->tenmonhoc . "-" . $itemTableAfternoon->tenlop);
                 } else {
                     $sheetTKBTeacherTypeTwo->setCellValueByColumnAndRow($columnTableTime, $rowTime + 1, "");
                 }
-                if ($indexTable < count($tableAfterNoon)) {
+                if ($indexTable < count($tableMorning)) {
                     $indexTable++;
                 }
                 $columnTableTime++;
