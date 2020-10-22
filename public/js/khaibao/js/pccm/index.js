@@ -149,19 +149,23 @@ function initEvent() {
     };
 
     btncapnhatpccmgiaovien.onclick = function (e) {
-       // Cap nhat thong tin phan cong chuyen mon cho giao vien
-            luuPhancong(bangphancongTam, giaovienchon, xoaPhancong, arrSuaSotiet).then((res) => {
-                if (res["code"] == http.CODE_SUCCESS) {
-                    window.location.reload();
-                } else {
-                    Swal.fire(
-                        "Đã có lỗi xảy ra vui lòng thử lại sau",
-                        "Cập nhật phân công chuyên môn không thành công",
-                        "success"
-                    );
-                }
-            });
-        
+        // Cap nhat thong tin phan cong chuyen mon cho giao vien
+        luuPhancong(
+            bangphancongTam,
+            giaovienchon,
+            xoaPhancong,
+            arrSuaSotiet
+        ).then((res) => {
+            if (res["code"] == http.CODE_SUCCESS) {
+                window.location.reload();
+            } else {
+                Swal.fire(
+                    "Đã có lỗi xảy ra vui lòng thử lại sau",
+                    "Cập nhật phân công chuyên môn không thành công",
+                    "success"
+                );
+            }
+        });
     };
 }
 function hienthidanhsachMonhoc() {
@@ -370,6 +374,7 @@ function hienthiDanhsach(danhsach) {
                                 !item.classList.contains("selected")
                             ) {
                                 item.checked = false;
+
                                 // go bo khoi mang
                                 let index = mondachon.findIndex(
                                     (x) => x == item.value
@@ -403,11 +408,24 @@ function hienthiDanhsach(danhsach) {
                             let inputsotiettd = document.createElement("input");
                             inputsotiettd.setAttribute("data-lop", item.id);
                             inputsotiettd.classList.add("form-control");
+                            inputsotiettd.classList.add("inputPhancong");
                             inputsotiettd.setAttribute(
                                 "data-monhoc",
                                 chk.value
                             );
                             inputsotiettd.value = sotiet;
+                            let checkBangphancong = danhsachphancong.findIndex(
+                                (x) =>
+                                    x.mamonhoc == chk.value &&
+                                    x.malop ==
+                                        Number(inputsotiettd.dataset.lop) &&
+                                    x.magiaovien == ttgiaovien.id
+                            );
+                            if (checkBangphancong == -1) {
+                                inputsotiettd.disabled = true;
+                            } else {
+                                inputsotiettd.disabled = false;
+                            }
                             inputsotiettd.oninput = function (e) {
                                 // Kich hoat su kien khi nguoi dung nhap lieu vao o input
                                 let idLop = Number(inputsotiettd.dataset.lop);
@@ -582,6 +600,10 @@ function hienthiDanhsach(danhsach) {
                             // Su kien khi click chon giao phan cong cho giao vien day mon nay
 
                             inputChon.onclick = function (e) {
+                                document.querySelector(
+                                    `.inputPhancong[data-lop="${inputChon.value}"][data-monhoc="${chk.value}"]`
+                                ).disabled = false;
+
                                 let idLop = inputChon.value;
                                 let txtSotiet = document.querySelector(
                                     '.txtSotietmon[data-mon="' +
@@ -714,6 +736,7 @@ function hienthiDanhsach(danhsach) {
                                     danhsachphancong[findGiaovien].sotiet;
                                 danhsachphancong.splice(findGiaovien, 1);
                                 inputsotiettd.value = "";
+                                inputsotiettd.disabled = false;
                                 giaovien.textContent = "";
                                 buttonXoa.disabled = true;
                                 inputChon.disabled = false;
