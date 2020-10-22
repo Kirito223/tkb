@@ -735,7 +735,15 @@ function hienthiDanhsach(danhsach) {
                                 sotietchuaphancong.textContent =
                                     danhsachphancong[findGiaovien].sotiet;
                                 danhsachphancong.splice(findGiaovien, 1);
-                                inputsotiettd.value = "";
+                                let indexSotiet = sotietmon.findIndex(
+                                    (x) =>
+                                        x.mamonhoc == chk.value &&
+                                        x.malop == item.id
+                                );
+                                if (indexSotiet > -1) {
+                                    inputsotiettd.value =
+                                        sotietmon[indexSotiet].sotiet;
+                                }
                                 inputsotiettd.disabled = false;
                                 giaovien.textContent = "";
                                 buttonXoa.disabled = true;
@@ -764,6 +772,21 @@ function hienthiDanhsach(danhsach) {
                 let sotiet = creatTd("");
                 sotiet.setAttribute("data-mon", item.id);
                 sotiet.setAttribute("class", "txtSotietmon");
+                sotiet.setAttribute("data-giaovien", ttgiaovien.id);
+                sotiet.setAttribute("data-lop", item.malop);
+                // Tinh tong so tiet
+
+                let temp = danhsachphancong.filter(
+                    (x) =>
+                        x.magiaovien == sotiet.dataset.giaovien &&
+                        x.mamonhoc == sotiet.dataset.mon
+                );
+                let sum = 0;
+                temp.forEach((element) => {
+                    sum += element.sotiet;
+                });
+
+                sotiet.textContent = sum > 0 ? sum : "";
                 // tr.appendChild(stt);
                 tr.appendChild(mon);
                 tr.appendChild(chon);

@@ -105,8 +105,7 @@ class PhanconggiaovienDayController extends Controller
             }
             return response()->json(["code" => HTTPCode::$CODE_SUCCESS, "message" => "Phân công giáo viên thành công"]);
         } catch (Exception $ex) {
-            printf($ex);
-            // return response()->json(["code" => HTTPCode::$CODE_BADREQUEST, "message" => "Đã có lỗi xảy ra vui lòng kiểm tra lại"]);
+            return response()->json(["code" => HTTPCode::$CODE_BADREQUEST, "message" => "Đã có lỗi xảy ra vui lòng kiểm tra lại", 'error' => $ex]);
         }
     }
 
