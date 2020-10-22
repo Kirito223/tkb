@@ -683,14 +683,16 @@ function hienthiDanhsach(danhsach) {
                                     let index = lopdachon.findIndex(
                                         (x) => x == idLop
                                     );
-                                    lopdachon.splice(index, 1);
-                                    giaovien.textContent = "";
-
+                                    if (index > -1) {
+                                        lopdachon.splice(index, 1);
+                                        giaovien.textContent = "";
+                                    }
                                     // Go bo khoi mang tam
                                     let indexPhancong = bangphancongTam.findIndex(
                                         (x) =>
                                             x.magiaovien == ttgiaovien.id &&
-                                            x.mamonhoc == chk.value
+                                            x.mamonhoc == chk.value &&
+                                            x.malop == inputChon.value
                                     );
                                     if (indexPhancong > -1) {
                                         bangphancongTam.splice(
