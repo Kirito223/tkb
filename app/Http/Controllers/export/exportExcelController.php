@@ -620,11 +620,11 @@ class exportExcelController extends Controller
                         ->where('tiet', $ss)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
-                        ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'thoikhoabieu.malop', 'thoikhoabieu.tiet')
+                        ->select('monhoc.tenmonhoc', 'danhsachgv.bidanh', 'thoikhoabieu.malop', 'thoikhoabieu.tiet')
                         ->first();
 
                     if ($table != null) {
-                        $item = new TableTime($day, $session, $table->tenmonhoc, $table->hovaten);
+                        $item = new TableTime($day, $session, $table->tenmonhoc, $table->bidanh);
                         array_push($tableTime, $item);
                     } else {
                         array_push($tableTime, null);

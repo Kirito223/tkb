@@ -10,11 +10,12 @@ export function layDanhsachPhancongGv(magiaovien) {
     );
 }
 
-export function luuPhancong(danhsach, giaovien, bangxoaPhancong) {
+export function luuPhancong(danhsach, giaovien, bangxoaPhancong, arrSuaSotiet) {
     return axiosClient.post("phanconggiaovien/luu", {
         data: JSON.stringify(danhsach),
         giaovien: giaovien,
         xoaPhancong: JSON.stringify(bangxoaPhancong),
+        suaSotiet: JSON.stringify(arrSuaSotiet)
     });
 }
 

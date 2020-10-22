@@ -83,6 +83,17 @@ class PhanconggiaovienDayController extends Controller
                 $phancong->matruong = $matruong;
                 $phancong->save();
             }
+
+            // Sua phan cong tiet moi mon hoc cua moi lop
+            $danhsachSua = json_decode($request->suaSotiet);
+            foreach ($danhsachSua as $item) {
+                $phanmon = sotietmonhoc::where('mamonhoc', $item->monhoc)
+                    ->where('malop', $item->lophoc)
+                    ->where('matruong', $matruong)
+                    ->first();
+                $phanmon->sotiet = $item->sotiet;
+                $phanmon->save();
+            }
             return response()->json(["code" => HTTPCode::$CODE_SUCCESS, "message" => "Phân công giáo viên thành công"]);
         } catch (Exception $ex) {
             return response()->json(["code" => HTTPCode::$CODE_BADREQUEST, "message" => "Đã có lỗi xảy ra vui lòng kiểm tra lại"]);

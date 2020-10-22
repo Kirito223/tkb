@@ -41,6 +41,7 @@ var lopdachon = [];
 var bangphancongTam = [];
 var xoaPhancong = [];
 var giaovienchon;
+var arrSuaSotiet = [];
 
 window.onload = function () {
     document.getElementById("phancong_giaovienday").onclick = function () {
@@ -118,17 +119,11 @@ function initEvent() {
     timkiemhovaten.oninput = function (e) {
         Search("tdhovaten", timkiemhovaten);
     };
-    // timkiemTen.oninput = function (e) {
-    //     Search("tdTen", timkiemTen);
-    // };
+
     timkiemBidanh.oninput = function (e) {
         Search("tdBidanh", timkiemBidanh);
     };
-    // btnTaipccm.onclick = function (e) {
-    //     xuatBangphancong().then((res) => {
-    //         window.open(`${public_path}storage/app/excel/${res}`);
-    //     });
-    // };
+
     btnXoatatcaPCCMtaimon.onclick = function (e) {
         let idMon = Number(btnXoatatcaPCCMtaimon.dataset.id);
         let giaovien = Number(btnXoatatcaPCCMtaimon.dataset.giaovien);
@@ -152,31 +147,21 @@ function initEvent() {
             );
         }
     };
-    /*  showchitietchuapc.onclick = function (e) {
-        if (tableChuaphancong.classList.contains("hidden")) {
-            showchitietchuapc.classList.remove("fa-arrow-circle-right");
-            showchitietchuapc.classList.add("fa-arrow-circle-down");
-            tableChuaphancong.classList.remove("hidden");
-        } else {
-            showchitietchuapc.classList.remove("fa-arrow-circle-down");
-            showchitietchuapc.classList.add("fa-arrow-circle-right");
-            tableChuaphancong.classList.add("hidden");
-        }
-    };*/
 
     btncapnhatpccmgiaovien.onclick = function (e) {
-        // Cap nhat thong tin phan cong chuyen mon cho giao vien
-        luuPhancong(bangphancongTam, giaovienchon, xoaPhancong).then((res) => {
-            if (res["code"] == http.CODE_SUCCESS) {
-                window.location.reload();
-            } else {
-                Swal.fire(
-                    "Đã có lỗi xảy ra vui lòng thử lại sau",
-                    "Cập nhật phân công chuyên môn không thành công",
-                    "success"
-                );
-            }
-        });
+       // Cap nhat thong tin phan cong chuyen mon cho giao vien
+            luuPhancong(bangphancongTam, giaovienchon, xoaPhancong, arrSuaSotiet).then((res) => {
+                if (res["code"] == http.CODE_SUCCESS) {
+                    window.location.reload();
+                } else {
+                    Swal.fire(
+                        "Đã có lỗi xảy ra vui lòng thử lại sau",
+                        "Cập nhật phân công chuyên môn không thành công",
+                        "success"
+                    );
+                }
+            });
+        
     };
 }
 function hienthidanhsachMonhoc() {
@@ -414,7 +399,129 @@ function hienthiDanhsach(danhsach) {
                             let stt = creatTd(sttIndex);
                             let lop = creatTd(item.tenlop);
 
-                            let sotiettd = creatTd(sotiet);
+                            let sotiettd = document.createElement("td");
+                            let inputsotiettd = document.createElement("input");
+                            inputsotiettd.setAttribute("data-lop", item.id);
+                            inputsotiettd.classList.add("form-control");
+                            inputsotiettd.setAttribute(
+                                "data-monhoc",
+                                chk.value
+                            );
+                            inputsotiettd.value = sotiet;
+                            inputsotiettd.oninput = function (e) {
+                                // Kich hoat su kien khi nguoi dung nhap lieu vao o input
+                                let idLop = Number(inputsotiettd.dataset.lop);
+
+                                // Kiem tra va them so tiet vao mang chinh sua so tiet tam
+
+                                let indexSotietSua = arrSuaSotiet.findIndex(
+                                    (x) =>
+                                        x.monhoc ==
+                                            inputsotiettd.dataset.monhoc &&
+                                        x.lophoc == idLop
+                                );
+
+                                if (indexSotietSua == -1) {
+                                    arrSuaSotiet.push({
+                                        lophoc: idLop,
+                                        monhoc: Number(
+                                            inputsotiettd.dataset.monhoc
+                                        ),
+                                        sotiet: Number(inputsotiettd.value),
+                                    });
+                                } else {
+                                    arrSuaSotiet[
+                                        indexSotietSua
+                                    ].sotiet = Number(inputsotiettd.value);
+                                }
+
+                                let txtSotiet = document.querySelector(
+                                    '.txtSotietmon[data-mon="' +
+                                        inputsotiettd.dataset.monhoc +
+                                        '"]'
+                                );
+                                lopdachon.push(idLop);
+                                giaovien.textContent = `${ttgiaovien.hovaten}`;
+                                let checkPhancong = bangphancongTam.findIndex(
+                                    (x) =>
+                                        x.magiaovien == ttgiaovien.id &&
+                                        x.mamonhoc ==
+                                            inputsotiettd.dataset.monhoc &&
+                                        x.malop == idLop
+                                );
+
+                                let checkBangphancong = danhsachphancong.findIndex(
+                                    (x) =>
+                                        x.mamonhoc ==
+                                            inputsotiettd.dataset.monhoc &&
+                                        x.malop == idLop &&
+                                        x.magiaovien == ttgiaovien.id
+                                );
+
+                                if (checkPhancong == -1) {
+                                    //Them phan cong vao bang phan cong tam
+                                    bangphancongTam.push({
+                                        magiaovien: ttgiaovien.id,
+                                        mamonhoc: Number(
+                                            inputsotiettd.dataset.monhoc
+                                        ),
+                                        sotiet: Number(inputsotiettd.value),
+                                        malop: idLop,
+                                    });
+
+                                    // Them vao bang phan cong neu chua co
+                                    danhsachphancong.push({
+                                        id: 0,
+                                        magiaovien: ttgiaovien.id,
+                                        malop: idLop,
+                                        mamonhoc: Number(
+                                            inputsotiettd.dataset.monhoc
+                                        ),
+                                        sotiet: Number(inputsotiettd.value),
+                                    });
+                                } else {
+                                    // chinh sua lai thong tin trong bang phan cong tam
+                                    bangphancongTam.splice(checkPhancong, 1);
+                                    bangphancongTam.push({
+                                        magiaovien: ttgiaovien.id,
+                                        mamonhoc: Number(
+                                            inputsotiettd.dataset.monhoc
+                                        ),
+                                        sotiet: Number(inputsotiettd.value),
+                                        malop: idLop,
+                                    });
+                                    danhsachphancong.splice(
+                                        checkBangphancong,
+                                        1
+                                    );
+                                    danhsachphancong.push({
+                                        id: 0,
+                                        magiaovien: ttgiaovien.id,
+                                        malop: idLop,
+                                        mamonhoc: Number(
+                                            inputsotiettd.dataset.monhoc
+                                        ),
+                                        sotiet: Number(inputsotiettd.value),
+                                    });
+                                }
+
+                                txtSotiet.textContent = tinhTongsotiet(
+                                    ttgiaovien.id,
+                                    inputsotiettd.dataset.monhoc
+                                );
+
+                                sotietchuaphancong.textContent = "";
+                                chk.classList.add("selected");
+
+                                hienthidanhsachLopday(
+                                    ttgiaovien.id,
+                                    inputsotiettd.dataset.monhoc
+                                );
+                                hienthiTongsotiet(ttgiaovien.id);
+                            };
+
+                            sotiettd.appendChild(inputsotiettd);
+
                             let sotietchuaphancong = creatTd(sotiet);
 
                             let tdChon = document.createElement("td");
@@ -488,7 +595,7 @@ function hienthiDanhsach(danhsach) {
                                     lopdachon.push(idLop);
                                     giaovien.textContent = `${ttgiaovien.hovaten}`;
                                     sotietchuaphancong.textContent = "";
-
+                                    // Tim kiem so tiet duoc phan cho mon hoc cua lop
                                     let checkPhancong = bangphancongTam.findIndex(
                                         (x) =>
                                             x.magiaovien == ttgiaovien.id &&
@@ -606,7 +713,7 @@ function hienthiDanhsach(danhsach) {
                                 sotietchuaphancong.textContent =
                                     danhsachphancong[findGiaovien].sotiet;
                                 danhsachphancong.splice(findGiaovien, 1);
-                                sotiettd.textContent = "";
+                                inputsotiettd.value = "";
                                 giaovien.textContent = "";
                                 buttonXoa.disabled = true;
                                 inputChon.disabled = false;
