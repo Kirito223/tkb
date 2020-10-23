@@ -414,18 +414,7 @@ function hienthiDanhsach(danhsach) {
                                 chk.value
                             );
                             inputsotiettd.value = sotiet;
-                            let checkBangphancong = danhsachphancong.findIndex(
-                                (x) =>
-                                    x.mamonhoc == chk.value &&
-                                    x.malop ==
-                                        Number(inputsotiettd.dataset.lop) &&
-                                    x.magiaovien == ttgiaovien.id
-                            );
-                            if (checkBangphancong == -1) {
-                                inputsotiettd.disabled = true;
-                            } else {
-                                inputsotiettd.disabled = false;
-                            }
+
                             inputsotiettd.oninput = function (e) {
                                 // Kich hoat su kien khi nguoi dung nhap lieu vao o input
                                 let idLop = Number(inputsotiettd.dataset.lop);
@@ -548,6 +537,7 @@ function hienthiDanhsach(danhsach) {
                             inputChon.setAttribute("value", item.id);
                             inputChon.setAttribute("class", "chkChonlop");
                             inputChon.setAttribute("data-chon", "khongchon");
+
                             // Kiem tra xem co giao vien nao da day mon nay hay chua neu co thi hien thi giao vien dang duoc phan cong day mon nay ra và không cho phép click vào checkbox để chọn phân công môn này cho giáo viên hiện tại
 
                             let findGiaovien = danhsachphancong.findIndex(
@@ -558,6 +548,7 @@ function hienthiDanhsach(danhsach) {
                             let giaovien;
                             // Nếu có giáo viên đã phân công thì hiển thị tên giáo viên được phân công cũng như vô hiệu hóa nút checkbox
                             if (findGiaovien > -1) {
+                                // Co giao vien day
                                 let indexGiaovien = danhsachGiaovien.findIndex(
                                     (x) =>
                                         x.id ==
@@ -570,28 +561,34 @@ function hienthiDanhsach(danhsach) {
                                     danhsachGiaovien[indexGiaovien].id
                                 );
                                 inputChon.setAttribute("data-chon", "chon");
-                                giaovien = creatTd(
-                                    `${
-                                        danhsachGiaovien[indexGiaovien].ho !=
-                                        undefined
-                                            ? danhsachGiaovien[indexGiaovien]
-                                                  .hovaten
-                                            : ""
-                                    } ${
-                                        danhsachGiaovien[indexGiaovien].hovaten
-                                    }`
-                                );
-                                // Kiem tra xem giao vien trong danh sach co trung voi giao vien dang duoc chon khong neu trung thi hien thi la da duoc chon va hien thi cac lop ma giao vien dc phan cong day mon nay
+                                // Tim tat cac cac giao vien day mon nay tai lop nay
+
+                                giaovien = document.createElement("td");
+                                let name = "";
+                                danhsachphancong.filter((x) => {
+                                    if (
+                                        x.mamonhoc == chk.value &&
+                                        x.malop == item.id
+                                    ) {
+                                        let giaovienIndex = danhsachGiaovien.find(
+                                            (f) => f.id == x.magiaovien
+                                        );
+                                        name +=
+                                            giaovienIndex.hovaten != null
+                                                ? `<span data-idgiaovien="${giaovienIndex.id}">${giaovienIndex.hovaten},</span>`
+                                                : `<span data-idgiaovien="${giaovienIndex.id}">${giaovienIndex.bidanh}</span>`;
+                                    }
+                                });
+                                giaovien.innerHTML = name;
+
                                 if (
                                     danhsachGiaovien[indexGiaovien].id ==
                                     ttgiaovien.id
                                 ) {
-                                    inputChon.checked = true;
+                                    // Kiem tra xem giao vien trong danh sach co trung voi giao vien dang duoc chon khong neu trung thi hien thi la da duoc chon va hien thi cac lop ma giao vien dc phan cong day mon nay
 
+                                    inputChon.checked = true;
                                     sotietchuaphancong.textContent = "";
-                                } else {
-                                    // kiem tra xem giao vien dang duoc xet co phai la giao vien hien tai duoc chon khong neu la giao vien khac thi vo hieu hoa nut chon
-                                    inputChon.disabled = true;
                                 }
                             } else {
                                 giaovien = creatTd("");
@@ -615,7 +612,10 @@ function hienthiDanhsach(danhsach) {
 
                                 if (inputChon.checked) {
                                     lopdachon.push(idLop);
-                                    giaovien.textContent = `${ttgiaovien.hovaten}`;
+                                    giaovien.insertAdjacentHTML(
+                                        "beforeend",
+                                        `<span data-idgiaovien="${ttgiaovien.id}">${ttgiaovien.hovaten}</span>`
+                                    );
                                     sotietchuaphancong.textContent = "";
                                     // Tim kiem so tiet duoc phan cho mon hoc cua lop
                                     let checkPhancong = bangphancongTam.findIndex(
@@ -685,7 +685,10 @@ function hienthiDanhsach(danhsach) {
                                     );
                                     if (index > -1) {
                                         lopdachon.splice(index, 1);
-                                        giaovien.textContent = "";
+                                        let remove = document.querySelector(
+                                            `span[data-idgiaovien="${ttgiaovien.id}"]`
+                                        );
+                                        remove.remove();
                                     }
                                     // Go bo khoi mang tam
                                     let indexPhancong = bangphancongTam.findIndex(
