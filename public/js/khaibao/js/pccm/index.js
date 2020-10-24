@@ -59,6 +59,7 @@ function resetData() {
     danhsachLop = null;
     sotietmon = null;
     bangphancongTam.length = 0;
+    bangPhancong.length = 0;
 }
 
 function initControl() {
