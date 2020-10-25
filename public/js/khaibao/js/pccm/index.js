@@ -567,6 +567,12 @@ function hienthiDanhsach(danhsach) {
                             inputChon.setAttribute("class", "chkChonlop");
                             inputChon.setAttribute("data-chon", "khongchon");
 
+                            if (sotiet == 0) {
+                                sotietchuaphancong.textContent =
+                                    "Không còn tiết trống";
+                                inputsotiettd.disabled = true;
+                                inputChon.disabled = true;
+                            }
                             // Kiem tra mon hoc tai lop da duoc phan cong chua
 
                             let findGiaovien = danhsachphancong.findIndex(

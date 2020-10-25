@@ -83,19 +83,21 @@ class exportExcelController extends Controller
             $this->exportTKBClass($sheetTKBTeacherClass, $sheet, $classList);
         }
         if ($param->tkbGV == 1) {
-            if ($param->exportAll == true) {
-                $teacherList  = json_decode($param->arrSelect);
-                $sheet = $this->loadSheetExcel('mautkbgiaovien.xlsx');
-                $sheet->setActiveSheetIndex(0);
-                $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
-                $this->exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $sheet, $teacherList);
-            } else {
-                $teacherList  = json_decode($param->arrSelect);
-                $sheet = $this->loadSheetExcel('mautkbphonghoc.xlsx');
-                $sheet->setActiveSheetIndex(0);
-                $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
-                $this->exportTKBTeachers($sheetTKBTeacherTypeTwo, $sheet, $teacherList);
-            }
+            $teacherList  = json_decode($param->arrSelect);
+            $sheet = $this->loadSheetExcel('mautkbphonghoc.xlsx');
+            $sheet->setActiveSheetIndex(0);
+            $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
+            $this->exportTKBTeachers($sheetTKBTeacherTypeTwo, $sheet, $teacherList);
+
+            // if ($param->exportAll == true) {
+            //     $teacherList  = json_decode($param->arrSelect);
+            //     $sheet = $this->loadSheetExcel('mautkbgiaovien.xlsx');
+            //     $sheet->setActiveSheetIndex(0);
+            //     $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
+            //     $this->exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $sheet, $teacherList);
+            // } else {
+
+            // }
         }
         if ($param->tkbphong == 1) {
             //tkb phong
@@ -108,18 +110,7 @@ class exportExcelController extends Controller
             $sheet = $this->loadSheetExcel('mautkbtochuyenmon.xlsx');
             $this->exportTKBGroup($sheet);
         }
-        // $zip = new ZipArchive();
-
-        // $fileZip = public_path('export\\') . 'thoikhoabieu.zip';
-        // if ($zip->open($fileZip, ZipArchive::CREATE)) {
-        //     foreach ($fileExport as $file) {
-        //         $f = public_path('export/') . $file . ".xlsx";
-        //         $relativeNameInZipFile = basename($f);
-        //         $zip->addFile($f, $relativeNameInZipFile);
-        //     }
-        //     $zip->close();
-        // }
-
+        
 
         return response()->json(Response::HTTP_OK);
     }
