@@ -901,6 +901,7 @@ function hienthiDanhsach(danhsach) {
 function creatTd(texts = null, childControl = null, className = "") {
     let td = document.createElement("td");
     td.setAttribute("class", className);
+    td.setAttribute("style", "vertical-align:middle;");
     if (childControl == null && texts != null) {
         let text = document.createTextNode(texts);
         td.appendChild(text);
