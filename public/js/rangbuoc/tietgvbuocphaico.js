@@ -476,47 +476,70 @@ async function dangkytietbuocphaico() {
         var idthu9 = [];
         var idthu10 = [];
 
+        // id class
+
+        var idclass1 = [];
+        var idclass2 = [];
+        var idclass3 = [];
+        var idclass4 = [];
+        var idclass5 = [];
+        var idclass6 = [];
+        var idclass7 = [];
+        var idclass8 = [];
+        var idclass9 = [];
+        var idclass10 = [];
+
         chontietgvbuocphaico.filter(function (items) {
             iddktgvbpc.push({ iddktgvbpc: items.id });
             if (items.buoi == 0 && items.tiet == 1) {
                 idposition.push(1);
                 idthu1.push(items.thu);
+                idclass1.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 1) {
                 idposition.push(2);
                 idthu2.push(items.thu);
+                idclass2.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 0 && items.tiet == 2) {
                 idposition.push(3);
                 idthu3.push(items.thu);
+                idclass3.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 2) {
                 idposition.push(4);
                 idthu4.push(items.thu);
+                idclass4.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 0 && items.tiet == 3) {
                 idposition.push(5);
                 idthu5.push(items.thu);
+                idclass5.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 3) {
                 idposition.push(6);
                 idthu6.push(items.thu);
+                idclass6.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 0 && items.tiet == 4) {
                 idposition.push(7);
                 idthu7.push(items.thu);
+                idclass7.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 4) {
                 idposition.push(8);
                 idthu8.push(items.thu);
+                idclass8.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 0 && items.tiet == 5) {
                 idposition.push(9);
                 idthu9.push(items.thu);
+                idclass9.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 5) {
                 idposition.push(10);
                 idthu10.push(items.thu);
+                idclass10.push(items.lop);
                 idmrb.push(items.mamucrangbuoc);
             }
         });
@@ -524,7 +547,7 @@ async function dangkytietbuocphaico() {
         if (idposition != "") {
             var idpositionnew = [...new Set(idposition)];
         }
-
+        // Set checked checkbox select teacher
         for (var i = 0; i < checkboxes.length; i++) {
             var id = checkboxes[i].id;
             for (var j = 0; j < idpositionnew.length; j++) {
@@ -538,6 +561,7 @@ async function dangkytietbuocphaico() {
             var idmrbnew = [...new Set(idmrb)];
         }
 
+        // set valeu selected level of constraint
         var m = 0;
         for (k = 0; k < idpositionnew.length; k++) {
             $("#idmrb" + idpositionnew[k] + "").val(idmrbnew[m]);
@@ -617,6 +641,7 @@ async function dangkytietbuocphaico() {
             },
         ];
 
+        // set value selected thu
         for (var x = 0; x < idpositionnew.length; x++) {
             var idpst = idpositionnew[x];
             for (var z = 0; z < idthunew.length; z++) {
@@ -629,6 +654,93 @@ async function dangkytietbuocphaico() {
             }
         }
 
+        // set value selected classroom
+
+        if (idclass1 != "") {
+            var idclass1new = [...new Set(idclass1)];
+        }
+        if (idclass2 != "") {
+            var idclass2new = [...new Set(idclass2)];
+        }
+        if (idclass3 != "") {
+            var idclass3new = [...new Set(idclass3)];
+        }
+        if (idclass4 != "") {
+            var idclass4new = [...new Set(idclass4)];
+        }
+        if (idclass5 != "") {
+            var idclass5new = [...new Set(idclass5)];
+        }
+        if (idclass6 != "") {
+            var idclass6new = [...new Set(idclass6)];
+        }
+        if (idclass7 != "") {
+            var idclass7new = [...new Set(idclass7)];
+        }
+        if (idclass8 != "") {
+            var idclass8new = [...new Set(idclass8)];
+        }
+        if (idclass9 != "") {
+            var idclass9new = [...new Set(idclass9)];
+        }
+        if (idclass10 != "") {
+            var idclass10new = [...new Set(idclass10)];
+        }
+
+        var idclassnew = [
+            {
+                idposition: 1,
+                dataposition: idclass1new,
+            },
+            {
+                idposition: 2,
+                dataposition: idclass2new,
+            },
+            {
+                idposition: 3,
+                dataposition: idclass3new,
+            },
+            {
+                idposition: 4,
+                dataposition: idclass4new,
+            },
+            {
+                idposition: 5,
+                dataposition: idclass5new,
+            },
+            {
+                idposition: 6,
+                dataposition: idclass6new,
+            },
+            {
+                idposition: 7,
+                dataposition: idclass7new,
+            },
+            {
+                idposition: 8,
+                dataposition: idclass8new,
+            },
+            {
+                idposition: 9,
+                dataposition: idclass9new,
+            },
+            {
+                idposition: 10,
+                dataposition: idclass10new,
+            },
+        ];
+
+        for (var x = 0; x < idpositionnew.length; x++) {
+            var idpst = idpositionnew[x];
+            for (var z = 0; z < idclassnew.length; z++) {
+                if (idpst == idclassnew[z].idposition) {
+                    $("#idlop" + idpst + "")
+                        .select2({ width: "100%" })
+                        .val(idclassnew[z].dataposition)
+                        .trigger("change");
+                }
+            }
+        }
         $("#iddktgvbpc").val(JSON.stringify(iddktgvbpc));
     }
 }
@@ -639,8 +751,6 @@ $("#btnluutietgvbuocphaico").click(function () {
     var table = document.getElementById("tietgvbuocphaico");
     var checkboxes = table.querySelectorAll("input[type=checkbox]");
     for (var i = 0; i < checkboxes.length; i++) {
-        // check checkbox select teacher is checked or not checked
-
         if (checkboxes[i].checked == true) {
             if (checkboxes[i].id == 1) {
                 var idthu = [];

@@ -412,11 +412,11 @@ class rangbuocController extends Controller
 			}]);
 		}])
 			->with(['rangbuoctietgvbuocphaico' => function ($author1) {
-				$author1->select('rangbuoctietgvbuocphaico.id', 'rangbuoctietgvbuocphaico.magiaovien', 'rangbuoctietgvbuocphaico.mamucrangbuoc', 'rangbuoctietgvbuocphaico.buoi', 'rangbuoctietgvbuocphaico.thu', 'rangbuoctietgvbuocphaico.tiet');
+				$author1->select('rangbuoctietgvbuocphaico.id', 'rangbuoctietgvbuocphaico.magiaovien', 'rangbuoctietgvbuocphaico.mamucrangbuoc', 'rangbuoctietgvbuocphaico.buoi', 'rangbuoctietgvbuocphaico.thu', 'rangbuoctietgvbuocphaico.tiet', 'rangbuoctietgvbuocphaico.lop');
 			}])
 			->select('id', 'hovaten', 'bidanh', 'thutuhienthi')
 			->get();
-		return json_encode($data, JSON_UNESCAPED_UNICODE);
+		return response()->json($data);
 	}
 	//add ràng buộc tiết cố định tiết học
 	public function addrangbuoctietgvbuocphaico(Request $rq)
