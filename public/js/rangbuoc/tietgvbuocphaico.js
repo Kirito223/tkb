@@ -50,8 +50,6 @@ function loaddatadanhsachgvthamgiagiangday() {
 }
 
 function chongvthamgiagiangday(datas){
-	// console.log(datas);
-
 	$("#girdtietgiaovienbuocphaico").dxDataGrid({
 		dataSource: datas,
 		showBorders: true,

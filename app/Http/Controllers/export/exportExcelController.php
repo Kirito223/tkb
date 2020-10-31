@@ -4,6 +4,7 @@ namespace App\Http\Controllers\export;
 
 use App\danhsachgv;
 use App\danhsachlophoc;
+use App\diemtruong;
 use App\Http\Controllers\Controller;
 use App\Objects\Day;
 use App\Objects\SessionInfo;
@@ -110,7 +111,7 @@ class exportExcelController extends Controller
             $sheet = $this->loadSheetExcel('mautkbtochuyenmon.xlsx');
             $this->exportTKBGroup($sheet);
         }
-        
+
 
         return response()->json(Response::HTTP_OK);
     }
@@ -127,6 +128,15 @@ class exportExcelController extends Controller
     public function downLoadTableTime($file)
     {
         return response()->download(public_path('export/') . $file);
+    }
+    public function exportTKBSchoolArea()
+    {
+        $listArea = diemtruong::where('matruong', $this->sessionInfo->getSchoolId());
+        $arrExcel = array();
+
+        foreach ($listArea as $area) {
+            //
+        }
     }
 
     private function exportTKBSchoolOneColumn($sheetTKBSchool)
