@@ -420,15 +420,20 @@
 });
 };
 
-	function resetdata(datamatruong) {
-	var datare = axios.post('resetdata',{matruong:datamatruong}).then(function(response) {
-		loadtaikhoan();
-		var dataGrid = $("#getlisttaikhoan").dxDataGrid("instance");
-		dataGrid.refresh();
-
-	});
-
+function reload_reset() {
+	loadtaikhoan();
+	var dataGrid = $("#girdtaikhoan").dxDataGrid("instance");
+	dataGrid.refresh();
 }
+
+function resetdata(datamatruong) {
+	var datare = axios.post('resetdata', {
+		matruong: datamatruong
+	}).then(function(response) {
+		reload_reset();
+	});
+}
+
 	
 function xoataikhoan(id,matruong) {
 	Swal.fire({

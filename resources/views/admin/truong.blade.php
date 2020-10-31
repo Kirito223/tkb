@@ -18,7 +18,6 @@
         <div class="card-content collpase show">
             <div class="card-body">
                 <div id="girdtruong"></div>
-
             </div>
         </div>
     </div>
@@ -55,6 +54,9 @@
                 },{
                     "id": 3,
                     "tencap": "Trung học phổ thông"
+                },{
+                    "id": 4,
+                    "tencap": "Trường 2 cấp học"
                 }]
                 $("#girdtruong").dxDataGrid({
                     dataSource: datas,
@@ -62,23 +64,14 @@
                     paging: {
                         pageSize: 30
                     },
-                    /* xap xep */
                     sorting: {
                         mode: "multiple"
                     },
-                    /* loc du lieu */
-                    // filterRow: {
-                    //     visible: true,
-                    //     applyFilter: "auto"
-                    // },
                     searchPanel: {
                         visible: true,
                         width: 240,
                         placeholder: "Tìm kiếm..."
-                    },
-                    // selection: {
-                    //  mode: "single"
-                    // },                   
+                    },               
                     editing: {
                         mode: "batch",
                         allowUpdating: true,
@@ -86,7 +79,6 @@
                         startEditAction: "click",
                         allowAdding: true,
                     },
-                    /* co dan cot */
                     allowColumnResizing: true,
                     columnResizingMode: "widget",
                     onEditorPreparing(e) {
@@ -250,12 +242,9 @@
                             });
                             reloadtruong();
                         });
-                    },
-
-                    
+                    },                    
                 });
-            });
-            
+            });            
         });
     }
 

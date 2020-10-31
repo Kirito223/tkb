@@ -79,8 +79,10 @@ function loadthongkesoluongtietday() {
 				if(data1[j].matruong == datatruong){
 					$("#idtentruong").text(data1[j].tentruong);
 					$("#idtentruongphonghoc").text(data1[j].tentruong);
+					$("#idtentruonggiaovien").text(data1[j].tentruong);
 					var phanthantablesotietday = document.getElementById("phanthantablesotietday");
 					var phanthantablesophonghoc = document.getElementById("phanthantablesophonghoc");
+					var phanthantablesogiaovien = document.getElementById("phanthantablesogiaovien");
 					var datagv = data1[j].danhsachgv;
 					var countdatagv = datagv.length;
 					for (var k = 0; k < countdatagv; k++) {
@@ -150,6 +152,7 @@ function loadthongkesoluongtietday() {
 				        phanthantablesotietday.appendChild(tr);
 					}
 
+					//thống kế sl phòng học
 					var demslphong = data1[j].phonghoc.length;
 					var dataphong = data1[j].phonghoc;
 					var dataphongdemslphong = [];
@@ -182,6 +185,32 @@ function loadthongkesoluongtietday() {
 				        phanthantablesophonghoc.appendChild(tr);
 					}
 
+					//thống kê sl giáo viên
+					var demslgv= data1[j].danhsachgv.length;
+					var dsgv = data1[j].danhsachgv;
+					for (var z = 0; z < 1; z++) {
+
+						tr = document.createElement("tr");
+			            tr.appendChild(document.createElement('td'));
+				        tr.appendChild(document.createElement('td'));
+						
+				        var x = document.createElement("BUTTON");
+				        x.setAttribute("type", "button");
+				        x.setAttribute("style","color:red;"); 
+						var t = document.createTextNode(""+ demslgv);
+						x.onclick = function(e){
+							loaddanhsachgv(dsgv);
+							$('#modaldsgv').modal('show');
+						};
+						// t.setAttribute("style","color:red;"); 
+						x.appendChild(t);
+
+			        	tr.cells[0].appendChild(document.createTextNode(' ' + (z+1)));
+				       	tr.cells[1].appendChild(x);
+				       	// tr.cells[1].setAttribute("style","color:red;"); 
+				        phanthantablesogiaovien.appendChild(tr);
+					}
+
 				}
 			$("#iddiv span").after("<br />");
 
@@ -210,6 +239,25 @@ function loadthongkesoluongtietday() {
 
 	});
 }
+function loaddanhsachgv(dsgv){
+	var dsgv = dsgv;
+	var phanthantablegv = document.getElementById("phanthantablegv");
+	for (var i = 0; i < dsgv.length; i++) {
+		tr = document.createElement("tr");
+        tr.appendChild(document.createElement('td'));
+        tr.appendChild(document.createElement('td'));
+		
+    	tr.cells[0].appendChild(document.createTextNode(' ' + dsgv[i].stt));
+       	tr.cells[1].appendChild(document.createTextNode(' ' + dsgv[i].hovaten));
+       	// tr.cells[1].setAttribute("style","color:red;"); 
+        phanthantablegv.appendChild(tr);
+	}
+}
+jQuery(document).ready(function () {
+    jQuery('#modaldsgv').on('hidden.bs.modal', function (e) {
+		$('#tablegv>tbody').empty();
+    });
+});
 window.onload = function() {
 	loadthongkesoluongtietday();
 	$('#idselecttruong').select2({ width: '50%'});

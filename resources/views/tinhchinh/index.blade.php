@@ -3,7 +3,7 @@
 @section('content')
 
 <dir class="row" style="padding: 0;margin: 0">
-	<!-- 	<dir class="col-md-3" style="margin: 0;padding: 2px">
+<!-- 	<dir class="col-md-3" style="margin: 0;padding: 2px">
 		<div class="card">
 			<div class="card-header" style="padding: 10px">
 				<h4 class="card-title">Tinh chỉnh</h4>
@@ -57,7 +57,7 @@
 		<div class="card">
 			<div class="card-header" style="padding: 10px">
 				<h4 class="card-title" style="padding-left: 10px">Đánh giá giáo viên</h4>
-				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+				<a class="heading-elements-toggle" ><i class="fa fa-ellipsis-v font-medium-3"></i></a>
 				<div class="heading-elements" style="top: 10px">
 					<ul class="list-inline mb-0">
 						<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -72,7 +72,7 @@
 							<div class="row">
 								<div class="col-md-12">
 									<div id="danhgiagiaovien"></div>
-								</div>
+								</div>						
 							</div>
 						</div>
 					</form>
@@ -138,7 +138,7 @@
 	}
 
 	function danhgiagiaovien(){
-		var data = axios.get('getdanhgiagv').then(function (response) {
+		var data = axios.get('getdanhgiagvtruong').then(function (response) {
 			var data1 = response.data[0];
 			var tengv = response.data[1];
 			var gvchuyenmon = response.data[2];
@@ -161,16 +161,16 @@
 					enabled: true,
 					template: function(container, options) { 
 						var currentEmployeeData = options.data.id;
-						// var datagvchuyenmon = [];
-						// gvchuyenmon.filter(function(items) {
-						// 	if(items.matochuyenmon == currentEmployeeData){
-						// 		var i = datagvchuyenmon.findIndex(x => x.magiaovien == items.magiaovien);
-						// 		if (i <= -1) {
-						// 			datagvchuyenmon.push(items);
-						// 		}
-						// 		return null;
-						// 	}
-						// });
+						var datagvchuyenmon = [];
+						gvchuyenmon.filter(function(items) {
+							if(items.matochuyenmon == currentEmployeeData){
+								var i = datagvchuyenmon.findIndex(x => x.magiaovien == items.magiaovien);
+								if (i <= -1) {
+									datagvchuyenmon.push(items);
+								}
+								return null;
+							}
+						});
 						$("<div>").dxDataGrid({
 							columnAutoWidth: true,
 							showBorders: true,
@@ -179,7 +179,7 @@
 								allowUpdating: true,
 								selectTextOnEditStart: true,
 								startEditAction: "click",
-								allowAdding: true,
+								// allowAdding: true,
 							},
 							columns: [{
 								caption: "Tên giáo viên",
@@ -191,12 +191,12 @@
 								},
 							},{
 								caption: "Thời điểm đánh giá",
-								dataField: "created_at",
+								dataField: "danhgiagv.created_at",
 								dataType: "date",
 								format: 'dd/MM/yyyy',
 							},{
 								caption: "Hình thức",
-								dataField: "hinhthuc",
+								dataField: "danhgiagv.hinhthuc",
 								lookup: {
 									dataSource: [{
 										id: 1,
@@ -216,7 +216,7 @@
 								},
 							},{
 								caption: "Xếp loại",
-								dataField: 'xeploai',
+								dataField: 'danhgiagv.xeploai',
 								lookup: {
 									dataSource: [{
 										id: 1,
@@ -240,27 +240,32 @@
 							}],
 
 							onRowUpdating: function(e) {
-								var id = e.oldData.id;
+								var danhgiagvid = e.oldData.danhgiagv;
+								if(danhgiagvid == null){
+									var id = null;
+								}else{
+									var id = e.oldData.danhgiagv.id;
+								}
 								var tochuyenmon = currentEmployeeData;
 								if(e.newData.magiaovien === undefined){
 									var magiaovien = e.oldData.magiaovien;
 								}else{
 									var magiaovien = e.newData.magiaovien;
 								}
-								if(e.newData.hinhthuc === undefined){
-									var hinhthuc = e.oldData.hinhthuc;
+								if(e.newData.danhgiagv.hinhthuc === undefined){
+									var hinhthuc = e.oldData.danhgiagv.hinhthuc;
 								}else{
-									var hinhthuc = e.newData.hinhthuc;
+									var hinhthuc = e.newData.danhgiagv.hinhthuc;
 								}	
-								if(e.newData.xeploai === undefined){
-									var xeploai = e.oldData.xeploai;
+								if(e.newData.danhgiagv.xeploai === undefined){
+									var xeploai = e.oldData.danhgiagv.xeploai;
 								}else{
-									var xeploai = e.newData.xeploai;
+									var xeploai = e.newData.danhgiagv.xeploai;
 								}							
-								if(e.newData.created_at === undefined){
-									var created_at = e.oldData.created_at;
+								if(e.newData.danhgiagv.created_at === undefined){
+									var created_at = e.oldData.danhgiagv.created_at;
 								}else{
-									var created_at = e.newData.created_at;
+									var created_at = e.newData.danhgiagv.created_at;
 								}	
 								axios.post('updatedanhgiagv', {id:id,tochuyenmon:tochuyenmon,magiaovien:magiaovien,hinhthuc:hinhthuc,xeploai:xeploai,created_at:created_at}).then(function(response) {
 									var data = response.data;
@@ -324,10 +329,10 @@
 
 							dataSource: new DevExpress.data.DataSource({
 								store: new DevExpress.data.ArrayStore({
-									key: "tochuyenmon",
-									data: danhgiagv
+									key: "matochuyenmon",
+									data: datagvchuyenmon
 								}),
-								filter: ["tochuyenmon", "=", options.key.id]
+								filter: ["matochuyenmon", "=", options.key.id]
 							})
 						}).appendTo(container);
 }
@@ -365,5 +370,5 @@ function xoadanhgiagv(id) {
 }
 </script>
 
-<script type="text/javascript" src="js/tinhchinh/tinhchinh.js"></script>
+
 @endsection

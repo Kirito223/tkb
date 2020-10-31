@@ -1,32 +1,32 @@
 @extends('master')
-@section('title','Theo dõi báo cáo đơn vị')
+@section('title','Thông báo')
 @section('content')
 
 <!-- danh sách báo cáo -->
 <dir class="row" style="padding: 0;margin: 0" id="tabletruong">
-	<dir class="col-md-12" style="margin: 0;padding: 2px">
-		<div class="card">
-			<div class="card-header" style="padding: 10px">
-				<h4 class="card-title">Danh sách thông báo</h4>
-				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-				<div class="heading-elements" style="top: 10px">
-					<ul class="list-inline mb-0">
-						<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-						<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="card-content collpase show">
-				<div class="card-body">
-					<form class="form">
-						<div class="form-body">
-							<div id="girddsthongbao"></div>   
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</dir>
+    <dir class="col-md-12" style="margin: 0;padding: 2px">
+        <div class="card">
+            <div class="card-header" style="padding: 10px">
+                <h4 class="card-title">Danh sách thông báo</h4>
+                <a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements" style="top: 10px">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-content collpase show">
+                <div class="card-body">
+                    <form class="form">
+                        <div class="form-body">
+                            <div id="girddsthongbao"></div>   
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </dir>
 
 </dir>
 
@@ -41,9 +41,10 @@
                 </button>
             </div>
             <div class="modal-body">
-            	<form class="form" id="formthemthongbao" method="post" action="" enctype="multipart/form-data">
+                <form class="form" id="formthemthongbao" method="post" action="" enctype="multipart/form-data">
                     <div class="form-body">
                         <h4 class="form-section"><i class="fa fa-info-circle"></i> Chi tiết thông báo</h4>
+                        <input type="hidden" id="idcaphocall">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -84,13 +85,33 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="projectinput2">Đơn vị nhận</label>
-                                    <select id="iddonvi" name="interested" class="form-control" multiple>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="projectinput2">Cấp học</label>
+                                            <select id="idcaphoc" name="interested" class="form-control">
+                                                <option value=" " selected="" disabled="">--Chọn cấp học--
+                                                <option value="all">Chọn tất cả</option>
+                                                <option value="1">Tiểu học</option>
+                                                <option value="2">Trung học cơ sở</option>
+                                                <option value="3">Trung học phổ thông</option>
+                                                <option value="4">Trường 2 cấp học</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="display: none;" id="divdonvi">
+                                        <div class="form-group">
+                                            <label for="projectinput2">Đơn vị nhận</label>
+                                            <select id="iddonvi" name="interested" class="form-control" multiple>
+                                            </select>
+                                            
+                                        </div>
+                                        <input type="checkbox" id="chbxalldonvi" > Chọn tất cả đơn vị
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <br>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -139,6 +160,7 @@
                 <form class="form" id="formsuathongbao" method="post" action="" enctype="multipart/form-data">
                     <div class="form-body">
                         <h4 class="form-section"><i class="fa fa-info-circle"></i> Chi tiết thông báo</h4>
+                        <input type="hidden" id="idcaphocsuaall">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -179,26 +201,44 @@
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="projectinput2">Đơn vị nhận</label>
-                                    <select id="iddonvisua" name="interested" class="form-control" multiple>
-                                    </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="projectinput2">Cấp học</label>
+                                            <select id="idcaphocsua" name="interested" class="form-control">
+                                                <option value=" " selected="" disabled="">--Chọn cấp học--
+                                                <option value="all">Chọn tất cả</option>
+                                                <option value="1">Tiểu học</option>
+                                                <option value="2">Trung học cơ sở</option>
+                                                <option value="3">Trung học phổ thông</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" id="divdonvisua">
+                                        <div class="form-group">
+                                            <label for="projectinput2">Đơn vị nhận</label>
+                                            <select id="iddonvisua" name="interested" class="form-control" multiple>
+                                            </select>
+                                        </div>
+                                        <input type="checkbox" id="chbxalldonvisua" > Chọn tất cả đơn vị
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <br>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Tập tin đính kèm</label>
-                                    <br>
                                     <label id="projectinput7" class="file center-block">
-                                        <input type="file" id="filesua">
-                                        <div id="filedinhkemsua"></div>
+                                        <input type="file" id="filesua" >                  
                                         <button type="button" class="btn btn-danger">Ký văn bản</button>
                                     </label>
+                                    <div id="filedinhkemsua"></div>
                                 </div>
                             </div>
                         </div>
+                        <br>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">

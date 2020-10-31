@@ -1,12 +1,14 @@
+var itemlop;
 $('#capnhatsotietbuoi').click(function(){   
  var buoi= $('#chonbuoisotietbuoi').val();
- var malop=$('#lopsotietbuoi').val();
+ var malop=itemlop;
+var thu=$('#chonthusotietbuoi').val();
  var sotiet=$('#sotietsttrongbuoi').val();
  axios.post('updatesotiettrongbuoi', {
     id: 0,
     malop: malop,
     buoi: buoi,
-    thu: 0,
+   	thu: thu,
     sotiet: sotiet
 }).then(function(response) {var data = response.data;reload_sotiet_trongbuoi();});
 });
@@ -38,16 +40,18 @@ function sotiet_trongbuoi() {
     var data = axios.get('getdanhsachsotiettrongbuoi').then(function(response) {
         var data1 = response.data[0];
         var datalop = response.data[1];
-               $("#lopsotietbuoi").select2({closeOnSelect : false,
-            placeholder : "Chọn lớp",
-            allowHtml: true,
-            allowClear: true,
-            tags: true,
-            width: '100%'});
-        let htmllophoc = datalop.map(function(item) {
-            return ('<option value="' +item.id +'">' +item.tenlop +"</option>");
+        $("#lopsotietbuoi").dxTagBox({
+            items: datalop,
+            placeholder: "Chọn lớp",
+            showSelectionControls: true,
+            displayExpr: "tenlop",
+            valueExpr: "id",
+            applyValueMode: "useButtons",
+            onValueChanged: function(data) {
+                var itlop = data.value;
+                itemlop = itlop;
+            }
         });
-        $("#lopsotietbuoi").html('<option value="0">Chọn tất cả</option>' + htmllophoc);
 
 
         var datas = data1.map(function(value, label) {

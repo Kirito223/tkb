@@ -31,12 +31,6 @@
 														Ràng buộc tiết cố định
 													</label>
 												</fieldset>
-<!-- 												<fieldset class="radio">
-													<label>
-														<input type="radio" name="radio" value="" id="rangbuocphonghoc">
-														Ràng buộc phòng học
-													</label>
-												</fieldset> -->
 												<fieldset class="radio">
 													<label>
 														<input type="radio" name="radio" value="" id="tiethopcuato">
@@ -92,18 +86,18 @@
 														Số tiết tối đa trong ngày của môn
 													</label>
 												</fieldset>
-<!-- 												<fieldset class="radio">
+												<fieldset class="radio">
 													<label>
-														<input type="radio" name="radio" value="" id="uutienmonxeptiettoidatrongbuoi">
-														Ưu tiên môn xếp tiết tối đa trong buổi
+														<input type="radio" name="radio" value="" id="rangbuocthututiet">
+														Ràng buộc thứ tự tiết
 													</label>
 												</fieldset>
 												<fieldset class="radio">
 													<label>
-														<input type="radio" name="radio" value="" id="monxeptietcachnhauitnhat1ngay">
-														Môn xếp tiết cách nhau ít nhất 1 ngày
+														<input type="radio" name="radio" value="" id="rangbuoctietnghilop">
+														Ràng buộc tiết nghỉ lớp
 													</label>
-												</fieldset> -->
+												</fieldset>
 											</div>
 										</div>
 									</div>
@@ -116,7 +110,83 @@
 		</div>
 	</dir>
 	<dir class="col-md-9" style="margin: 0;padding: 2px">
+	<!-- rang buoc thu tu tiet	 -->
+		<div class="card" id="formthututiet" style="display: none">
+			<div class="card-header">
+				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+				<div class="heading-elements" style="padding-top: 20px">
+					<ul class="list-inline mb-0">
+						<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+						<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="card-content collapse show">
+				<div class="card-body">
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="projectinput1">Khối : </label>
+							<div id="thututietkhoi"></div>
+						</div>
+					</div>
 
+					<div id="girdthututiet"></div>
+				</div>
+			</div>
+		</div> 
+		<!-- dang ky tiet nghi lop	 -->
+		<div class="card" id="formtietnghilop" style="display: none">
+			<div class="card-header">
+				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+				<div class="heading-elements" style="padding-top: 20px">
+					<ul class="list-inline mb-0">
+						<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+						<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="card-content collapse show">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="tietnghilopds" multiple="multiple"></select>
+						</div>
+						<div class="col-md-2">
+							<select class="form-control input-sm" id="chonbuoitietnghilop">
+								<option selected="">Chọn buổi
+								</option><option value="0">Buổi sáng
+								</option><option value="1">Buổi chiều
+								</option></select>
+							</div>
+							<div class="col-md-2">
+								<select class="form-control input-sm" id="chonthutietnghilop">
+									<option selected="">Chọn thứ</option>
+									<option value="2">Thứ 2</option>
+									<option value="3">Thứ 3</option>
+									<option value="4">Thứ 4</option>
+									<option value="5">Thứ 5</option>
+									<option value="6">Thứ 6</option>
+									<option value="7">Thứ 7</option>
+								</select>
+							</div>
+							<div class="col-md-2">
+								<select class="form-control input-sm" id="chontiettietnghilop">
+									<option selected="">Chọn tiết</option>
+									<option value="1">Tiết 1</option>
+									<option value="2">Tiết 2</option>
+									<option value="3">Tiết 3</option>
+									<option value="4">Tiết 4</option>
+									<option value="5">Tiết 5</option>
+								</select>
+							</div>
+							<div class="col-md-3">
+								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="capnhattietnghilop">Cập nhật</button>
+							</div>
+						</div>
+						<div id="girdtietnghilop"></div>
+					</div>
+				</div>
+			</div> 
 
 		<!-- ràng buộc tiết cố định -->
 		<div class="card" id="formrangbuoctietcodinh" style="display: none">
@@ -247,6 +317,8 @@
 			</div>
 			<div class="card-content collapse show">
 				<div class="card-body">
+										<button type="button" class="btn mr-1 mb-1 btn-danger btn-sm" id="dkbuoinghiall">Đăng ký buổi nghỉ</button>					
+					<button type="button" class="btn mr-1 mb-1 btn-success btn-sm" id="dktietnghiall">Đăng ký tiết nghỉ</button>
 					<div id="girddangkybuoitietnghicuagv"></div>
 				</div>
 			</div>
@@ -1001,6 +1073,48 @@
 
 
 
+			<!-- modal đăng ký buổi nghỉ all-->
+				<div class="modal fade text-left" id="modaldangkybuoinghiall" tabindex="-1" role="dialog" aria-labelledby="myModalLabel15" style="display: none;" aria-hidden="true">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header bg-success white">
+								<h4 class="modal-title white" id="myModalLabel15" >Đăng ký buổi nghỉ cho GV</h4>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btndongdangkybuoinghicuagv">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div id="girddangkybuoinghiall"></div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal" id="btnhuybuoinghiall">Huỷ</button>
+								<button type="button" class="btn btn-outline-danger" id="btnluudangkybuoinghiall">Lưu</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<!-- modal đăng ký tiet nghỉ all-->
+				<div class="modal fade text-left" id="modaldangkytietnghiall" tabindex="-1" role="dialog" aria-labelledby="myModalLabel15" style="display: none;" aria-hidden="true">
+					<div class="modal-dialog modal-lg" role="document">
+						<div class="modal-content">
+							<div class="modal-header bg-success white">
+								<h4 class="modal-title white" id="myModalLabel15" >Đăng ký tiết nghỉ cho GV</h4>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btndongdangkytietnghicuagv">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<div id="girddangkytietnghiall"></div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal" id="btnhuytietnghiall">Huỷ</button>
+								<button type="button" class="btn btn-outline-danger" id="btnluudangkytietnghiall">Lưu</button>
+							</div>
+						</div>
+					</div>
+				</div>
 
 
 
@@ -1015,181 +1129,225 @@
 
 
 
-			<!-- script -->
 			<script type="text/javascript">
 
-				function clearcheckbox(){
-					$("#rangbuoctietcodinh").prop( "checked", false);
-					$("#rangbuocphonghoc").prop( "checked", false);
-					$("#tiethopcuato").prop( "checked", false);
-					$("#dangkybuoitietnghicuagv").prop( "checked", false);
-					$("#tietgiaovienbuocphaico").prop( "checked", false);
-					$("#rangbuocsotiet5sang").prop( "checked", false);
-					$("#rangbuoctiettranhcuamon").prop( "checked", false);
-					$("#tranhhaimonxepcungbuoi").prop( "checked", false);
-					$("#captietbuocphaixepliennhau").prop( "checked", false);
-					$("#sotiettoidatrongbuoicuamon").prop( "checked", false);
-					$("#sotiettoidatrongngaycuamon").prop( "checked", false);
-					$("#uutienmonxeptiettoidatrongbuoi").prop( "checked", false);
-					$("#monxeptietcachnhauitnhat1ngay").prop( "checked", false);
-	//
-}
+					function clearcheckbox(){
+						$("#rangbuoctietcodinh").prop( "checked", false);
+						$("#tiethopcuato").prop( "checked", false);
+						$("#dangkybuoitietnghicuagv").prop( "checked", false);
+						$("#tietgiaovienbuocphaico").prop( "checked", false);
+						$("#rangbuocsotiet5sang").prop( "checked", false);
+						$("#rangbuoctiettranhcuamon").prop( "checked", false);
+						$("#tranhhaimonxepcungbuoi").prop( "checked", false);
+						$("#captietbuocphaixepliennhau").prop( "checked", false);
+						$("#sotiettoidatrongbuoicuamon").prop( "checked", false);
+						$("#sotiettoidatrongngaycuamon").prop( "checked", false);
+						$("#rangbuocthututiet").prop( "checked", false);
+						$("#rangbuoctietnghilop").prop( "checked", false);
+					}
+					//ràng buộc tiết cố định
+					$("#rangbuoctietcodinh").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "block";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+						$("#rangbuoctietcodinhtiettrong").prop( "checked", false);
+						$("#rangbuoctietcodinhtiethoc").prop( "checked", false);
+						$("#apdungtoantruongrbtcd").prop( "checked", false);
+						$("#chonkhoilopapdungrbtcd").prop( "checked", false);
+						rangbuoctietcodinh();
+						loaddatarangbuoctietcodinh();
+					});
+					$(document).ready(function() {
+						document.getElementById("btnthemmoitiethoc").style.display = "block";
+						document.getElementById("btnthemmoitiettrong").style.display = "none";
+					});
 
-$("#sotiettoidatrongngaycuamon").change(function () {
-	document.getElementById("formsotiettoidatrongngay").style.display = "block";		
-	document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
-	document.getElementById("formtiethopcuato").style.display = "none";
-	document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
-	document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
-	document.getElementById("formtietgvbuocphaico").style.display = "none";
-	document.getElementById("formrangbuocsotiet5sang").style.display = "none";
-	document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-	document.getElementById("formrangbuoctietcodinh").style.display = "none";
-});
-$("#sotiettoidatrongbuoicuamon").change(function () {
-	document.getElementById("formsotiettoidatrongmoibuoi").style.display = "block";
-	document.getElementById("formsotiettoidatrongngay").style.display = "none";
-	document.getElementById("formtiethopcuato").style.display = "none";
-	document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
-	document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
-	document.getElementById("formtietgvbuocphaico").style.display = "none";
-	document.getElementById("formrangbuocsotiet5sang").style.display = "none";
-	document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-	document.getElementById("formrangbuoctietcodinh").style.display = "none";
+					//tiết họp của tổ(nhóm)
+					$("#tiethopcuato").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "block";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+						tiethopcuato();
+					});
 
-});
-	//ràng buộc tiết cố định
-	$("#rangbuoctietcodinh").change(function () {
-		document.getElementById("formrangbuoctietcodinh").style.display = "block";
-		document.getElementById("formtiethopcuato").style.display = "none";
-		document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
-		document.getElementById("formtietgvbuocphaico").style.display = "none";
-		document.getElementById("formrangbuocsotiet5sang").style.display = "none";
-		document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-		document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
-		document.getElementById("formsotiettoidatrongngay").style.display = "none";
-		$("#rangbuoctietcodinhtiettrong").prop( "checked", false);
-		$("#rangbuoctietcodinhtiethoc").prop( "checked", false);
-		$("#apdungtoantruongrbtcd").prop( "checked", false);
-		$("#chonkhoilopapdungrbtcd").prop( "checked", false);
+					// đăng ký buổi/tiết nghỉ của gv
+					$("#dangkybuoitietnghicuagv").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "block";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+						loaddatadanhsachgvthamgiagiangday1();
+					});
+					// tiết giáo viên buộc phải có
+					$("#tietgiaovienbuocphaico").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "block";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+						loaddatadanhsachgvthamgiagiangday();
+					});
+					// ràng buộc số tiết 5 sáng(tiết 1 chiều)
+					$("#rangbuocsotiet5sang").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "block";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+						rangbuocsotiet5sangtiet1chieu();
+					});
+					//rang buoc tiet tranh cua mon
+					$("#rangbuoctiettranhcuamon").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "block";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+						rangbuoctiettranh();
+						loadchonlopsang(); 
+						loadchonlopchieu(); 
+					});
+					//tranh 2 mon xep cung buoi
+					$("#tranhhaimonxepcungbuoi").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "block";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+						rangbuoctranh2monxepcungbuoi();
+					});
+					//ràng buộc cặp tiết xếp liền nhau
+					$("#captietbuocphaixepliennhau").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "block";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+						captietbuocphaixepliennhau();
+					});
 
-		rangbuoctietcodinh();
-		loaddatarangbuoctietcodinh();
-	});
 
-	$(document).ready(function() {
-		document.getElementById("btnthemmoitiethoc").style.display = "block";
-		document.getElementById("btnthemmoitiettrong").style.display = "none";
-	});
-	//tiết họp của tổ(nhóm)
-	$("#tiethopcuato").change(function () {
-		document.getElementById("formtiethopcuato").style.display = "block";
-		document.getElementById("formrangbuoctietcodinh").style.display = "none";
-		document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
-		document.getElementById("formtietgvbuocphaico").style.display = "none";
-		document.getElementById("formrangbuocsotiet5sang").style.display = "none";
-		document.getElementById("formrangbuoctiettranh").style.display = "none";
-		document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
-		document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-		document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
-		document.getElementById("formsotiettoidatrongngay").style.display = "none";
+					$("#sotiettoidatrongngaycuamon").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "block";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+					});
+					$("#sotiettoidatrongbuoicuamon").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "block";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "none";
+					});
 
-		tiethopcuato();
-	});
+					$("#rangbuocthututiet").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "block";
+						document.getElementById("formtietnghilop").style.display = "none";
+						thututietlockhoi();
+					});
 
-	//rang buoc tiet tranh cua mon
-	$("#rangbuoctiettranhcuamon").change(function () {
-		document.getElementById("formrangbuoctiettranh").style.display = "block";
-		document.getElementById("formtiethopcuato").style.display = "none";
-		document.getElementById("formrangbuoctietcodinh").style.display = "none";
-		document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
-		document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-		document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
-		document.getElementById("formsotiettoidatrongngay").style.display = "none";
-		document.getElementById("formrangbuocsotiet5sang").style.display = "none";	
-		rangbuoctiettranh();
-
-	});
-				
-
-
- 
-				
-
-
-
-
-
-
-
-	//tranh 2 mon xep cung buoi
-	$("#tranhhaimonxepcungbuoi").change(function () {
-		document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "block";
-		document.getElementById("formtiethopcuato").style.display = "none";
-		document.getElementById("formrangbuoctietcodinh").style.display = "none";
-		document.getElementById("formrangbuoctiettranh").style.display = "none";
-		document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-		document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
-		document.getElementById("formsotiettoidatrongngay").style.display = "none";
-		document.getElementById("formrangbuocsotiet5sang").style.display = "none";	
-		rangbuoctranh2monxepcungbuoi();
-	});
-	//ràng buộc cặp tiết xếp liền nhau
-	$("#captietbuocphaixepliennhau").change(function () {
-		document.getElementById("formrangbuoccaptietxepliennhau").style.display = "block";
-		document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
-		document.getElementById("formtiethopcuato").style.display = "none";
-		document.getElementById("formrangbuoctietcodinh").style.display = "none";
-		document.getElementById("formrangbuoctiettranh").style.display = "none";
-		document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
-		document.getElementById("formsotiettoidatrongngay").style.display = "none";
-		document.getElementById("formrangbuocsotiet5sang").style.display = "none";	
-		captietbuocphaixepliennhau();
-	});
-
-	// đăng ký buổi/tiết nghỉ của gv
-	$("#dangkybuoitietnghicuagv").change(function () {
-		document.getElementById("formtiethopcuato").style.display = "none";
-		document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-		document.getElementById("formrangbuoctietcodinh").style.display = "none";
-		document.getElementById("formdangkybuoitietnghicuagv").style.display = "block";
-		document.getElementById("formtietgvbuocphaico").style.display = "none";
-		document.getElementById("formrangbuocsotiet5sang").style.display = "none";
-		document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
-		document.getElementById("formsotiettoidatrongngay").style.display = "none";
-		document.getElementById("formrangbuoctiettranh").style.display = "none";
-
-		loaddatadanhsachgvthamgiagiangday1();
-	});
-
-	// tiết giáo viên buộc phải có
-	$("#tietgiaovienbuocphaico").change(function () {
-		document.getElementById("formtiethopcuato").style.display = "none";
-		document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-		document.getElementById("formrangbuoctietcodinh").style.display = "none";
-		document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
-		document.getElementById("formtietgvbuocphaico").style.display = "block";
-		document.getElementById("formrangbuocsotiet5sang").style.display = "none";
-		document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
-		document.getElementById("formsotiettoidatrongngay").style.display = "none";
-		document.getElementById("formrangbuoctiettranh").style.display = "none";
-		loaddatadanhsachgvthamgiagiangday();
-
-	});
-
-	// ràng buộc số tiết 5 sáng(tiết 1 chiều)
-	$("#rangbuocsotiet5sang").change(function () {
-		document.getElementById("formtiethopcuato").style.display = "none";
-		document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
-		document.getElementById("formrangbuoctietcodinh").style.display = "none";
-		document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
-		document.getElementById("formtietgvbuocphaico").style.display = "none";
-		document.getElementById("formrangbuocsotiet5sang").style.display = "block";	
-		document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
-		document.getElementById("formsotiettoidatrongngay").style.display = "none";	
-		document.getElementById("formrangbuoctiettranh").style.display = "none";
-		rangbuocsotiet5sangtiet1chieu();
-	});
+					$("#rangbuoctietnghilop").change(function () {
+						document.getElementById("formrangbuoctietcodinh").style.display = "none";
+						document.getElementById("formtiethopcuato").style.display = "none";
+						document.getElementById("formdangkybuoitietnghicuagv").style.display = "none";
+						document.getElementById("formtietgvbuocphaico").style.display = "none";
+						document.getElementById("formrangbuocsotiet5sang").style.display = "none";
+						document.getElementById("formrangbuoctiettranh").style.display = "none";
+						document.getElementById("formrangbuoctranh2monxepcungbuoi").style.display = "none";
+						document.getElementById("formrangbuoccaptietxepliennhau").style.display = "none";
+						document.getElementById("formsotiettoidatrongmoibuoi").style.display = "none";
+						document.getElementById("formsotiettoidatrongngay").style.display = "none";
+						document.getElementById("formthututiet").style.display = "none";
+						document.getElementById("formtietnghilop").style.display = "block";
+						tietnghilop();
+					});
 
 
 </script>
@@ -1203,6 +1361,9 @@ $("#sotiettoidatrongbuoicuamon").change(function () {
 <script type="text/javascript" src="js/rangbuoc/dangkybuoitietnghicuagv.js"></script>
 <script type="text/javascript" src="js/rangbuoc/tietgvbuocphaico.js"></script>
 <script type="text/javascript" src="js/rangbuoc/rangbuocsotiet5sangtiet1chieu.js"></script>
+		
+<script type="text/javascript" src="js/rangbuoc/thututiet.js"></script>
+<script type="text/javascript" src="js/rangbuoc/rangbuocdangkytietnghilop.js"></script>
 
 <!-- a duc -->
 <!-- <script type="module" src="js\rangbuoc\toidabuoi.js"></script> -->

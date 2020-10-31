@@ -69,28 +69,20 @@ function rangbuoctietcodinh() {
             chkbox.setAttribute("value", iterator.id);
             chkbox.setAttribute("data-khoi", iterator.tenkhoi);
             var text = document.createTextNode(' ' + iterator.tenkhoi);
-            var th = document.createElement("th");
+            let th = document.createElement("th");
 
-
+            chkbox.onclick = function(e) {
+                let chkClass = document.querySelectorAll(`.classRoom[data-khoi="${e.target.dataset.khoi}"]`);
+                for (const classRoom of chkClass) {
+                    classRoom.checked = e.target.checked;
+                }
+            };
 
             th.setAttribute("data-khoi", iterator.id);
             th.appendChild(chkbox);
             th.appendChild(text);
             headTable.appendChild(th);
-			
-					            chkbox.onclick = function(e) {
-									
-									let khoi = e.target.dataset.khoi;
-                var chkClass = document.querySelectorAll(`.classRoom[data-khoi="${e.target.dataset.khoi}"]`);
-                for (const classRoom of chkClass) {
-                    classRoom.checked = e.target.checked;
-                }
-            };
         }
-		
-
-		
-		
         // Render phan than(tbody)
         let className = [];
         // Lap theo so lop hoc lon nhat
@@ -181,7 +173,7 @@ function rangbuoctietcodinh() {
                 var dataadtt = [];
                 data1.filter(function(items){
                     dataadtt.push({
-                        id: items.id
+                        id: items.tenkhoi
                     });
                 });
                 $('#apdungtoantruongid').val(JSON.stringify(dataadtt));
@@ -193,7 +185,7 @@ function rangbuoctietcodinh() {
                 var dataadtt = [];
                 data1.filter(function(items){
                     dataadtt.push({
-                        id: items.id
+                        id: items.tenkhoi
                     });
                 });
                 $('#apdungtoantruongids').val(JSON.stringify(dataadtt));
@@ -204,59 +196,16 @@ function rangbuoctietcodinh() {
 
 function loaddatarangbuoctietcodinh() {
     var data = axios.get('getrangbuoctietcodinh').then(function(response) {
-        var data1 = response.data;
-        var data2 = [];
-        data1.filter(function(items) {
-            if (items.danhsachlophocrb != '') {
-                data2.push({
-                    id: items.id,
-                    tenmonhoc: items.tenmonhoc,
-                    danhsachlophocrb: items.danhsachlophocrb
-                });
-            }
-        });
-        // var data3 = [];
-        // var lucky2 = data2.filter(function(items1) {
-        //     var mamonhoc = items1.id;
-        //     var data4 = [];
-        //     data3.push({
-        //         id: items1.id,
-        //         tenmonhoc: items1.tenmonhoc,
-        //         danhsachlophocrb: data4
+        var datas = response.data;
+        // var datas = data1.map(function(value, label) {
+        //     let data = value;
+        //     let stt = label + 1;
+        //     var datas = Object.assign(data, {
+        //         stt: stt.toString()
         //     });
-        //     var datadslhrb = items1.danhsachlophocrb;
-        //     var lucky3 = datadslhrb.filter(function(items2) {
-        //         if (mamonhoc == items2.mamonhoc) {
-        //             var mamucrangbuoc = items2.mamucrangbuoc;
-        //             var datamrb = items2.mucrangbuoc;
-        //             var lucky4 = datamrb.filter(function(items3) {
-        //                 if (mamucrangbuoc == items3.id) {
-        //                     data4.push({
-        //                         id: items2.id,
-        //                         tenlop: items2.tenlop,
-        //                         khoi: items2.khoi,
-        //                         idrbtcd: items2.idrbtcd,
-        //                         mamonhoc: items2.mamonhoc,
-        //                         mamucrangbuoc: items2.mamucrangbuoc,
-        //                         buoi: items2.buoi,
-        //                         thu: items2.thu,
-        //                         tiet: items2.tiet,
-        //                         mucrangbuoc: items3.mucrangbuoc
-        //                     });
-        //                 }
-        //             });
-        //         }
-        //     });
+        //     return datas;
         // });
-        // console.log(data3);
-        var datas = data2.map(function(value, label) {
-            let data = value;
-            let stt = label + 1;
-            var datas = Object.assign(data, {
-                stt: stt.toString()
-            });
-            return datas;
-        });
+
         dsrangbuoctietcodinh(datas);
     });
 }
@@ -264,6 +213,7 @@ function loaddatarangbuoctietcodinh() {
 function dsrangbuoctietcodinh(datas) {
     $('#girdrangbuoctietcodinh').dxDataGrid({
         dataSource: datas,
+        keyExpr: "mamonhoc",
         showBorders: true,
         paging: {
             pageSize: 10
@@ -282,179 +232,27 @@ function dsrangbuoctietcodinh(datas) {
             allowedPageSizes: [5, 10, 20],
             showInfo: true
         },
-
-        /*chon row*/
-        // selection: {
-        //     mode: "single"
-        // },
-        /* co dan cot */
         allowColumnResizing: true,
         columnResizingMode: "widget",
-        columns: [{
-            caption: "STT",
-            dataField: "stt",
-            width: 50
-        }, {
+        columns: [ {
             caption: "Môn",
             dataField: "tenmonhoc",
         }, {
-            caption: "Lớp",
-            dataField: 'danhsachlophocrb',
-            cellTemplate: function(element, info) {
-                var item = info.value;
-                var datakhoi = [];
-                item.filter(function(items) {
-                    var i = datakhoi.findIndex(x => x.khoi == items.khoi);
-                    if (i <= -1) {
-                        datakhoi.push({
-                            khoi: items.khoi
-                        });
-                    }
-                    return null;
-                });
-                var temp = datakhoi.map(function(value) {
-                    return value.khoi;
-                }).join(", ");
-                $("<div>")
-                    .appendTo(element)
-                    .text("Khối: " + temp)
-                    .css("white-space", "normal")
-                    .css("overflow-wrap", 'break-word');
-            }
-        }, {
-            caption: "Thứ",
-            dataField: 'danhsachlophocrb',
-            cellTemplate: function(element, info) {
-                var item = info.value;
-                var databuoithu = [];
-                item.filter(function(items) {
-                    var i = databuoithu.findIndex(x => x.buoi == items.buoi);
-                    if (i <= -1) {
-                        databuoithu.push({
-                            buoi: items.buoi,
-                            thu: items.thu
-                        });
-                    }
-                    return null;
-                });
-                var temp = databuoithu.map(function(value) {
-                    var buoi;
-                    if (value.buoi == 0) {
-                        buoi = "sáng";
-                    } else {
-                        buoi = "chiều";
-                    }
-                    return "Thứ " + value.thu + " - " + buoi;
-                }).join(", ");
-                $("<div>")
-                    .appendTo(element)
-                    .text(temp)
-                    .css("white-space", "normal")
-                    .css("overflow-wrap", 'break-word');
-            }
-        }, {
-            caption: "Tiết",
-            dataField: 'danhsachlophocrb',
-            cellTemplate: function(element, info) {
-                var item = info.value;
-                var datatiet = [];
-                item.filter(function(items) {
-                    var i = datatiet.findIndex(x => x.tiet == items.tiet);
-                    if (i <= -1) {
-                        datatiet.push({
-                            tiet: items.tiet
-                        });
-                    }
-                    return null;
-                });
-                var temp = datatiet.map(function(value) {
-                    return value.tiet;
-                }).join(", ");
-                $("<div>")
-                    .appendTo(element)
-                    .text(temp)
-                    .css("white-space", "normal")
-                    .css("overflow-wrap", 'break-word');
-            }
-        }, {
-            caption: "Mức ràng buộc",
-            dataField: 'danhsachlophocrb',
-            cellTemplate: function(element, info) {
-                var item = info.value;
-                var datamrb = [];
-                item.filter(function(items) {
-                    var i = datamrb.findIndex(x => x.mucrangbuoc == items.mucrangbuoc);
-                    if (i <= -1) {
-                        datamrb.push({
-                            mucrangbuoc: items.mucrangbuoc
-                        });
-                    }
-                    return null;
-                });
-                var temp = datamrb.map(function(value) {
-                    return "Mức " + value.mucrangbuoc;
-                }).join(", ");
-                $("<div>")
-                    .appendTo(element)
-                    .text(temp)
-                    .css("white-space", "normal")
-                    .css("overflow-wrap", 'break-word');
-            }
-        }, {
-            caption: "KT trùng tiết CĐ",
-            // dataField: 'danhsachlophocrb',
-        }, {
             fixed: true,
             fixedPosition: "right",
-            caption: "Sửa",
+            caption: "Xóa môn học",
             cellTemplate: function(container, options) {
                 container.addClass("center");
                 $("<div>")
                     .dxButton({
                         template: function(e) {
-                            return $('<i class="fa fa-pencil-square-o"></i>');
+                            return $('<i class="fa fa-eraser"></i>');
                         },
                         onClick: function(e) {
-                            var datarb = options.data.danhsachlophocrb;
-                            var datarbtcd = [];
-                            datarb.filter(function(items){
-                                // var i = datarbtcd.findIndex(x => x.id == items.id);
-                                // if (i <= -1) {
-                                    datarbtcd.push(items);
-                                // }
-                                // return null;
-                            });
-                            suarangbuoctietcodinh(datarbtcd);
-                        },
-                    })
-                    .css('background-color', 'green')
-                    .appendTo(container);
-            },
-            width: 50,
-        }, {
-            fixed: true,
-            fixedPosition: "right",
-            caption: "Xóa",
-            cellTemplate: function(container, options) {
-                container.addClass("center");
-                $("<div>")
-                    .dxButton({
-                        template: function(e) {
-                            return $('<i class="fa fa-trash-o"></i>');
-                        },
-                        onClick: function(e) {
-                            var data = options.data.danhsachlophocrb;
-                            var idrbtcdloc = [];
-                            data.filter(function(items) {
-                                idrbtcdloc.push({
-                                    idrbtcd: items.idrbtcd
-                                        // tenlop: items.tenlop
-                                });
-                            });
-                            var idrbtcd = JSON.stringify(idrbtcdloc);
+                            var idmonhoc = options.data.mamonhoc;
                             Swal.fire({
                                 title: 'Xoá?',
-                                text: "Bạn có muốn xoá!",
+                                text: "Bạn có muốn xoá môn "+options.data.tenmonhoc+"",
                                 icon: 'warning',
                                 showCancelButton: true,
                                 confirmButtonColor: '#3085d6',
@@ -462,8 +260,8 @@ function dsrangbuoctietcodinh(datas) {
                                 confirmButtonText: 'OK'
                             }).then((result) => {
                                 if (result.value) {
-                                    axios.post('delrangbuoctietcodinh', {
-                                        idrbtcd: idrbtcd
+                                    axios.post('delmonhocrangbuoctietcodinh', {
+                                        idmonhoc: idmonhoc
                                     }).then(function(response) {
                                         var data = response.data;
                                         if(data == 1){
@@ -480,18 +278,145 @@ function dsrangbuoctietcodinh(datas) {
                             })
                         },
                     })
-                    .css('background-color', 'red')
+                    .css('background-color', '#C71585')
                     .appendTo(container);
             },
-            width: 50,
-        }],
-        // select data row
-        onSelectionChanged: function(data) {
-            // var data = data.selectedRowsData;
-            // updateButton.option("disabled", !data.length);
-            // // console.log(data);
-            // loaditemgvthamgiagiangday(data);
-        },
+            width: 100,
+        }
+        ],
+        masterDetail: {
+            enabled: true,
+            template: function(container, options) { 
+                var tasks = options.data.dsbuoithu;
+                $("<div>")
+                    .dxDataGrid({
+                        columnAutoWidth: true,
+                        showBorders: true,
+                        columns: [{
+                            caption: "Lớp",
+                            dataField: 'dsrbtcd',
+                            cellTemplate: function(element, info) {
+                                var item = info.value;
+                                var datakhoi = [];
+                                item.filter(function(items) {
+                                    var i = datakhoi.findIndex(x => x.khoi == items.khoi);
+                                    if (i <= -1) {
+                                        datakhoi.push({
+                                            khoi: items.khoi
+                                        });
+                                    }
+                                    return null;
+                                });
+                                var temp = datakhoi.map(function(value) {
+                                    return value.khoi;
+                                }).join(", ");
+                                $("<div>")
+                                    .appendTo(element)
+                                    .text("Khối: " + temp)
+                                    .css("white-space", "normal")
+                                    .css("overflow-wrap", 'break-word');
+                            }
+                        }, {
+                            caption: "Thứ",
+                            dataField: "tenbuoithu",
+                        }, {
+                            caption: "Tiết",
+                            dataField: "tiet",
+                        }, {
+                            caption: "Mức ràng buộc",
+                            dataField: "tenmucrangbuoc",
+                            cellTemplate: function(element, info) {
+                                var item = info.value;
+                                $("<div>")
+                                .appendTo(element)
+                                .text("Mức " + item)
+                                .css("white-space", "normal")
+                                .css("overflow-wrap", 'break-word');
+                            }
+                        }, {
+                            fixed: true,
+                            fixedPosition: "right",
+                            caption: "Sửa",
+                            cellTemplate: function(container, options) {
+                                container.addClass("center");
+                                $("<div>")
+                                    .dxButton({
+                                        template: function(e) {
+                                            return $('<i class="fa fa-pencil-square-o"></i>');
+                                        },
+                                        onClick: function(e) {
+                                            var databuoithu = options.data;
+                                            suarangbuoctietcodinh(databuoithu);
+                                        },
+                                    })
+                                    .css('background-color', 'green')
+                                    .appendTo(container);
+                            },
+                            width: 50,
+                        }, {
+                            fixed: true,
+                            fixedPosition: "right",
+                            caption: "Xóa",
+                            cellTemplate: function(container, options) {
+                                container.addClass("center");
+                                $("<div>")
+                                    .dxButton({
+                                        template: function(e) {
+                                            return $('<i class="fa fa-trash-o"></i>');
+                                        },
+                                        onClick: function(e) {
+                                            var data = options.data.dsrbtcd;
+                                            var idrbtcdloc = [];
+                                            data.filter(function(items) {
+                                                idrbtcdloc.push({
+                                                    idrbtcd: items.marbtcd
+                                                });
+                                            });
+                                            var idrbtcd = JSON.stringify(idrbtcdloc);
+                                            Swal.fire({
+                                                title: 'Xoá?',
+                                                text: "Bạn có muốn xoá!",
+                                                icon: 'warning',
+                                                showCancelButton: true,
+                                                confirmButtonColor: '#3085d6',
+                                                cancelButtonColor: '#d33',
+                                                confirmButtonText: 'OK'
+                                            }).then((result) => {
+                                                if (result.value) {
+                                                    axios.post('delrangbuoctietcodinh', {
+                                                        idrbtcd: idrbtcd
+                                                    }).then(function(response) {
+                                                        var data = response.data;
+                                                        if(data == 1){
+                                                            Swal.fire(
+                                                                'Xoá!',
+                                                                'Xoá thành công.',
+                                                                'success'
+                                                            )
+                                                            reload_rangbuoctietcodinh();
+                                                        }
+                                                        
+                                                    });
+                                                }
+                                            })
+                                        },
+                                    })
+                                    .css('background-color', 'red')
+                                    .appendTo(container);
+                            },
+                            width: 50,
+                        }
+                        ],
+                        dataSource: new DevExpress.data.DataSource({
+                            store: new DevExpress.data.ArrayStore({
+                                key: "mamonhoc",
+                                data: tasks
+                            }),
+                            filter: ["mamonhoc", "=", options.key]
+                        })
+                    }).appendTo(container);
+            }
+        }
     });
 }
 
@@ -548,11 +473,12 @@ $('#btnthemtiethoc').click(function() {
 
 });
 
-function suarangbuoctietcodinh(datarbtcd) {
+function suarangbuoctietcodinh(databuoithu) {
 
-    var datarblh = datarbtcd;
+    var data = databuoithu;
+    var datarbtcd = data.dsrbtcd;
     $('#monSelect2s option').each(function(value) {
-        var idmhold = datarblh[0].mamonhoc;
+        var idmhold = data.mamonhoc;
         if (idmhold == $(this).val()) {
             $(this).attr('selected', 'selected');
         }else{
@@ -560,7 +486,7 @@ function suarangbuoctietcodinh(datarbtcd) {
         }
     });
     $('#buoiSelect2s option').each(function(value) {
-        var idbuoiold = datarblh[0].buoi;
+        var idbuoiold = data.mabuoi;
         if (idbuoiold == $(this).val()) {
             $(this).attr('selected', 'selected');
         }else{
@@ -568,7 +494,7 @@ function suarangbuoctietcodinh(datarbtcd) {
         }
     });
     $('#thuSelect2s option').each(function(value) {
-        var idthuold = datarblh[0].thu;
+        var idthuold = data.mathu;
         if (idthuold == $(this).val()) {
             $(this).attr('selected', 'selected');
         }else{
@@ -576,7 +502,7 @@ function suarangbuoctietcodinh(datarbtcd) {
         }
     });
     $('#tietthuSelect2s option').each(function(value) {
-        var idtietthuold = datarblh[0].tiet;
+        var idtietthuold = data.tiet;
         if (idtietthuold == $(this).val()) {
             $(this).attr('selected', 'selected');
         }else{
@@ -584,7 +510,7 @@ function suarangbuoctietcodinh(datarbtcd) {
         }
     });
     $('#mucrangbuocSelect2s option').each(function(value) {
-        var idmucrangbuocold = datarblh[0].mamucrangbuoc;
+        var idmucrangbuocold = data.mamucrangbuoc;
         if (idmucrangbuocold == $(this).val()) {
             $(this).attr('selected', 'selected');
         }else{
@@ -597,11 +523,11 @@ function suarangbuoctietcodinh(datarbtcd) {
     var checkBoxescha = grid.getElementsByClassName("classchas");
 
     var lopcheck = [];
-    datarblh.map(function(items){
+    datarbtcd.map(function(items){
         for (var i = 0; i < checkBoxes.length; i++) {
             var id = checkBoxes[i].defaultValue;
             var idk = checkBoxes[i].dataset.khois;
-            if (id == items.id) {               
+            if (id == items.malop) {               
                 checkBoxes[i].checked=true;
                 lopcheck.push(idk);           
             }
@@ -634,7 +560,7 @@ function suarangbuoctietcodinh(datarbtcd) {
         for(var k=0;k<checkBoxescha.length;k++){
             var datakhoicha = checkBoxescha[k].dataset.khois;
             for(var m=0;m<getdatakhoi.length;m++){
-                if(datakhoicha == getdatakhoi[m].id){
+                if(datakhoicha == getdatakhoi[m].tenkhoi){
                     var demlop = getdatakhoi[m].danhsachlophoc.length;
                     demsllopkhoi.push({idkhoi:datakhoicha,sllop:demlop});
                 }    
@@ -681,9 +607,9 @@ function suarangbuoctietcodinh(datarbtcd) {
             }
         }
         var idrbtcdlocs = [];
-        datarblh.filter(function(items) {
+        datarbtcd.filter(function(items) {
             idrbtcdlocs.push({
-                idrbtcds: items.idrbtcd
+                idrbtcds: items.marbtcd
             });
         });
         var idrbtcds = JSON.stringify(idrbtcdlocs);

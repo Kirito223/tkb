@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Session; 
+use App\thongbao;
 
 class HomeController extends Controller
 {
@@ -16,6 +17,9 @@ class HomeController extends Controller
 	{
 		$matruong = Session::get('matruong');
 		\Assets::addScripts(['js-macdinh'])->addStyles(['style-macdinh'])->removeStyles(['style-dev'])->removeScripts(['js-dev','js-custom']);
-		return view('home.index');
+		
+		$thongbao = thongbao::where('truong_id',$matruong)->get();
+		$thongbaocount = thongbao::where('trangthai',0)->where('truong_id',$matruong)->count();
+		return view('home.index',compact('thongbao', 'thongbaocount'));
 	}
 }

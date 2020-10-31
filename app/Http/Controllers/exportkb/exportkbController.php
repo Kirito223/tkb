@@ -9,13 +9,23 @@ use App\thoikhoabieuexcel;
 use App\danhsachgv;
 use App\monhoc;
 use App\danhsachlophoc;
+use App\baocao;
+use App\User;
+use Auth;
+use DB;
+use stdClass;
+use App\thongbao;
 
 class exportkbController extends Controller
 {
 	public function index()
 	{
 		\Assets::addScripts(['js-macdinh','js-custom','js-dev'])->addStyles(['style-macdinh','style-dev'])->removeStyles(['style-datatable'])->removeScripts(['js-datatable']);
-		return view('exportkb.index');
+		
+				$matruong = Session::get('matruong');
+		$thongbao = thongbao::where('truong_id',$matruong)->get();
+		$thongbaocount = thongbao::where('trangthai',0)->where('truong_id',$matruong)->count();
+		return view('exportkb.index',compact('thongbao', 'thongbaocount'));
 	}
 
 
@@ -115,6 +125,138 @@ class exportkbController extends Controller
 		return json_encode($success, JSON_UNESCAPED_UNICODE);
 	}
 
+	//lấy danh sách báo cáo
+	public function getdsbaocao(){
+		$matruong = Session::get('matruong');  
+		$baocao = DB::table('baocao')
+		->join('tbl_admin','tbl_admin.id','=','baocao.tbl_admin_id')
+		->select('baocao.id','baocao.truong_id','baocao.tbl_admin_id','baocao.sohieu','baocao.tieude','baocao.loai','baocao.ngaytao','baocao.ngaygui','baocao.file','baocao.noidung','baocao.gui','baocao.trangthai','tbl_admin.tentaikhoan')
+		->where('baocao.truong_id',$matruong)
+		->get();
+		
+		return json_encode($baocao, JSON_UNESCAPED_UNICODE);
+	}
+
+	//thêm mới báo cáo
+	public function addbaocao(Request $rq){
+		// $Str = addslashes($iddonvi);
+		// $iddonvijson = json_encode($iddonvi);
+		$matruong = Session::get('matruong');
+		$ngaytaofirst = strtr( $rq->idngaytao, '/', '-');
+		$ngaytaoformat = date('Y-m-d', strtotime($ngaytaofirst));
+		$tenfile = [];
+		if(isset($_FILES['file'])){
+	        if($_FILES['file']['name'] !=''){
+	            $date = getdate();
+	            $name_array = $_FILES['file']['name'];
+	            $tmp_name_array = $_FILES['file']['tmp_name'];
+	            $type_array = $_FILES['file']['type'];
+	            $size_array = $_FILES['file']['size'];
+	            $error_array = $_FILES['file']['error'];
+                $file_name=$date['mday'].'_'.$date['mon'].'_'.$date['year'].'_'.rand(10,1000).'_'.$name_array;
+                array_push($tenfile, $file_name);
+                move_uploaded_file($tmp_name_array, public_path('uploads/baocao/').$file_name);
+	        }         
+	    }    
+		// if($rq->iddonvi !=''){
+			// for($i=0;$i<count($iddonvi);$i++){
+				$baocao = new baocao();
+				$baocao->truong_id = $matruong;
+				$baocao->tbl_admin_id = Auth::user()->id;
+				$baocao->sohieu = $rq->idsohieu;
+				$baocao->tieude = $rq->idtieude;
+				$baocao->loai = $rq->idloai;
+				$baocao->ngaytao = $ngaytaoformat;
+				$baocao->ngaygui = null;
+				if($tenfile != null){
+					$baocao->file = $tenfile[0];
+				}else{
+					$baocao->file = '';
+				} 
+			    $baocao->noidung = $rq->idnoidung;
+			    $baocao->gui = 0;
+			    $baocao->trangthai = 0;
+			    $baocao->save();    
+			// }
+		// }
+		$success = 1;
+		return json_encode($success);
+	}
+
+	//sửa báo cáo
+	public function updatebaocao(Request $rq){
+		$matruong = Session::get('matruong');  
+		// $Str = addslashes($iddonvi);
+		// $iddonvijson = json_encode($iddonvi);
+		$ngaytaofirst = strtr( $rq->idngaytao, '/', '-');
+		$ngaytaoformat = date('Y-m-d', strtotime($ngaytaofirst));
+		$tenfile = [];
+		if(isset($_FILES['file'])){
+	        if($_FILES['file']['name'] !=''){
+	            $date = getdate();
+	            $name_array = $_FILES['file']['name'];
+	            $tmp_name_array = $_FILES['file']['tmp_name'];
+	            $type_array = $_FILES['file']['type'];
+	            $size_array = $_FILES['file']['size'];
+	            $error_array = $_FILES['file']['error'];
+                $file_name=$date['mday'].'_'.$date['mon'].'_'.$date['year'].'_'.rand(10,1000).'_'.$name_array;
+                array_push($tenfile, $file_name);
+                move_uploaded_file($tmp_name_array, public_path('uploads/baocao/').$file_name);
+	        }         
+	    }    
+		// if($rq->iddonvi !=''){
+			// for($i=0;$i<count($iddonvi);$i++){
+				$baocao = baocao::find($rq->idbaocao);	
+				$baocao->truong_id = $matruong;
+				$baocao->tbl_admin_id = Auth::user()->id;
+				$baocao->sohieu = $rq->idsohieu;
+				$baocao->tieude = $rq->idtieude;
+				$baocao->loai = $rq->idloai;
+				$baocao->ngaytao = $ngaytaoformat;
+				if($tenfile != null){
+					$baocao->file = $tenfile[0];
+				}else{
+					$baocao->file = '';
+				} 
+			    $baocao->noidung = $rq->idnoidung;
+			    $baocao->update();    
+			// }
+		// }
+		$success = 1;
+		return json_encode($success);
+	}
+
+	//xoá báo cáo 
+	public function delbaocao(Request $rq)
+	{	
+
+		baocao::destroy($rq->idbaocao);
+		$success = 1;
+		return json_encode($success);
+	}
+
+	//gửi báo cáo
+	public function sendbaocao(Request $rq)
+	{	
+		$ngayhientai = date("Y-m-d");
+		$baocao = baocao::find($rq->idbaocao);
+		$baocao->gui = 1;
+		$baocao->ngaygui = $ngayhientai;
+		$baocao->update();  
+		$success = 1;
+		return json_encode($success);
+	}
+
+	//thu hồi báo cáo 
+	public function thuhoibaocao(Request $rq)
+	{	
+		$baocao = baocao::find($rq->idbaocao);
+		$baocao->gui = 0;
+		$baocao->ngaygui = null;
+		$baocao->update();  
+		$success = 1;
+		return json_encode($success);
+	}
 
 
 

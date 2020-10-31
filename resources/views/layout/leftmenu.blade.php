@@ -17,19 +17,28 @@
                     </li>
                 </ul>
             </li>
+				            <li class="nav-item has-sub open"><a href=""><i class="fa fa-file-excel-o"></i><span class="menu-title" data-i18n="nav.dash.main">Import</span></a>
+              <ul class="menu-content" style="">
+                <li class="active is-shown"><a class="menu-item" href="importsotietmonhoctemp" data-i18n="nav.dash.ecommerce">Số tiết môn học temp</a>
+                </li>
+              </ul>
+            </li>
             @endif
 
             @if( Auth::user()->level == 2)
             <li ><a href="khaibao"><i class="fa fa-exclamation-circle"></i><span class="menu-title" data-i18n="nav.icons.main">Khai báo</span></a>
+
                <li ><a href="rangbuoc"><i class="fa fa-compress"></i><span class="menu-title" data-i18n="nav.icons.main">Ràng buộc</span></a>
                </li>
                <li ><a href="xeptkb"><i class="fa fa-calendar-o"></i><span class="menu-title" data-i18n="nav.icons.main">Xếp TKB</span></a>
                </li>
-               <li ><a href="tinhchinh"><i class="fa fa-cog"></i><span class="menu-title" data-i18n="nav.icons.main">Tinh chỉnh </span></a>
+				<li ><a href="xemtkb"><i class="fa fa-calendar-plus-o"></i><span class="menu-title" data-i18n="nav.icons.main">Xem TKB</span></a>
                </li>
-               <!-- <li ><a href="xemtkb"><i class="fa fa-calendar-plus-o"></i><span class="menu-title" data-i18n="nav.icons.main">Xem TKB</span></a>
-               </li>-->
                <li ><a href="exportkb"><i class="fa fa-download"></i><span class="menu-title" data-i18n="nav.icons.main">Lưu - Tải TKB</span></a>
+               </li>
+				               <li ><a href="tinhchinh"><i class="fa fa-cog"></i><span class="menu-title" data-i18n="nav.icons.main">Đánh giá giáo viên </span></a>
+               </li>
+				               <li ><a href="thongbaotruong"><i class="fa fa-bullhorn"></i><span class="menu-title" data-i18n="nav.icons.main">Thông báo</span></a>
                </li>
            </li>
            @endif
@@ -44,10 +53,18 @@
                         </li>
                         <li class="is-shown"><a class="menu-item" href="theodoibaocaodonvi" data-i18n="nav.dash.project">Báo cáo đơn vị</a>
                         </li>
+                        <li class="is-shown"><a class="menu-item" href="theodoidanhgiagiaovien" data-i18n="nav.dash.project">Đánh giá giáo viên</a>
+                        </li>
                     </ul>
                 </li>
                 <li><a href="thongbao"><i class="fa fa-bell"></i><span class="menu-title" data-i18n="nav.icons.main">Thông báo</span></a>
             @endif
+					
+					
+					
+			@if( Auth::user()->level == 4)
+               <li ><a href="tinhchinh"><i class="fa fa-cog"></i><span class="menu-title" data-i18n="nav.icons.main">Đánh giá giáo viên </span></a>
+				 @endif
 					
 					
            <li ><a href="getlogout"><i class="fa fa-times-circle"></i><span class="menu-title" data-i18n="nav.icons.main">Đăng xuất</span></a>

@@ -88,7 +88,7 @@
 												</div>							
 											</div>
 
-											<div class="card box-shadow-0 border-info bg-transparent" >
+											<!-- <div class="card box-shadow-0 border-info bg-transparent" >
 												<div class="card-header bg-transparent" style="padding: 10px">
 													<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
 													<div class="heading-elements">
@@ -119,7 +119,7 @@
 														</fieldset>		
 													</div>
 												</div>							
-											</div>
+											</div> -->
 
 										</div>						
 									</div>
@@ -132,211 +132,13 @@
 
 			<dir class="col-md-9">
 
-				<!-- xem tkb trường -->
-				<div class="card" id="cardxeptkbtruong" style="display: none;">
-					<div class="card-header" style="padding: 10px">
-						<h4 class="card-title" id="titletkbgv">Thời khóa biểu trường: <b><span id="idtentruong" style="color: blue;"></span></b></h4>
-						<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-						<div class="heading-elements" style="top: 10px">
-							<ul class="list-inline mb-0">
-								<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-								<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="card-content collpase show">
-						<div class="card-body">
-							<form class="form">
-								<div class="form-body">
-									<section>
-										<div class="container">
-											<table id="example2" class="table table-striped table-bordered dataex-key-basic table-responsive display nowrap" width="100%">
-												<thead>
-													<tr>
-														<th>Thứ</th>
-														<th>Tiết</th>
-														<th>6A1</th>
-														<th>6A2</th>
-														<th>6A3</th>
-														<th>6A4</th>
-														<th>6A5</th>
-														<th>7A1</th>
-														<th>7A2</th>
-														<th>7A3</th>
-														<th>7A4</th>
-														<th>7A5</th>
-														<th style="border-right: 1px solid #E3EBF3;">9A2</th>
-														<!-- <th style="border-right: 1px solid #E3EBF3;">Thứ 7</th> -->
-
-													</tr>
-												</thead>
-												<tbody id="tkbgv">
-													<tr>
-														<td rowspan="5" style="color: red;">Thứ 2 sáng</td>
-														<td>1</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden></td>
-														<td>2</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden></td>
-														<td>3</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden></td>
-														<td>4</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden></td>
-														<td>5</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td rowspan="5" style="color: red;">Thứ 2 chiều</td>
-														<td>1</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden></td>
-														<td>2</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden></td>
-														<td>3</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden></td>
-														<td>4</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden></td>
-														<td>5</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-
-												</tbody>
-											</table>
-										</div>
-									</section>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-
-
 				<!-- select giáo viên của trường -->
 				<div class="card" id="cardselectgv" style="display: none;">
 					<div class="card-header" style="padding: 10px">
 						<h4 class="card-title" id="titletkbgv">Trường: <b><span id="idtentruonggv" style="color: blue;"></span></b></h4>
+						<input type="hidden" id="idtruonggv">
+						<input type="hidden" id="idgv">
+						<p id="iddatatungay" style="display: none;"></p>
 					</div>
 					<div class="card-content collpase show">
 						<div class="card-body">
@@ -416,125 +218,23 @@
 							<form class="form">
 								<div class="form-body">
 									<section>
-										<div class="container" style="overflow-y: auto; ">
-											<table id="example2" class="table table-striped table-bordered dataex-key-basic table-responsive display nowrap" style="width: 100%;margin:0px; padding:0px">
-											<thead>
-												<tr>
-													<th>Buổi</th>
-													<th>Tiết</th>
-													<th>Thứ 2</th>
-													<th>Thứ 3</th>
-													<th>Thứ 4</th>
-													<th>Thứ 5</th>
-													<th>Thứ 6</th>
-													<th style="border-right: 1px solid #E3EBF3;">Thứ 7</th>
-
-												</tr>
-											</thead>
-											<tbody id="tkbgv">
-												<tr>
-													<td rowspan="5" style="color: red;">Sáng</td>
-													<td>1</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-												<tr>
-													<td hidden>Sáng</td>
-													<td>2</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-												<tr>
-													<td hidden>Sáng</td>
-													<td>3</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-												<tr>
-													<td hidden>Sáng</td>
-													<td>4</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-												<tr>
-													<td hidden>Sáng</td>
-													<td>5</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-												<tr>
-													<td rowspan="5" style="color: red;">Chiều</td>
-													<td>1</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-												<tr>
-													<td hidden>Chiều</td>
-													<td>2</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-												<tr>
-													<td hidden>Chiều</td>
-													<td>3</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-												<tr>
-													<td hidden>Chiều</td>
-													<td>4</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-												<tr>
-													<td hidden>Chiều</td>
-													<td>5</td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true"></td>
-													<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-												</tr>
-
-											</tbody>
-											</table>
+										<div class="container">
+											<div id="divResults"></div>
+											<!-- <table id="tablexemtkbgiaovien" class="table table-striped table-bordered dataex-key-basic table-responsive display nowrap" style="overflow-y: auto; height: 100%;width: 100%;">
+												<thead class="thead-inverse" style="background-color: #28386c;color: white;">
+													<tr id="phandautablegiaovien">
+														<th>Buổi</th>
+														<th>Tiết</th>
+														<th id="2" class="classthu">Thứ 2</th>
+														<th id="3" class="classthu">Thứ 3</th>
+														<th id="4" class="classthu">Thứ 4</th>
+														<th id="5" class="classthu">Thứ 5</th>
+														<th id="6" class="classthu">Thứ 6</th>
+														<th id="7" class="classthu">Thứ 7</th>
+													</tr>
+												</thead>
+												<tbody id="phanthantablegiaovien"></tbody>
+											</table> -->
 										</div>
 									</section>
 
@@ -549,6 +249,9 @@
 				<div class="card" id="cardselectlop" style="display: none;">
 					<div class="card-header" style="padding: 10px">
 						<h4 class="card-title" id="titletkbgv">Trường: <b><span id="idtentruonglop" style="color: blue;"></span></b></h4>
+						<input type="hidden" id="idtruonglop">
+						<input type="hidden" id="idlop">
+						<p id="iddatatungaylop" style="display: none;"></p>
 					</div>
 					<div class="card-content collpase show">
 						<div class="card-body">
@@ -634,124 +337,22 @@
 								<div class="form-body">
 									<section>
 										<div class="container">
-											<table id="example2" class="table table-striped table-bordered dataex-key-basic table-responsive display nowrap" width="100%">
-												<thead>
-													<tr>
+											<div id="divResultsLop"></div>
+											<!-- <table id="tablexemtkblop" class="table table-striped table-bordered dataex-key-basic table-responsive display nowrap" style="overflow-y: auto; height: 100%;width: 100%;">
+												<thead class="thead-inverse" style="background-color: #28386c;color: white;">
+													<tr id="phandautablelop">
 														<th>Buổi</th>
 														<th>Tiết</th>
-														<th>Thứ 2</th>
-														<th>Thứ 3</th>
-														<th>Thứ 4</th>
-														<th>Thứ 5</th>
-														<th>Thứ 6</th>
-														<th style="border-right: 1px solid #E3EBF3;">Thứ 7</th>
-
+														<th id="2" class="classthu">Thứ 2</th>
+														<th id="3" class="classthu">Thứ 3</th>
+														<th id="4" class="classthu">Thứ 4</th>
+														<th id="5" class="classthu">Thứ 5</th>
+														<th id="6" class="classthu">Thứ 6</th>
+														<th id="7" class="classthu">Thứ 7</th>
 													</tr>
 												</thead>
-												<tbody id="tkbgv">
-													<tr>
-														<td rowspan="5" style="color: red;">Sáng</td>
-														<td>1</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden>Sáng</td>
-														<td>2</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden>Sáng</td>
-														<td>3</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden>Sáng</td>
-														<td>4</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden>Sáng</td>
-														<td>5</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td rowspan="5" style="color: red;">Chiều</td>
-														<td>1</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden>Chiều</td>
-														<td>2</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden>Chiều</td>
-														<td>3</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden>Chiều</td>
-														<td>4</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-													<tr>
-														<td hidden>Chiều</td>
-														<td>5</td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true"></td>
-														<td draggable="true" style="border-right: 1px solid #E3EBF3;"></td>
-													</tr>
-
-												</tbody>
-											</table>
+												<tbody id="phanthantablelop"></tbody>
+											</table> -->
 										</div>
 									</section>
 								</div>
@@ -771,22 +372,22 @@
 		$('#changegv').trigger('click');
 	},500);
 
-	$("#xemtkbtruong").change(function () {
+	// $("#xemtkbtruong").change(function () {
 
-		$("#xemtkbgiaovien").prop("checked", false);
-		$("#xemtkblop").prop("checked", false);
-		document.getElementById("cardxeptkbtruong").style.display = "block";
-		document.getElementById("cardxeptkbgiaovien").style.display = "none";
-		document.getElementById("cardxeptkblop").style.display = "none";
-		document.getElementById("cardselectgv").style.display = "none";
-		document.getElementById("cardselectlop").style.display = "none";
-	});
+	// 	$("#xemtkbgiaovien").prop("checked", false);
+	// 	$("#xemtkblop").prop("checked", false);
+	// 	document.getElementById("cardxeptkbtruong").style.display = "block";
+	// 	document.getElementById("cardxeptkbgiaovien").style.display = "none";
+	// 	document.getElementById("cardxeptkblop").style.display = "none";
+	// 	document.getElementById("cardselectgv").style.display = "none";
+	// 	document.getElementById("cardselectlop").style.display = "none";
+	// });
 
 	$("#xemtkbgiaovien").change(function () {
 
-		$("#xemtkbtruong").prop("checked", false);
+		// $("#xemtkbtruong").prop("checked", false);
 		$("#xemtkblop").prop("checked", false);
-		document.getElementById("cardxeptkbtruong").style.display = "none";
+		// document.getElementById("cardxeptkbtruong").style.display = "none";
 		// document.getElementById("cardxeptkbgiaovien").style.display = "block";		
 		document.getElementById("cardxeptkblop").style.display = "none";
 		document.getElementById("cardselectgv").style.display = "block";
@@ -796,8 +397,8 @@
 	$("#xemtkblop").change(function () {
 
 		$("#xemtkbgiaovien").prop("checked", false);
-		$("#xemtkbtruong").prop("checked", false);
-		document.getElementById("cardxeptkbtruong").style.display = "none";
+		// $("#xemtkbtruong").prop("checked", false);
+		// document.getElementById("cardxeptkbtruong").style.display = "none";
 		document.getElementById("cardxeptkbgiaovien").style.display = "none";
 		// document.getElementById("cardxeptkblop").style.display = "block";
 		document.getElementById("cardselectgv").style.display = "none";
@@ -873,6 +474,15 @@
 	});
 
 </script>
+
+<style type="text/css">
+	#tablexemtkbgiaovien tbody tr td.classoronggiaovien:hover {
+	  background-color: yellow;
+	}
+	#tablexemtkblop tbody tr td.classoronglop:hover {
+	  background-color: yellow;
+	}
+</style>
 
 <script type="text/javascript" src="js/tonghop/theodoibiendongtkb.js"></script>
 

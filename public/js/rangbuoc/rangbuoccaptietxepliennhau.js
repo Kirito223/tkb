@@ -198,31 +198,111 @@ function captietbuocphaixepliennhau() {
 				},
 			}
 			],
+						onContextMenuPreparing: function(data) { 
+				if (data.target == "content") {
+					if (!data.items) data.items = [];
+					data.items.push({
+						template: function () {
+							return $("<i class='fa fa-remove'>").text(" Xóa");                  
+						},
+						onItemClick: function() {
+							var dataxoa = data.row.data.id;
+							xoadscaptietxepliennhau(dataxoa);
+						}
+					});
+					data.items.push({
+						template: function () {
+							return $("<i class='fa fa-remove'>").text(" Xóa toàn bộ");                  
+						},
+						onItemClick: function() {
+							var dataxoahet = datas;
+							xoatoanbodscaptietxepliennhau(dataxoahet);
+						}
+					});
+				} 
+			},
+			
 			onSelectionChanged: function (selectedItems) {
 				var item = selectedItems.selectedRowsData[0];
 				changeitem(item);
 				embeditem();
 			}
 		});
-});
+	});	
 
+
+
+function xoadscaptietxepliennhau(id) {
+	Swal.fire({
+		title: 'Lưu',
+		text: "Bạn có muốn xóa cặp tiết xếp liền nhau này không",
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes'
+	}).then((result) => {
+		if (result.value) {
+			axios.post('dellrangbuoccaptietxepliennhau',{id:id}).then(function (response) {
+				var data = response.data;
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					text: 'Đã xóa thành công',
+					showConfirmButton: false,
+					timer: 1000
+				});   
+				captietbuocphaixepliennhau();
+				var dataGrid = $("#girdrangbuoccaptietxepliennhau").dxDataGrid("instance");
+				dataGrid.refresh();
+			});
+		}           
+	})
+}
+
+
+function xoatoanbodscaptietxepliennhau(id) {
+	Swal.fire({
+		title: 'Lưu',
+		text: "Bạn có muốn xóa toàn bộ cặp tiết xếp liền nhau không",
+		icon: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		confirmButtonText: 'Yes'
+	}).then((result) => {
+		if (result.value) {
+			axios.post('dellrangbuoccaptietxepliennhauall',{id:id}).then(function (response) {
+				var data = response.data;
+				Swal.fire({
+					position: 'center',
+					icon: 'success',
+					text: 'Đã xóa thành công',
+					showConfirmButton: false,
+					timer: 1000
+				});   
+				captietbuocphaixepliennhau();
+				var dataGrid = $("#girdrangbuoccaptietxepliennhau").dxDataGrid("instance");
+				dataGrid.refresh();
+			});
+		}           
+	})
+}
+		
 var datachangemon;
 axios.get("getdanhsachmonhoc").then(function(response) {
 	let data = response.data;
 
-	var datas = data.filter(function(cv){
-		return !datachangemon.find(function(e){
-			return e.mamonhoc == cv.id;
-		});
-	});
-
-	if (datas != null) {
-		let htmlmonhoc = datas.map(function(item) {
+	if (data != null) {
+		let htmlmonhoc = data.map(function(item) {
 			return ('<option value="' +item.id +'">' +item.tenmonhoc +"</option>");
 		});
 		$("#mon").html('<option value=""></option>' + htmlmonhoc);
 	}
 });
+
+
+
 
 }
 

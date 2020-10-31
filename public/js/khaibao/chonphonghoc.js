@@ -7,7 +7,7 @@ function reload_phonghoc() {
 
 function chon_phonghoc(){
 	var data = axios.get('getdanhsachphonghocbomon').then(function (response) {
-		var data1 = response.data;
+		var data1 = response.data[0];
 		var datas = data1.map(function (value, label) {
 			let data = value;
 			let stt = label + 1;

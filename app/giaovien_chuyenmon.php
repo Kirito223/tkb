@@ -24,4 +24,8 @@ class giaovien_chuyenmon extends Model
 	{
 		return $this->hasMany('App\mucrangbuoc', 'id','mucrangbuoc');
 	}
+		public function danhgiagv()
+	{
+		return $this->belongsTo('App\danhgiagv', 'magiaovien','magiaovien');
+	}
 }

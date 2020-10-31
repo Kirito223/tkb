@@ -47,7 +47,10 @@ class LoginController extends Controller
 				$user = Auth::user();
 				if($user->matruong != ""){
 					$school = truong::where('matruong', $user->matruong)->first();
+					$schools = truong::where('matruong', $user->matruong)->join('huyen','huyen.mahuyen','truong.mahuyen')->first();
+					Session::put('mahuyens', $schools->tenhuyen);
 					Session::put('schoolName', $school->tentruong);
+					Session::put('caphoc', $school->caphoc);
 				}
 				Session::put('id', $user->id);
 				Session::put('tentaikhoan', $user->tentaikhoan);

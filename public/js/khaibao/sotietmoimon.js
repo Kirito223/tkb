@@ -19,10 +19,11 @@ $('#khoitaodulieusotietmoimon').click(function() {
     });
 });
 
+var itemlop,itemmon,itemsotiet;
 $('#capnhatsotietmoimon').click(function(){   
- var lop = $('#sotietmoimonlop').val();
- var mon = $('#sotietmoimonmon').val();
- var sotiet = $('#sotietmoimonsotiet').val();
+ var lop = itemlop;
+ var mon = itemmon;
+ var sotiet = itemsotiet;
  axios.post('capnhatsotietmoimon', {lop:lop,mon:mon,sotiet:sotiet}).then(function(response) {var data = response.data;reload_sotiet_moimon();});
 });
 
@@ -49,27 +50,42 @@ function sotiet_moimon() {
             return datas;
         });
 
-        //chọn lớp
-        $("#sotietmoimonlop").select2({closeOnSelect : false,
-            placeholder : "Chọn lớp",
-            allowHtml: true,
-            allowClear: true,
-            tags: true,
-            width: '100%'});
-        let htmllophoc = datalop.map(function(item) {
-            return ('<option value="' +item.id +'">' +item.tenlop +"</option>");
+ //chọn lớp
+        $("#sotietmoimonlop").dxTagBox({
+            items: datalop,
+            placeholder: "Chọn lớp",
+            showSelectionControls: true,
+            displayExpr: "tenlop",
+            valueExpr: "id",
+            applyValueMode: "useButtons",
+            onValueChanged: function(data) {
+                var itlop = data.value;
+                itemlop = itlop;
+            }
         });
-        $("#sotietmoimonlop").html('<option value="0">Chọn tất cả</option>' + htmllophoc);
 
 
         //chọn môn 
-        $("#sotietmoimonmon").select2({
-            placeholder : "Chọn môn",
-            width: '100%'});
-        let htmlmon = datamon.map(function(item) {
-            return ('<option value="' +item.id +'">' +item.tenmonhoc +"</option>");
+        $("#sotietmoimonmon").dxTagBox({
+            items: datamon,
+            placeholder: "Chọn môn",
+            displayExpr: "tenmonhoc",
+            valueExpr: "id",
+            onValueChanged: function(data) {
+                var itmon = data.value[0];
+                itemmon = itmon;
+            }
         });
-        $("#sotietmoimonmon").html('<option value=""></option>' + htmlmon);
+
+        $("#sotietmoimonsotiet").dxNumberBox({
+            placeholder: "Số tiết",
+            showSpinButtons: true,
+            showClearButton: true,
+            onValueChanged: function(data) {
+                var itsotiet = data.value;
+                itemsotiet = itsotiet;
+            }
+        });
 		
 		
 		
@@ -281,9 +297,9 @@ function sotiet_moimon() {
             }
         });
 
-        axios.get('getdanhsachmonhoc').then(function(response) {
+        axios.get('getdanhsachsotietmoimon').then(function(response) {
 
-            var data = response.data;
+            var data = response.data[2];
             var datamh = [];
             data.filter(function(items) {
                 datamh.push({

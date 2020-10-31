@@ -4,10 +4,39 @@
 
 <!-- danh sách báo cáo -->
 <dir class="row" style="padding: 0;margin: 0" id="tabletruong">
+    <dir class="col-md-12" style="margin: 0;padding: 2px">
+        <div class="card">
+            <div class="card-header" style="padding: 10px">
+                <h4 class="card-title" style="padding-left: 10px"></h4>
+                <a class="heading-elements-toggle" ><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+                <div class="heading-elements" style="top: 10px">
+                    <ul class="list-inline mb-0">
+                        <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                        <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-content collpase show">
+                <div class="card-body">
+                    <form class="form">
+                        <div class="form-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label>Chọn trường xem báo cáo:</label>
+                                            <select id="idselecttruong" data-live-search="true"></select>
+                                </div>                      
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </dir>
+
 	<dir class="col-md-12" style="margin: 0;padding: 2px">
 		<div class="card">
 			<div class="card-header" style="padding: 10px">
-				<h4 class="card-title">Danh sách báo cáo đơn vị</h4>
+				<h4 class="card-title">Danh sách báo cáo trường: <b><span id="idtentruong" style="color: blue;"></span></b></h4>
 				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
 				<div class="heading-elements" style="top: 10px">
 					<ul class="list-inline mb-0">
@@ -65,13 +94,6 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-3 label-control" for="projectinput4">Tên đơn vị</label>
-                            <div class="col-md-9">
-                            	<input type="text" id="idtendonvi" class="form-control" name="phone" disabled="">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
                             <label class="col-md-3 label-control" for="projectinput4">Ngày gửi</label>
                             <div class="col-md-9">
                             	<input type="text" id="idngaygui" class="form-control" name="phone" disabled="">
@@ -89,10 +111,7 @@
 							<label class="col-md-3 label-control">Tập tin đính kèm</label>
 							<div class="col-md-9">
 								<label id="projectinput8" class="file center-block">
-									<!-- <input type="file" id="file"> -->
-									<span class="file-custom"><a href="http://www.africau.edu/images/default/sample.pdf" target="_blank">File1</a></span>
-									<br>
-									<span class="file-custom"><a href="http://www.africau.edu/images/default/sample.pdf" target="_blank">File2</a></span>
+									<div id="filedinhkem"></div>
 								</label>
 							</div>
 						</div>

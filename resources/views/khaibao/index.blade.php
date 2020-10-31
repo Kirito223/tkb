@@ -8,7 +8,7 @@
 			<div class="card-header" style="padding: 10px">
 				<h4 class="card-title">Khai báo dữ liệu</h4>
 				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-				<div class="heading-elements" style="top: 10px">
+				<div class="heading-elements"  style="top: 10px">
 					<ul class="list-inline mb-0">
 						<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
 						<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
@@ -21,13 +21,6 @@
 						<div class="form-body">
 							<div class="row">
 								<div class="col-md-12">
-									<div class="form-group">
-										<label>Chọn thời khóa biểu</label>
-										<input type="text" id="projectinput1" class="form-control input-xs"
-											placeholder="" name="fname">
-									</div>
-									<hr>
-
 									<fieldset class="checkbox">
 										<label>
 											<input type="checkbox" id="importexcel"> Nạp dữ liệu từ TKB Excel
@@ -44,8 +37,7 @@
 									<div class="card box-shadow-0 border-info bg-transparent" id="nhapdulieuhethong">
 										<div class="card-header bg-transparent" style="padding: 10px">
 											<h6 class="card-title" style="font-size: medium;">NHẬP DỮ LIỆU HỆ THỐNG</h6>
-											<a class="heading-elements-toggle"><i
-													class="fa fa-ellipsis-v font-medium-3"></i></a>
+											<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
 											<div class="heading-elements">
 												<ul class="list-inline mb-0">
 													<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -56,8 +48,7 @@
 											<div class="card-body">
 												<fieldset class="radio">
 													<label>
-														<input type="radio" name="radio" value=""
-															id="nhapdanhsachlophoc">
+														<input type="radio" name="radio" value="" id="nhapdanhsachlophoc">
 														Nhập danh sách lớp
 													</label>
 												</fieldset>
@@ -69,30 +60,26 @@
 												</fieldset>
 												<fieldset class="radio">
 													<label>
-														<input type="radio" name="radio" value=""
-															id="nhapdanhsachtochuyenmon">
+														<input type="radio" name="radio" value="" id="nhapdanhsachtochuyenmon">
 														Nhập tổ chuyên môn
 													</label>
 												</fieldset>
 												<fieldset class="radio">
 													<label>
-														<input type="radio" name="radio" value=""
-															id="nhapdanhsachmonhoc">
+														<input type="radio" name="radio" value="" id="nhapdanhsachmonhoc">
 														Nhập danh sách môn học
 													</label>
 												</fieldset>
 
 												<fieldset class="radio">
 													<label>
-														<input type="radio" name="radio" value=""
-															id="danhsachgvcuatochuyenmon">
+														<input type="radio" name="radio" value="" id="danhsachgvcuatochuyenmon">
 														DSGV của tổ CM
 													</label>
 												</fieldset>
 												<fieldset class="radio">
 													<label>
-														<input type="radio" name="radio" value=""
-															id="nhapdanhsachphonghocbomon">
+														<input type="radio" name="radio" value="" id="nhapdanhsachphonghocbomon">
 														Nhập DS phòng học bộ môn
 													</label>
 												</fieldset>
@@ -102,8 +89,7 @@
 									<div class="card box-shadow-0 border-info bg-transparent" id="khaibao">
 										<div class="card-header bg-transparent" style="padding: 10px">
 											<h6 class="card-title" style="font-size: medium;">KHAI BÁO: </h6>
-											<a class="heading-elements-toggle"><i
-													class="fa fa-ellipsis-v font-medium-3"></i></a>
+											<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
 											<div class="heading-elements">
 												<ul class="list-inline mb-0">
 													<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -120,8 +106,7 @@
 												</fieldset>
 												<fieldset class="radio">
 													<label>
-														<input type="radio" name="radio" value=""
-															id="chongvthamgiagiangday">
+														<input type="radio" name="radio" value="" id="chongvthamgiagiangday">
 														Chọn GV tham gia giảng dạy
 													</label>
 												</fieldset>
@@ -163,8 +148,7 @@
 												</fieldset>
 												<fieldset class="radio">
 													<label>
-														<input type="radio" name="radio" value=""
-															id="phancong_giaovienday">
+														<input type="radio" name="radio" value="" id="phancong_giaovienday">
 														Phân công giáo viên dạy
 													</label>
 												</fieldset>
@@ -172,7 +156,7 @@
 										</div>
 									</div>
 
-								</div>
+								</div>						
 							</div>
 						</div>
 					</form>
@@ -182,8 +166,8 @@
 	</dir>
 	<dir class="col-md-9" style="margin: 0;padding: 2px">
 		<div class="card" style="margin-bottom: 10px;display:none" id="cardhead">
-			<div class="card-header" style="padding: 10px">
-				<h4 class="card-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+			<div class="card-header" style="padding: 10px">	
+				<h4 class="card-title">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>			
 				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
 				<div class="heading-elements">
 					<ul class="list-inline mb-0">
@@ -196,8 +180,7 @@
 				<div class="card-body">
 					<div class="row">
 						<div class="col-md-2">
-							<button type="button" class="btn mr-1 mb-1 btn-success btn-sm" id="btnimportexcel"
-								style="display: none"><i class="fa fa-file-excel-o"></i> Nhập dữ liệu excel</button>
+							<button type="button" class="btn mr-1 mb-1 btn-success btn-sm" id="btnimportexcel" style="display: none"><i class="fa fa-file-excel-o"></i> Nhập dữ liệu excel</button>
 						</div>
 					</div>
 				</div>
@@ -224,20 +207,45 @@
 							<div class="form-group">
 								<h5>Tải lên file excel chứa thời khóa biểu</h5>
 								<div class="controls">
-									<input type="file" name="file[]" id="importfile" class="form-control input-sm"
-										required="" style="padding: 0px;
+									<input type="file" name="file[]" id="importfile" class="form-control input-sm" required="" style="padding: 0px;
 									height: auto;">
-								</div>
+								</div>	
 								<!-- <input id="upload" type=file  name="files[]"  style="display: none;" /> -->
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
 								<h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h5>
-								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="btnimportexcel"
-									onclick="document.getElementById('link').click()"><i class="fa fa-file-excel-o"></i>
-									Tải file mẫu</button>
-								<a id="link" href="excelfilemau/bangphancongtkb.xls" download hidden></a>
+								@if(Session::get('caphoc') == 1 && Session::get('mahuyen') == 6)
+								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="btnimportexcel"  onclick="document.getElementById('link').click()"><i class="fa fa-file-excel-o"></i> Tải file mẫu</button>	
+								<a id="link" href="excelfilemau/bangphancongtieuhocnhatrang.xls" download hidden></a>
+								@endif
+								@if(Session::get('caphoc') == 2 && Session::get('mahuyen') == 6)
+								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="btnimportexcel"  onclick="document.getElementById('link').click()"><i class="fa fa-file-excel-o"></i> Tải file mẫu</button>	
+								<a id="link" href="excelfilemau/bangphancongthcsnhatrang.xls" download hidden></a>
+								@endif
+								@if(Session::get('caphoc') == 4 && Session::get('mahuyen') == 6)
+								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="btnimportexcel"  onclick="document.getElementById('link').click()"><i class="fa fa-file-excel-o"></i> Tải file mẫu</button>	
+								<a id="link" href="excelfilemau/bangphancongtieuhocvathcsnhatrang.xls" download hidden></a>
+								@endif
+								
+								
+								
+								
+								
+								
+								@if(Session::get('caphoc') == 1 && Session::get('mahuyen') == 4)
+								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="btnimportexcel"  onclick="document.getElementById('link').click()"><i class="fa fa-file-excel-o"></i> Tải file mẫu</button>	
+								<a id="link" href="excelfilemau/bangphancongtieuhocdonghoa.xls" download hidden></a>
+								@endif
+								@if(Session::get('caphoc') == 2 && Session::get('mahuyen') == 4)
+								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="btnimportexcel"  onclick="document.getElementById('link').click()"><i class="fa fa-file-excel-o"></i> Tải file mẫu</button>	
+								<a id="link" href="excelfilemau/bangphancongthcsdonghoa.xls" download hidden></a>
+								@endif
+								@if(Session::get('caphoc') == 4 && Session::get('mahuyen') == 4)
+								<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="btnimportexcel"  onclick="document.getElementById('link').click()"><i class="fa fa-file-excel-o"></i> Tải file mẫu</button>	
+								<a id="link" href="excelfilemau/bangphancongtieuhocvathcsdonghoa.xls" download hidden></a>
+								@endif
 							</div>
 						</div>
 					</div>
@@ -296,7 +304,7 @@
 				</div>
 			</div>
 			<div class="card-content collapse show">
-				<div class="card-body">
+				<div class="card-body">				
 					<div id="girdnhapdanhsachtochuyenmon"></div>
 				</div>
 			</div>
@@ -417,8 +425,7 @@
 			</div>
 			<div class="card-content collapse show">
 				<div class="card-body">
-					<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="capnhat_monhoc" disabled>Cập
-						nhật</button>
+					<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="capnhat_monhoc" disabled>Cập nhật</button>
 					<hr>
 					<div id="girddanhsach_monhoc"></div>
 				</div>
@@ -426,7 +433,7 @@
 		</div>
 
 
-
+		
 
 		<!-- Chọn lớp học -->
 		<div class="card" id="formdanhsach_lophoc" style="display: none">
@@ -497,7 +504,7 @@
 
 
 		<!-- Số tiết trong buổi của mỗi lớp-->
-		<div class="card" id="formdanhsach_sotiettrongbuoi" style="display: none">
+		<div class="card" id="formdanhsach_sotiettrongbuoi" style="display: none;z-index:1500">
 			<div class="card-header">
 				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
 				<div class="heading-elements" style="padding-top: 10px">
@@ -509,262 +516,257 @@
 			</div>
 			<div class="card-content collapse show">
 				<div class="card-body">
-					<div class="row">
-						<div class="col-md-2">
-							<select class="form-control input-sm" id="lopsotietbuoi" multiple="multiple"></select>
+										<div class="row">
+						<div class="col-md-3">
+							<div id="lopsotietbuoi"></div>
+						</div>
+							<div class="col-md-2">
+							<select class="form-control input-sm" id="chonthusotietbuoi">
+								<option selected="" value="0">Chọn thứ</option>
+								<option value="2">Thứ 2</option>
+								<option value="3">Thứ 3</option>
+								<option value="4">Thứ 4</option>
+								<option value="5">Thứ 5</option>
+								<option value="6">Thứ 6</option>
+								<option value="7">Thứ 7</option>
+							</select>
 						</div>
 						<div class="col-md-2">
 							<select class="form-control input-sm" id="chonbuoisotietbuoi">
 								<option selected="">Chọn buổi
-								</option>
-								<option value="0">Buổi sáng
-								</option>
-								<option value="1">Buổi chiều
-								</option>
-							</select>
+								</option><option value="0">Buổi sáng
+								</option><option value="1">Buổi chiều
+								</option></select>
 							</fieldset>
 						</div>
 						<div class="col-md-2">
 							<fieldset class="form-group position-relative">
-								<input type="number" class="form-control input-sm" id="sotietsttrongbuoi"
-									placeholder="Số tiết">
+								<input type="number" class="form-control input-sm" id="sotietsttrongbuoi" placeholder="Số tiết">
 							</fieldset>
 						</div>
 						<div class="col-md-3">
-							<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="capnhatsotietbuoi">Cập
-								nhật</button>
+							<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="capnhatsotietbuoi">Cập nhật</button>
 						</div>
 					</div>
 
 					<!-- <div id="capnhat_sotiettrongbuoi"></div>
 						<input type="text" id="sotiettrongbuoiid" class="form-control input-sm" hidden> -->
-					<hr>
-					<div id="girddanhsach_sotiettrongbuoi"></div>
+						<hr>
+						<div id="girddanhsach_sotiettrongbuoi"></div>
+					</div>
 				</div>
 			</div>
-		</div>
 
 
 
 
 
-		<!-- Số tiết ở mỗi môn của mỗi lớp-->
-		<div class="card" id="formdanhsach_sotietmoimon" style="display: none">
-			<div class="card-header">
-				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-				<div class="heading-elements" style="padding-top: 10px">
-					<ul class="list-inline mb-0">
-						<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-						<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-					</ul>
+			<!-- Số tiết ở mỗi môn của mỗi lớp-->
+			<div class="card" id="formdanhsach_sotietmoimon" style="display: none;z-index:1500">
+				<div class="card-header">
+					<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+					<div class="heading-elements" style="padding-top: 10px">
+						<ul class="list-inline mb-0">
+							<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+							<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+						</ul>
+					</div>
 				</div>
-			</div>
-			<div class="card-content collapse show">
-				<div class="card-body">
-					<div class="row">
-						<div class="col-md-4">
-							<fieldset class="form-group position-relative">
-								<select class="form-control input-sm" id="loaitruongsotietmoimon">
-									<option selected="">Chọn loại trường
-									</option>
-									<option value="1">Tiểu học
-									</option>
-									<option value="2">THCS
-									</option>
-									<option value="3">THPT
-									</option>
-								</select>
-							</fieldset>
-						</div>
-						<div class="col-md-3">
-							<button type="button" class="btn mr-1 mb-1 btn-info btn-sm"
-								id="khoitaodulieusotietmoimon">Khởi tạo dữ liệu mẫu</button>
+				<div class="card-content collapse show">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-4">
+								<fieldset class="form-group position-relative">
+									<select class="form-control input-sm" id="loaitruongsotietmoimon">
+										<option selected="">Chọn loại trường
+										</option><option value="1">Tiểu học
+										</option><option value="2">THCS
+										</option><option value="3">THPT
+										</option></select>
+									</fieldset>
+								</div>
+								<div class="col-md-3">
+									<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="khoitaodulieusotietmoimon">Khởi tạo dữ liệu mẫu</button>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-3">
+									<div id="sotietmoimonlop"></div>
+								</div>
+								<div class="col-md-3">
+									<div id="sotietmoimonmon"></div>
+								</div>
+								<div class="col-md-2">
+									<div id="sotietmoimonsotiet"></div>
+								</div>
+								<div class="col-md-3">
+									<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="capnhatsotietmoimon">Cập nhật</button>
+								</div>
+							</div>
+							<div id="capnhat_sotietmoimon"></div>
+							<input type="text" id="sotietmoimonid" class="form-control input-sm" hidden>
+							<hr>
+							<div id="girddanhsach_sotietmoimon"></div>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col-md-2">
-							<select class="form-control input-sm" id="sotietmoimonlop" multiple="multiple"></select>
-						</div>
-						<div class="col-md-3">
-							<select class="form-control input-sm" id="sotietmoimonmon"></select>
-						</div>
-						<div class="col-md-2">
-							<input type="number" class="form-control input-sm" id="sotietmoimonsotiet"
-								placeholder="Số tiết">
-						</div>
-						<div class="col-md-3">
-							<button type="button" class="btn mr-1 mb-1 btn-info btn-sm" id="capnhatsotietmoimon">Cập
-								nhật</button>
+				</div>
+
+
+				<!-- diem truong -->
+				<div class="card" id="formdiemtruong" style="display: none">
+					<div class="card-header">
+						<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+						<div class="heading-elements" style="padding-top: 10px">
+							<ul class="list-inline mb-0">
+								<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+								<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+							</ul>
 						</div>
 					</div>
-					<div id="capnhat_sotietmoimon"></div>
-					<input type="text" id="sotietmoimonid" class="form-control input-sm" hidden>
-					<hr>
-					<div id="girddanhsach_sotietmoimon"></div>
+					<div class="card-content collapse show">
+						<div class="card-body">
+							<div id="girddiemtruong"></div>
+						</div>
+					</div>
 				</div>
-			</div>
-		</div>
-
-
-		<!-- diem truong -->
-		<div class="card" id="formdiemtruong" style="display: none">
-			<div class="card-header">
-				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-				<div class="heading-elements" style="padding-top: 10px">
-					<ul class="list-inline mb-0">
-						<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-						<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="card-content collapse show">
-				<div class="card-body">
-					<div id="girddiemtruong"></div>
-				</div>
-			</div>
-		</div>
 
 
 
-		<!-- Phân công giáo viên dạy-->
-		<div class="card" id="formdanhsach_phanconggvday" style="display: none">
-			<div class="card-header">
-				<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
-				<div class="heading-elements" style="padding-top: 10px">
-					<ul class="list-inline mb-0">
-						<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-						<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="card-content collapse show">
-				<div class="card-body">
-					<dir class="row" style="padding: 0;margin: 0">
-						<section class="col-md-12 col-xs-12">
-							<section>
-								<h3>KHAI BÁO DỮ LIỆU XẾP THỜI KHÓA BIỂU</h3>
-							</section>
-							<section>
-								{{-- <button class="btn btn-sm btn-primary">Cập nhật phân công chuyên môn</button> --}}
-								<!-- 									<button id="btnTaipccm" class="btn btn-sm btn-info"><i class="fa fa-download"></i> Tải PCCCM</button> -->
-								{{-- <button class="btn btn-sm btn-primary">Nhận PCCM từ TKB</button> --}}
-								{{-- <select></select> --}}
-							</section>
+				<!-- Phân công giáo viên dạy-->
+				<div class="card" id="formdanhsach_phanconggvday" style="display: none">
+					<div class="card-header">
+						<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+						<div class="heading-elements" style="padding-top: 10px">
+							<ul class="list-inline mb-0">
+								<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+								<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="card-content collapse show">
+						<div class="card-body">
+							<dir class="row" style="padding: 0;margin: 0">
+								<section class="col-md-12 col-xs-12">
+									<section>
+										<h3>KHAI BÁO DỮ LIỆU XẾP THỜI KHÓA BIỂU</h3>
+									</section>
+									<hr>
+									<section>
+										<h5 style="color: blue">Tổng số tiết của toàn trường: <span style="color: red" id="idTongsotiettoantruong"></span></h5>
+									</section>
+									<section>
+										{{-- <button class="btn btn-sm btn-primary">Cập nhật phân công chuyên môn</button> --}}
+										<!-- 									<button id="btnTaipccm" class="btn btn-sm btn-info"><i class="fa fa-download"></i> Tải PCCCM</button> -->
+										{{-- <button class="btn btn-sm btn-primary">Nhận PCCM từ TKB</button> --}}
+										{{-- <select></select> --}}
+									</section>
 
-							<section>
-								<table class="table table-bordered table-light">
-									<thead class="thead-default">
-										<tr>
-											<th rowspan="2">STT</th>
-											<th>Họ và tên</th>
-											<th>Bí danh</th>
-											<th rowspan="2">Số tiết</th>
-											<th rowspan="2">Chuyên môn</th>
-											<th rowspan="2">PCCM</th>
-											<th rowspan="2">Xóa</th>
-										</tr>
-										<tr>
-											<th><input id="timkiemhovaten" class="input-sm form-control" type="text" />
-											</th>
-											<th><input id="timkiemBidanh" class="input-sm form-control" type="text" />
-											</th>
-										</tr>
-									</thead>
-									<tbody id="bangdanhsachphancong">
+										<section>
+											<table class="table table-bordered table-light">
+												<thead class="thead-default">
+													<tr>
+														<th rowspan="2">STT</th>
+														<th>Họ và tên</th>
+														<th>Bí danh</th>
+														<th rowspan="2">Số tiết</th>
+														<th rowspan="2">Chuyên môn</th>
+														<th rowspan="2">PCCM</th>
+														<th rowspan="2">Xóa</th>
+													</tr>
+													<tr>
+														<th><input id="timkiemhovaten" class="input-sm form-control" type="text" /></th>
+														<th><input id="timkiemBidanh" class="input-sm form-control" type="text" /></th>
+													</tr>
+												</thead>
+												<tbody id="bangdanhsachphancong">
 
-									</tbody>
-								</table>
-							</section>
-						</section>
+												</tbody>
+											</table>
+										</section>
+									</section>
 
-						<!-- Modal -->
-						<div class="modal fade" id="modelPhancong" tabindex="-1" role="dialog"
-							aria-labelledby="modelTitleId" aria-hidden="true">
-							<div class="modal-dialog modal-xl" role="document">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h5 class="modal-title">Phân công chuyên môn</h5>
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-											<span aria-hidden="true">&times;</span>
-										</button>
-									</div>
-									<div class="modal-body">
-										<div class="container-fluid">
-											<div class="row">
-												<section class="col-md-12">
-													<section>
-														<p id="lblPhacong">Phân công chuyên môn cho giáo viên</p>
-														<h5 id="lblTongsotiet">Tổng số tiết:</h5>
-													</section>
+									<!-- Modal -->
+									<div class="modal fade" id="modelPhancong" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+									aria-hidden="true">
+									<div class="modal-dialog modal-xl" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title">Phân công chuyên môn</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													<span aria-hidden="true">&times;</span>
+												</button>
+											</div>
+											<div class="modal-body">
+												<div class="container-fluid">
+													<div class="row">
+														<section class="col-md-12">
+															<section>
+																<p id="lblPhacong">Phân công chuyên môn cho giáo viên</p>
+																<h5 id="lblTongsotiet">Tổng số tiết:</h5>
+															</section>
 
+														</section>
+														<section class="col-md-3 col-xl-3" style="overflow-y: scroll; height: 500px;">
+															<table class="table table-bordered table-light ">
+																<thead class="thead-inverse">
+																	<tr>
+																		<!-- <th>STT</th> -->
+																		<th>Môn</th>										
+																		<th>Chọn</th>
+																		<th style="width: 10%;">Lớp dạy</th>
+																		<th>Số tiết</th>
+																	</tr>
+																</thead>
+																<tbody id="bangdanhsachmonpc">
+
+																</tbody>
+															</table>
+														</section>
+														<section class="col-md-9 col-xl-9" style="overflow-y: scroll; height: 500px;">
+															<table class="table table-bordered table-light">
+																<thead class="thead-inverse">
+																	<tr>
+																		<th>STT</th>
+																		<th>Lớp</th>
+																		<th>Chọn tất cả <input type="checkbox" id="chontatcaphancongmon" /></th>
+																		<th>Số tiết của môn</th>
+																		<th>Số tiết chưa phân công</th>
+																		<th>Giáo viên được phân công</th>
+																		<th>Xóa</th>
+																	</tr>
+																</thead>
+																<tbody id="bangdanhsachphancongchomonhoc">
+
+																</tbody>
+															</table>
+														</section>
+													</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<section class="col-md-3">
+													<button id="btnXoatatcaPCCMtaimon" data-id="" data-giaovien="" class="btn btn-sm btn-danger">Xóa
+														tất cả phân công
+													chuyên môn</button>
 												</section>
-												<section class="col-md-3 col-xl-3"
-													style="overflow-y: scroll; height: 500px;">
-													<table class="table table-bordered table-light ">
-														<thead class="thead-inverse">
-															<tr>
-																<!-- <th>STT</th> -->
-																<th>Môn</th>
-																<th>Chọn</th>
-																<th style="width: 10%;">Lớp dạy</th>
-																<th>Số tiết</th>
-															</tr>
-														</thead>
-														<tbody id="bangdanhsachmonpc">
-
-														</tbody>
-													</table>
-												</section>
-												<section class="col-md-9 col-xl-9"
-													style="overflow-y: scroll; height: 500px;">
-													<table class="table table-bordered table-light">
-														<thead class="thead-inverse">
-															<tr>
-																<th>STT</th>
-																<th>Lớp</th>
-																<th>Chọn tất cả <input type="checkbox"
-																		id="chontatcaphancongmon" /></th>
-																<th>Số tiết của môn</th>
-																<th>Số tiết chưa phân công</th>
-																<th>Giáo viên được phân công</th>
-																<th>Xóa</th>
-															</tr>
-														</thead>
-														<tbody id="bangdanhsachphancongchomonhoc">
-
-														</tbody>
-													</table>
+												<section class="col-md-9" style="text-align: right;">
+													<button type="button" class="btn btn-sm btn-primary" id="btncapnhatpccmgiaovien">Cập nhật PCCM
+														với giáo
+													viên:</button>
+													{{-- <button type="button" class="btn btn-sm btn-danger" id="btncapnhatpccmtatcagiaovien">Cập nhật
+														PCCM tất
+														cả
+													giáo viên</button> --}}
+													<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Đóng</button>
 												</section>
 											</div>
 										</div>
 									</div>
-									<div class="modal-footer">
-										<section class="col-md-3">
-											<button id="btnXoatatcaPCCMtaimon" data-id="" data-giaovien=""
-												class="btn btn-sm btn-danger">Xóa
-												tất cả phân công
-												chuyên môn</button>
-										</section>
-										<section class="col-md-9" style="text-align: right;">
-											<button type="button" class="btn btn-sm btn-primary"
-												id="btncapnhatpccmgiaovien">Cập nhật PCCM
-												với giáo
-												viên:</button>
-											{{-- <button type="button" class="btn btn-sm btn-danger" id="btncapnhatpccmtatcagiaovien">Cập nhật
-														PCCM tất
-														cả
-													giáo viên</button> --}}
-											<button type="button" class="btn btn-sm btn-secondary"
-												data-dismiss="modal">Đóng</button>
-										</section>
-									</div>
 								</div>
-							</div>
+							</dir>
 						</div>
-					</dir>
+					</div>
 				</div>
-			</div>
-		</div>
 
 
 
@@ -777,30 +779,29 @@
 
 
 
+		</dir>
 	</dir>
-</dir>
 
 
 
-<!-- modal loading -->
-<div class="modal fade text-left show" id="modalloading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel20">
-	<div class="modal-dialog modal-xs" role="document">
-		<div class="modal-content">
-			<div class="row">
-				<div class="col-12">
-					<div class="card">
-						<div class="card-header">
-							<h4 class="card-title">Đang cập nhât! Vui lòng đợi trong giây lát</h4>
-
-						</div>
-						<div class="card-content">
-							<div class="card-body text-center">
-								<div class="progress">
-									<div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
-										id="loading" role="progressbar" aria-valuenow="80" aria-valuemin="80"
-										aria-valuemax="100" style="width:0%"></div>
+	<!-- modal loading -->
+	<div class="modal fade text-left show" id="modalloading" tabindex="-1" role="dialog" aria-labelledby="myModalLabel20">
+		<div class="modal-dialog modal-xs" role="document">
+			<div class="modal-content">
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title">Đang cập nhât! Vui lòng đợi trong giây lát</h4>
+								
+							</div>
+							<div class="card-content">
+								<div class="card-body text-center">					
+									<div class="progress">
+										<div class="progress-bar progress-bar-striped progress-bar-animated bg-info" id="loading" role="progressbar" aria-valuenow="80" aria-valuemin="80" aria-valuemax="100" style="width:0%"></div>
+									</div>
+									
 								</div>
-
 							</div>
 						</div>
 					</div>
@@ -808,11 +809,10 @@
 			</div>
 		</div>
 	</div>
-</div>
 
 
 
-<script type="text/javascript">
+	<script type="text/javascript">
 	/*$("#importfile").on("click", function() {
 		$("#upload").trigger('click');
 	});*/
@@ -871,7 +871,7 @@
 
 		Swal.fire({
 			title: 'Lưu',
-			text: "Bạn có muốn import file excel này không",
+			text: "ImportExcel sẽ reset tất cả dữ liệu Bạn có muốn import file excel này không",
 			icon: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
@@ -914,11 +914,30 @@
 			$('#importfile').val('');
 		})
 	}
-		function importexcel(datas){
+		
+		
+		
+		
+function importexcel(datas){
 		var data = datas.map(function (value, key){
-			var lop = value.Lophocngangcachboidau;
+			var lop = value.Lophocngancachboidau;
 			var loparray = lop.split(";");
 			var tcm = value.Tochuyenmon;
+			var em = value.Email;
+			var sdt1 = value.Sodienthoai;
+
+			if(em != undefined){
+				var email = value.Email;
+			}else{
+				var email = null;
+			}
+
+			if(sdt1 != undefined){
+				var sdt = value.Sodienthoai;
+			}else{
+				var sdt = null;
+			}
+
 			if(tcm != undefined){
 				var tochuyenmon = value.Tochuyenmon;
 			}else{
@@ -929,15 +948,85 @@
 				tengv: value.Hovatengiaovien,
 				monhoc: value.Monhoc,
 				tochuyenmon:tochuyenmon,
+				email:email,
+				sdt:sdt,
 			}
 		});
 		axios.post('importexcelbangphancongtkb',data).then(function (response) {
-			var data =  response.data;
-			var status = response.status;
-			if(status == 200){
-				axios.post('importexcelsotiettrongbuoi',data).then(function (response) {
-					var data =  response.data;
-				});
+			var data =  response.data[0];
+			var loilopst =  response.data[1];
+			var dongvipham = response.data[2];
+
+			if(loilopst == 3000){
+				var ten = data.tengv;
+				var mon = data.monhoc;
+				var tochuyenmon = data.tochuyenmon;
+				var lopst = data.tenlop;
+				var email = data.email;
+				var sdt = data.sdt;
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					text: 'Sai cú pháp email - '+'Tên giáo viên: ('+ten +') '+sdt+' '+email+' - Tên môn học: ('+ mon +') - Tổ chuyên môn: ('+ tochuyenmon +') - Lớp & Số tiết: ('+lopst+') Vui lòng kiểm tra lại' + ' Dòng vi phạm: (' + dongvipham +')',
+					showConfirmButton: true,
+				}); 				
+			}else if(loilopst == 2000){
+				var ten = data.tengv;
+				var mon = data.monhoc;
+				var tochuyenmon = data.tochuyenmon;
+				var lopst = data.tenlop;
+				var email = data.email;
+				var sdt = data.sdt;
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					text: 'Sai cú pháp số điện thoại - '+'Tên giáo viên: ('+ten +') '+sdt+' - Tên môn học: ('+ mon +') - Tổ chuyên môn: ('+ tochuyenmon +') - Lớp & Số tiết: ('+lopst+') Vui lòng kiểm tra lại' + ' Dòng vi phạm: (' + dongvipham +')',
+					showConfirmButton: true,
+				}); 				
+			}else if(loilopst == 1000){
+				var ten = data.tengv;
+				var mon = data.monhoc;
+				var tochuyenmon = data.tochuyenmon;
+				var lopst = data.tenlop;
+				Swal.fire({
+					position: 'center',
+					icon: 'warning',
+					text: 'Sai cú pháp lớp & số tiết - '+'Tên giáo viên: ('+ten +') - Tên môn học: ('+ mon +') - Tổ chuyên môn: ('+ tochuyenmon +') - Lớp & Số tiết: ('+lopst+') Vui lòng kiểm tra lại' + ' Dòng vi phạm: (' + dongvipham +')',
+					showConfirmButton: true,
+				}); 				
+			}else{
+				var status = response.status;
+				if(status == 200){
+					Swal.fire({
+						position: 'center',
+						icon: 'success',
+						text: 'Cập nhật thành công',
+						showConfirmButton: false,
+						timer: 1000
+					}); 
+
+
+					axios.post('updatesotietmoimon', {
+						id: 0,
+						mamonhoc: 0,
+						malop: null,
+						sotiet: 0
+					}).then(function(response) {
+						var data = response.data;       
+					});
+
+					axios.post('importexcelsotiettrongbuoi',data).then(function (response) {
+						var data =  response.data;
+					});
+				}else{
+					Swal.fire({
+						position: 'center',
+						icon: 'danger',
+						text: 'Import excel không thành công',
+						showConfirmButton: false,
+						timer: 1000
+					}); 
+				}
 			}
 		});
 
@@ -972,7 +1061,7 @@
 			document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 			document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
 			document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("cardhead").style.display = "block";
+			document.getElementById("cardhead").style.display = "block";
 			document.getElementById("formdiemtruong").style.display = "none";
 			clearcheckbox();
 		}
@@ -980,7 +1069,7 @@ document.getElementById("cardhead").style.display = "block";
 
 	$('#btnimportexcel').click(function () {
 		document.getElementById("formimportexcel").style.display = "block";
-
+		
 	});
 
 
@@ -992,7 +1081,7 @@ document.getElementById("cardhead").style.display = "block";
 			document.getElementById("khaibao").style.display = "block";
 			document.getElementById("btnimportexcel").style.display = "none";
 			document.getElementById("formimportexcel").style.display = "none";
-document.getElementById("cardhead").style.display = "none";
+			document.getElementById("cardhead").style.display = "none";
 			clearcheckbox();
 		}
 	});
@@ -1013,7 +1102,7 @@ document.getElementById("cardhead").style.display = "none";
 		$("#sotiet_trongbuoi").prop( "checked", false);
 		$("#sotiet_moimon").prop( "checked", false);
 		$("#phancong_giaovienday").prop( "checked", false);
-$("#diemtruong").prop( "checked", false);
+		$("#diemtruong").prop( "checked", false);
 	}
 
 
@@ -1034,7 +1123,7 @@ $("#diemtruong").prop( "checked", false);
 		document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdiemtruong").style.display = "none";
 		nhapdanhsachgv();
 	});
@@ -1055,7 +1144,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		nhapdanhsachmonhoc();
 	});
 	//nhập danh sach lop hoc
@@ -1073,7 +1162,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_tochuyenmon").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
 		nhapdanhsachlophoc();
 	});
@@ -1093,7 +1182,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		nhapdanhsachtochuyenmon();
 	});
 
@@ -1113,7 +1202,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		locgvcuamatochuyenmon();
 	});
 
@@ -1134,7 +1223,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		nhapdanhsachphonghocbomon();
 	});
 
@@ -1154,7 +1243,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_tochuyenmon").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		chon_monhoc();
 	});
 	//chọn lớp học
@@ -1173,7 +1262,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_tochuyenmon").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		chon_lophoc();
 	});
 
@@ -1193,7 +1282,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_tochuyenmon").style.display = "block";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		chon_tochuyenmon();
 	});
 
@@ -1213,7 +1302,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "block";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		chon_phonghoc();
 	});
 
@@ -1235,7 +1324,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_phonghoc").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		loaddatadanhsachgvthamgiagiangday();
 	});
 
@@ -1258,7 +1347,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 			document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "block";
 			document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
 			document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+			document.getElementById("formdiemtruong").style.display = "none";
 			sotiet_trongbuoi();
 		});
 	//số tiết ở mỗi môn của mỗi mon
@@ -1277,7 +1366,7 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_sotietmoimon").style.display = "block";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		sotiet_moimon();
 	});
 	//phân công giáo viên dạy
@@ -1296,29 +1385,30 @@ document.getElementById("formdiemtruong").style.display = "none";
 		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
 		document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
 		document.getElementById("formdanhsach_phanconggvday").style.display = "block";
-document.getElementById("formdiemtruong").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "none";
 		// phancong_giaovienday();
 	});
 		
-//diem truong
+	//diem truong
 	$("#diemtruong").change(function () {
-	document.getElementById("formnhapdanhsachgv").style.display = "none";
-	document.getElementById("formnhapdanhsachmonhoc").style.display = "none";
-	document.getElementById("formnhapdanhsachlophoc").style.display = "none";
-	document.getElementById("formdanhsachgvtochuyenmon").style.display = "none";
-	document.getElementById("formnhapdanhsachtochuyenmon").style.display = "none";
-	document.getElementById("formnhapdanhsachphonghocbomon").style.display = "none";
-	document.getElementById("formdanhsachgvthamgiagiangday").style.display = "none";
-	document.getElementById("formdanhsach_monhoc").style.display = "none";
-	document.getElementById("formdanhsach_lophoc").style.display = "none";
-	document.getElementById("formdanhsach_tochuyenmon").style.display = "none";
-	document.getElementById("formdanhsach_phonghoc").style.display = "none";
-	document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
-	document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
-	document.getElementById("formdanhsach_phanconggvday").style.display = "none";
-	document.getElementById("formdiemtruong").style.display = "block";
-	danhsachdiemtruong();
+		document.getElementById("formnhapdanhsachgv").style.display = "none";
+		document.getElementById("formnhapdanhsachmonhoc").style.display = "none";
+		document.getElementById("formnhapdanhsachlophoc").style.display = "none";
+		document.getElementById("formdanhsachgvtochuyenmon").style.display = "none";
+		document.getElementById("formnhapdanhsachtochuyenmon").style.display = "none";
+		document.getElementById("formnhapdanhsachphonghocbomon").style.display = "none";
+		document.getElementById("formdanhsachgvthamgiagiangday").style.display = "none";
+		document.getElementById("formdanhsach_monhoc").style.display = "none";
+		document.getElementById("formdanhsach_lophoc").style.display = "none";
+		document.getElementById("formdanhsach_tochuyenmon").style.display = "none";
+		document.getElementById("formdanhsach_phonghoc").style.display = "none";
+		document.getElementById("formdanhsach_sotietmoimon").style.display = "none";
+		document.getElementById("formdanhsach_sotiettrongbuoi").style.display = "none";
+		document.getElementById("formdanhsach_phanconggvday").style.display = "none";
+		document.getElementById("formdiemtruong").style.display = "block";
+		danhsachdiemtruong();
 	});
+
 
 
 </script>
@@ -1361,3 +1451,9 @@ document.getElementById("formdiemtruong").style.display = "none";
 
 
 @endsection
+
+
+
+
+
+

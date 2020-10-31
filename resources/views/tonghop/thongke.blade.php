@@ -49,12 +49,12 @@
 																Số lượng phòng học
 															</label>
 														</fieldset>
-														<!-- <fieldset class="radio">
+														<fieldset class="radio">
 															<label>
-																<input type="radio" name="radio" value="" id="thongkesoluonghocsinh">														
-																Số lượng học sinh
+																<input type="radio" name="radio" value="" id="thongkesoluonggiaovien">														
+																Số lượng giáo viên
 															</label>
-														</fieldset> -->
+														</fieldset>
 <!-- 														<fieldset class="radio">
 															<label>
 																<input type="radio" name="radio" value="" id="thongkesoluonggvgiangday">														
@@ -162,6 +162,43 @@
 													</tr>
 												</thead>
 												<tbody id="phanthantablesophonghoc"></tbody>
+											</table>
+										</div>
+									</section>
+
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<!-- thống kê số lượng giáo viên-->
+				<div class="card" id="cardthongkesoluonggiaovien" style="display: none;">
+					<div class="card-header" style="padding: 10px">
+						<h4 class="card-title" id="titletkbgv">Trường: <b><span id="idtentruonggiaovien" style="color: green;"></span></b></h4>
+						<a class="heading-elements-toggle"><i class="fa fa-ellipsis-v font-medium-3"></i></a>
+						<div class="heading-elements" style="top: 10px">
+							<ul class="list-inline mb-0">
+								<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+								<li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+							</ul>
+						</div>
+					</div>
+					<div class="card-content collpase show">
+						<div class="card-body">
+							<form class="form">
+								<div class="form-body">
+									<section>
+										<div class="container" style="overflow-y: auto; ">
+											<table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" id="tablesophonghoc">
+												<thead class="thead-inverse">
+													<tr >
+														<th scope="col">STT</th>
+														<th scope="col">Tổng số giáo viên</th>
+														<!-- <th scope="col">Tên giáo viên</th> -->
+													</tr>
+												</thead>
+												<tbody id="phanthantablesogiaovien"></tbody>
 											</table>
 										</div>
 									</section>
@@ -322,13 +359,43 @@
 	</div>	
 </dir>
 
+
+<div class="modal fade text-left show" id="modaldsgv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" style="display: none;">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div id="tiettranhcuamon"></div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">	
+				<table class="table table-striped table-bordered table-sm" cellspacing="0" width="100%" id="tablegv">
+					<thead class="thead-inverse">
+						<tr >
+							<th scope="col">STT</th>
+							<th scope="col">Tên giáo viên</th>
+							<!-- <th scope="col">Tên giáo viên</th> -->
+						</tr>
+					</thead>
+					<tbody id="phanthantablegv"></tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn mr-1 mb-1 btn-danger btn-sm" data-dismiss="modal">Đóng</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 	$("#thongkesoluongtietday").change(function () {
 
 		$("#thongkesoluongphonghoc").prop("checked", false);
-		$("#thongkesoluonghocsinh").prop("checked", false);
+		// $("#thongkesoluonghocsinh").prop("checked", false);
 		document.getElementById("cardthongkesoluongtietday").style.display = "block";
 		document.getElementById("cardthongkesoluongphonghoc").style.display = "none";
+		document.getElementById("cardthongkesoluonggiaovien").style.display = "none";
 		// document.getElementById("cardthongkesoluonghocsinh").style.display = "none";
 		document.getElementById("cardselecttruong").style.display = "block";
 	});
@@ -336,9 +403,22 @@
 	$("#thongkesoluongphonghoc").change(function () {
 
 		$("#thongkesoluongtietday").prop("checked", false);
-		$("#thongkesoluonghocsinh").prop("checked", false);
+		// $("#thongkesoluonghocsinh").prop("checked", false);
 		document.getElementById("cardthongkesoluongtietday").style.display = "none";
 		document.getElementById("cardthongkesoluongphonghoc").style.display = "block";
+		document.getElementById("cardthongkesoluonggiaovien").style.display = "none";
+		// document.getElementById("cardthongkesoluonghocsinh").style.display = "none";
+		document.getElementById("cardselecttruong").style.display = "block";
+	});
+
+	$("#thongkesoluonggiaovien").change(function () {
+
+		$("#thongkesoluongtietday").prop("checked", false);
+		// $("#thongkesoluonghocsinh").prop("checked", false);
+		$("#thongkesoluongphonghoc").prop("checked", false);
+		document.getElementById("cardthongkesoluongtietday").style.display = "none";
+		document.getElementById("cardthongkesoluongphonghoc").style.display = "none";
+		document.getElementById("cardthongkesoluonggiaovien").style.display = "block";
 		// document.getElementById("cardthongkesoluonghocsinh").style.display = "none";
 		document.getElementById("cardselecttruong").style.display = "block";
 	});

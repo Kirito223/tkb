@@ -17,10 +17,38 @@ use App\monhoc;
 use App\xa;
 use App\danhsachgv;
 use App\danhsachlophoc;
+use App\thututiet;
+use App\sotietmonhoc_temp;
 use Hash;
 use App\roles;
 use stdClass;
 use Session; 
+
+use App\tiethoc;
+use App\sotietmonhoc;
+use App\phonghoc;
+use App\diemtruong;
+use App\danhgiagv;
+use App\giaovienmonlop;
+use App\phongmonlop;
+use App\rangbuoccaptietxepliennhau;
+use App\rangbuocdangkybuoitietnghigv;
+use App\rangbuocdangkytietnghilop;
+use App\rangbuocsotiet5sangtiet1chieu;
+use App\rangbuoctietcodinh;
+use App\rangbuoctietgvbuocphaico;
+use App\rangbuoctiethopcuato;
+use App\rangbuoctiettranh;
+use App\rangbuoctranh2moncungbuoi;
+use App\sotietbuoi;
+use App\thoikhoabieu;
+use App\sotietngay;
+use App\thoikhoabieuexcel;
+use App\thutumon;
+use App\tietcodinh;
+use App\tietghep;
+use App\tiethopcuato;
+use App\tietnghigiaovien;
 
 class AdminController extends Controller
 {
@@ -52,9 +80,9 @@ class AdminController extends Controller
 	public function getlisttaikhoan(){
 		$matruong = Session::get('matruong');
 		if($matruong == null){
-			$data =  DB::table('tbl_admin')->get();
+			$data =  DB::table('tbl_admin')->orderBy('id', 'DESC')->get();
 		}else{
-			$data =  DB::table('tbl_admin')->where('matruong',$matruong)->get();
+			$data =  DB::table('tbl_admin')->where('matruong',$matruong)->orderBy('id', 'DESC')->get();
 		}
 		
 		$lopcount = danhsachlophoc::all();
@@ -78,7 +106,7 @@ class AdminController extends Controller
 		return json_encode($datas, JSON_UNESCAPED_UNICODE);
 	}
 	public function getlisttruong(){
-		$data =  DB::table('truong')->get();
+		$data =  DB::table('truong')->orderBy('matruong', 'DESC')->get();
 		return json_encode($data, JSON_UNESCAPED_UNICODE);
 	}
 	public function getlisthuyen(){
@@ -142,6 +170,33 @@ class AdminController extends Controller
 		$phancongchuyenmon = phancongchuyenmon::where('matruong',$matruong)->delete();
 		$tochuyenmon = tochuyenmon::where('matruong',$matruong)->delete();
 		$sotiettrongbuoi = sotiettrongbuoi::where('matruong',$matruong)->delete();
+		$thututiet = thututiet::where('matruong',$matruong)->delete();
+
+		$danhgiagv = danhgiagv::where('matruong',$matruong)->delete();
+		$diemtruong = diemtruong::where('matruong',$matruong)->delete();
+		$giaovien_mon_lop = giaovienmonlop::where('matruong',$matruong)->delete();
+		$phonghoc = phonghoc::where('matruong',$matruong)->delete();
+		$phongmonlop = phongmonlop::where('matruong',$matruong)->delete();
+		$rangbuoccaptietxepliennhau = rangbuoccaptietxepliennhau::where('matruong',$matruong)->delete();
+		$rangbuocdangkybuoitietnghigv = rangbuocdangkybuoitietnghigv::where('matruong',$matruong)->delete();
+		$rangbuocdangkytietnghilop = rangbuocdangkytietnghilop::where('matruong',$matruong)->delete();
+		$rangbuocsotiet5sangtiet1chieu = rangbuocsotiet5sangtiet1chieu::where('matruong',$matruong)->delete();
+		$rangbuoctietcodinh = rangbuoctietcodinh::where('matruong',$matruong)->delete();
+		$rangbuoctietgvbuocphaico = rangbuoctietgvbuocphaico::where('matruong',$matruong)->delete();
+		$rangbuoctiethopcuato = rangbuoctiethopcuato::where('matruong',$matruong)->delete();
+		$rangbuoctiettranh = rangbuoctiettranh::where('matruong',$matruong)->delete();
+		$rangbuoctranh2moncungbuoi = rangbuoctranh2moncungbuoi::where('matruong',$matruong)->delete();
+		$sotietbuoi = sotietbuoi::where('matruong',$matruong)->delete();
+		$sotietmonhoc = sotietmonhoc::where('matruong',$matruong)->delete();
+		$sotietngay = sotietngay::where('matruong',$matruong)->delete();
+		$thoikhoabieu = thoikhoabieu::where('matruong',$matruong)->delete();
+		$thoikhoabieuexcel = thoikhoabieuexcel::where('matruong',$matruong)->delete();
+		$thutumon = thutumon::where('matruong',$matruong)->delete();
+		$tietcodinh = tietcodinh::where('matruong',$matruong)->delete();
+		$tietghep = tietghep::where('matruong',$matruong)->delete();
+		$tiethoc = tiethoc::where('matruong',$matruong)->delete();
+		$tiethopcuato = tiethopcuato::where('matruong',$matruong)->delete();
+		$tietnghigiaovien = tietnghigiaovien::where('matruong',$matruong)->delete();
 		
 		//$danhsachgv = danhsachgv::query()->delete();
 		//$danhsachlophoc = danhsachlophoc::query()->delete();
@@ -167,7 +222,33 @@ class AdminController extends Controller
 		$phancongchuyenmon = phancongchuyenmon::where('matruong',$matruong)->delete();
 		$tochuyenmon = tochuyenmon::where('matruong',$matruong)->delete();
 		$sotiettrongbuoi = sotiettrongbuoi::where('matruong',$matruong)->delete();
-		
+		$thututiet = thututiet::where('matruong',$matruong)->delete();
+
+		$danhgiagv = danhgiagv::where('matruong',$matruong)->delete();
+		$diemtruong = diemtruong::where('matruong',$matruong)->delete();
+		$giaovien_mon_lop = giaovienmonlop::where('matruong',$matruong)->delete();
+		$phonghoc = phonghoc::where('matruong',$matruong)->delete();
+		$phongmonlop = phongmonlop::where('matruong',$matruong)->delete();
+		$rangbuoccaptietxepliennhau = rangbuoccaptietxepliennhau::where('matruong',$matruong)->delete();
+		$rangbuocdangkybuoitietnghigv = rangbuocdangkybuoitietnghigv::where('matruong',$matruong)->delete();
+		$rangbuocdangkytietnghilop = rangbuocdangkytietnghilop::where('matruong',$matruong)->delete();
+		$rangbuocsotiet5sangtiet1chieu = rangbuocsotiet5sangtiet1chieu::where('matruong',$matruong)->delete();
+		$rangbuoctietcodinh = rangbuoctietcodinh::where('matruong',$matruong)->delete();
+		$rangbuoctietgvbuocphaico = rangbuoctietgvbuocphaico::where('matruong',$matruong)->delete();
+		$rangbuoctiethopcuato = rangbuoctiethopcuato::where('matruong',$matruong)->delete();
+		$rangbuoctiettranh = rangbuoctiettranh::where('matruong',$matruong)->delete();
+		$rangbuoctranh2moncungbuoi = rangbuoctranh2moncungbuoi::where('matruong',$matruong)->delete();
+		$sotietbuoi = sotietbuoi::where('matruong',$matruong)->delete();
+		$sotietmonhoc = sotietmonhoc::where('matruong',$matruong)->delete();
+		$sotietngay = sotietngay::where('matruong',$matruong)->delete();
+		$thoikhoabieu = thoikhoabieu::where('matruong',$matruong)->delete();
+		$thoikhoabieuexcel = thoikhoabieuexcel::where('matruong',$matruong)->delete();
+		$thutumon = thutumon::where('matruong',$matruong)->delete();
+		$tietcodinh = tietcodinh::where('matruong',$matruong)->delete();
+		$tietghep = tietghep::where('matruong',$matruong)->delete();
+		$tiethoc = tiethoc::where('matruong',$matruong)->delete();
+		$tiethopcuato = tiethopcuato::where('matruong',$matruong)->delete();
+		$tietnghigiaovien = tietnghigiaovien::where('matruong',$matruong)->delete();
 		$success = 200;
 		
 		return $success?200:500;
@@ -255,6 +336,121 @@ class AdminController extends Controller
 		$success = truong::where('matruong', '=', $rq->id)->delete();   
 		return json_encode($success, JSON_UNESCAPED_UNICODE);
 	}
+	
+	
+	
+	
+	
+	
+	
+	//import số tiết môn học temp
+	public function viewimportsotietmonhoctemp()
+	{
+		\Assets::addScripts(['js-macdinh','js-custom','js-dev'])->addStyles(['style-macdinh','style-dev'])->removeStyles(['style-datatable'])->removeScripts(['js-datatable']);
+		return view('admin.importsotietmonhoctemp');
+	}
+
+	public function getDssotietmonhoctemp(){
+		$dataSotietmonhoctemp = sotietmonhoc_temp::all();
+		$data = [];
+		foreach($dataSotietmonhoctemp as $d){
+			if($d->khoi == 1 || $d->khoi == 2 || $d->khoi == 3 || $d->khoi == 4 || $d->khoi == 5){
+				array_push($data,array("idstmhtemp"=>$d->id,"macaphoc"=>1,"mahuyen"=>$d->mahuyen,"tenmon"=>$d->tenmon,"khoi"=>$d->khoi,"sotiet"=>$d->sotiet));
+			}
+
+			if($d->khoi == 6 || $d->khoi == 7 || $d->khoi == 8 || $d->khoi == 9){
+				array_push($data,array("idstmhtemp"=>$d->id,"macaphoc"=>2,"mahuyen"=>$d->mahuyen,"tenmon"=>$d->tenmon,"khoi"=>$d->khoi,"sotiet"=>$d->sotiet));
+			}
+		}
+		return json_encode($data, JSON_UNESCAPED_UNICODE);
+
+	}
+
+	public function postexcelsotietmonhoctemp(Request $rq){
+		$getDataRq = $rq->request;
+		$mahuyen = 0 ;
+		$khoi = 0 ;
+		foreach($getDataRq as $r){
+			$mahuyen = $r['mahuyen'];
+			$khoi = $r['khoi'];
+		}
+		
+		$getData = sotietmonhoc_temp::where('mahuyen',$mahuyen)->where('khoi',$khoi)->get();
+		
+		if($getData != ''){
+			foreach($getData as $g){
+				sotietmonhoc_temp::destroy($g->id);
+			}
+		}
+		
+		
+		foreach($getDataRq as $rq){
+			$stmh_temp = new sotietmonhoc_temp();
+			$stmh_temp->mahuyen = $rq['mahuyen'];
+			$stmh_temp->tenmon = $rq['tenmon'];
+			$stmh_temp->khoi = $rq['khoi'];
+			$stmh_temp->sotiet = $rq['sotiet'];
+			$stmh_temp->save();
+		}
+		$success = 1;
+		return json_encode($success);
+
+	}
+
+	//add số tiết môn học temp
+	public function addsotietmonhoc_temp(Request $rq){
+		$stmh_temp = new sotietmonhoc_temp();
+		$stmh_temp->mahuyen = $rq->mahuyen;
+		$stmh_temp->tenmon = $rq->tenmon;
+		$stmh_temp->khoi = $rq->khoi;
+		$stmh_temp->sotiet = $rq->sotiet;
+		$stmh_temp->save();
+		$success = 1;
+		return json_encode($success);
+	}
+
+	//sửa số tiết môn học temp
+	public function updatesotietmonhoc_temp(Request $rq){
+		$stmh_temp = sotietmonhoc_temp::find($rq->id);
+		$stmh_temp->mahuyen = $rq->mahuyen;
+		$stmh_temp->tenmon = $rq->tenmon;
+		$stmh_temp->khoi = $rq->khoi;
+		$stmh_temp->sotiet = $rq->sotiet;
+		$stmh_temp->update();
+		$success = 1;
+		return json_encode($success);
+	}
+
+	//xoá số tiết môn học temp
+	public function delsotietmonhoc_temp(Request $rq)
+	{
+		$stmh_temp = sotietmonhoc_temp::destroy($rq->id);
+		$success = 1;
+		return json_encode($success);
+	}
+
+	//xoá toàn bộ số tiết môn học temp
+	public function delsotietmonhoc_tempall(Request $rq)
+	{	
+		$id = $rq->id;
+		foreach($id as $i){
+			$stmh_temp = sotietmonhoc_temp::destroy($i['id']);
+		}
+		$success = 1;
+		return json_encode($success);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 }

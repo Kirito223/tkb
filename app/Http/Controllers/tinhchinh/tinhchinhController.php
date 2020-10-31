@@ -12,6 +12,7 @@ use App\danhsachgv;
 use App\monhoc;
 use App\giaovien_chuyenmon;
 use App\danhgiagv;
+use App\thongbao;
 
 
 class tinhchinhController extends Controller
@@ -19,14 +20,18 @@ class tinhchinhController extends Controller
 	public function index()
 	{
 		\Assets::addScripts(['js-macdinh','js-custom','js-dev'])->addStyles(['style-macdinh','style-dev'])->removeStyles(['style-datatable'])->removeScripts(['js-datatable']);
-		return view('tinhchinh.index');
+		
+				$matruong = Session::get('matruong');
+		$thongbao = thongbao::where('truong_id',$matruong)->get();
+		$thongbaocount = thongbao::where('trangthai',0)->where('truong_id',$matruong)->count();
+		return view('tinhchinh.index',compact('thongbao', 'thongbaocount'));
 	}
-	public function getdanhgiagv(){
+	public function getdanhgiagvtruong(){
 		$matruong = Session::get('matruong');
 		$data =  tochuyenmon::where('matruong',$matruong)->get();
 		$tengv = danhsachgv::where('matruong',$matruong)->get();
-		$danhgiagv = danhgiagv::where('matruong',$matruong)->get();
-		$giaovien_chuyenmon = giaovien_chuyenmon::where('giaovien_chuyenmon.matruong',$matruong)->join('danhgiagv','danhgiagv.magiaovien','giaovien_chuyenmon.magiaovien')->get();
+		$danhgiagv = danhgiagv::where('danhgiagv.matruong',$matruong)->get();
+		$giaovien_chuyenmon = giaovien_chuyenmon::with('danhgiagv')->where('giaovien_chuyenmon.matruong',$matruong)->get();
 		return json_encode([$data,$tengv,$giaovien_chuyenmon,$danhgiagv], JSON_UNESCAPED_UNICODE);
 	}
 	public function adddanhgiagv(Request $rq){
@@ -45,14 +50,25 @@ class tinhchinhController extends Controller
 	public function updatedanhgiagv(Request $rq){
 		$matruong = Session::get('matruong');
 		$thoidiemdanhgia = date('Y-m-d', strtotime($rq->created_at));
-		$data = danhgiagv::find($rq->id);
-		$data->magiaovien = $rq->magiaovien;
-		$data->tochuyenmon = $rq->tochuyenmon;
-		$data->hinhthuc = $rq->hinhthuc;
-		$data->xeploai = $rq->xeploai;
-		$data->created_at = $thoidiemdanhgia;
-		$data->matruong = $matruong;
-		$success = $data->save();
+		if($rq->id == null){
+			$data =  new danhgiagv();
+			$data->magiaovien = $rq->magiaovien;
+			$data->tochuyenmon = $rq->tochuyenmon;
+			$data->hinhthuc = $rq->hinhthuc;
+			$data->xeploai = $rq->xeploai;
+			$data->created_at = $thoidiemdanhgia;
+			$data->matruong = $matruong;
+			$success = $data->save();
+		}else{
+			$data = danhgiagv::find($rq->id);
+			$data->magiaovien = $rq->magiaovien;
+			$data->tochuyenmon = $rq->tochuyenmon;
+			$data->hinhthuc = $rq->hinhthuc;
+			$data->xeploai = $rq->xeploai;
+			$data->created_at = $thoidiemdanhgia;
+			$data->matruong = $matruong;
+			$success = $data->save();	
+		}
 		return json_encode($success, JSON_UNESCAPED_UNICODE);
 	}
 	public function delldanhgiagv(Request $rq){

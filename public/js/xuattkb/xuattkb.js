@@ -67,7 +67,7 @@ async function initListTeacher() {
         },
         columns: [
             { dataField: "hovaten", caption: "Tên giáo viên" },
-            { dataField: "email", caption: "Tên giáo viên" },
+            { dataField: "email", caption: "email" },
         ],
     });
 }
@@ -146,7 +146,7 @@ function initEvent() {
     };
 
     sendEmail.onclick = function (e) {
-        let emailSelect = $("#dsgiaovienguimail")
+        let emailSelect = $("#dsgiaovienguimails")
             .dxDataGrid("instance")
             .getSelectedRowsData();
         let email = emailSelect.map((e) => {

@@ -260,6 +260,64 @@ function loaddanhsachthongbao() {
                         .appendTo(container);
                 },
                 width: 50,
+            },{
+                fixed: true,
+                fixedPosition: "right",
+                caption: "Thu hồi",
+                cellTemplate: function(container, options) {
+                    container.addClass("center");
+                    $("<div>")
+                        .dxButton({
+                            template: function(e) {
+                                return $('<i class="fa fa-ban"></i>');
+                            },
+                            onClick: function(e) {
+                                var data = options.data;
+                                if(data.gui != 1 ){
+                                    Swal.fire(
+                                        "Thông báo chưa được gửi không thể thu hồi",
+                                        "Thông báo chưa được gửi",
+                                        "info"
+                                    );
+                                }else if(data.trangthai == 1){
+                                    Swal.fire(
+                                        "Thông báo đã được xem không thể thu hồi",
+                                        "Thông báo đã được xem",
+                                        "info"
+                                    );
+                                }else if(data.gui == 1 && data.trangthai != 1){
+                                    Swal.fire({
+                                        title: 'Thu hồi thông báo?',
+                                        text: "Bạn có muốn thu hồi thông báo!",
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'OK'
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            axios.post('thuhoithongbao', {
+                                                idthongbao: data.id
+                                            }).then(function(response) {
+                                                var data = response.data;
+                                                if(data == 1){
+                                                    Swal.fire(
+                                                        'Thu hồi thông báo!',
+                                                        'Thu hồi thông báo thành công.',
+                                                        'success'
+                                                    )
+                                                    reloadthongbao();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            },
+                        })
+                        .css('background-color', '#B8860B')
+                        .appendTo(container);
+                },
+                width: 65,
             }],
             onToolbarPreparing: function(e) {
                 var dataGrid = e.component;
@@ -286,17 +344,25 @@ $('#btnluu').click(function() {
     var idsohieu = $('#idsohieu').val();
     var idtieude = $('#idtieude').val();
     var idngaytao = $('#idngaytao').val();
-    var iddonvi = $('#iddonvi').val();
+    var idcaphoc = $('#idcaphoc').val();
+    var iddonvi; 
     var idnoidung = $('#idnoidung').val();
     var formData = new FormData();
     var imagefile = document.querySelector('#file');
+    if(idcaphoc == "all"){
+        iddonvi = '';
+        idcaphocall = $('#idcaphocall').val();
+    }else{
+        iddonvi = $('#iddonvi').val(); 
+    } 
     formData.append("file", imagefile.files[0]);
     formData.append("idloai", idloai);
     formData.append("idsohieu", idsohieu);
     formData.append("idtieude", idtieude);
     formData.append("idngaytao", idngaytao);
-    formData.append("iddonvi", iddonvi);
+    formData.append("iddonvi", iddonvi);   
     formData.append("idnoidung", idnoidung);
+    formData.append("idcaphocall", idcaphocall);
     axios.post('addthongbao', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -326,10 +392,18 @@ $('#btnsua').click(function() {
     var idsohieu = $('#idsohieusua').val();
     var idtieude = $('#idtieudesua').val();
     var idngaytao = $('#idngaytaosua').val();
-    var iddonvi = $('#iddonvisua').val();
+    var idcaphoc = $('#idcaphocsua').val();
+    var iddonvi;
     var idnoidung = $('#idnoidungsua').val();
     var formData = new FormData();
     var imagefile = document.querySelector('#filesua');
+
+    if(idcaphoc == "all"){
+        iddonvi = '';
+        idcaphocall = $('#idcaphocsuaall').val();
+    }else{
+        iddonvi = $('#iddonvisua').val(); 
+    } 
     formData.append("file", imagefile.files[0]);
     formData.append("idthongbao", idthongbao);
     formData.append("idloai", idloai);
@@ -338,6 +412,7 @@ $('#btnsua').click(function() {
     formData.append("idngaytao", idngaytao);
     formData.append("iddonvi", iddonvi);
     formData.append("idnoidung", idnoidung);
+    formData.append("idcaphocall", idcaphocall);
     axios.post('updatethongbao', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -362,90 +437,133 @@ $('#btnsua').click(function() {
 });
 
 function loaddatamodalthongtinchung(data){
-    var datattc = data;
-    var tenloai;
-    if (datattc.loai == 1) {
-        tenloai = "Công tác quản lý";
-    } else if (datattc.loai == 2) {
-        tenloai = "Công tác chuyên môn";
-    } else if (datattc.loai == 3) {
-        tenloai = "Lịch kiểm tra";
-    } else if (datattc.loai == 4) {
-        tenloai = "Thông báo khác";
-    }
-    var ngaytao = datattc.ngaytao;
-    var formatngaytao = moment(ngaytao).format("DD-MM-YYYY");
-    var ngaygui = datattc.ngaygui;
-    if (ngaygui != null) {
-        $("#formngaygui").show();
-    } else {
-        $("#formngaygui").hide();
-    }
-    var formatngaygui = moment(ngaygui).format("DD-MM-YYYY");
-    $("#idloaixem").val(tenloai);
-    $("#idsohieuxem").val(datattc.sohieu);
-    $("#idtieudexem").val(datattc.tieude);
-    $("#idngaytaoxem").val(formatngaytao);
-    $("#idngayguixem").val(formatngaygui);
-    $("#idnoidungxem").text(datattc.noidung);
-    var bodytruong = document.getElementById("bodytruong");
-    var datatruong = datattc.truong;
-    var counttruong = datatruong.length;
-    for (var i = 0; i < counttruong; i++) {
+  var datattc = data;
+  var tenloai;
+  if(datattc.loai == 1){
+    tenloai = "Công tác quản lý";
+  }else if(datattc.loai == 2){
+    tenloai = "Công tác chuyên môn";
+  }else if(datattc.loai == 3){
+    tenloai = "Lịch kiểm tra";
+  }else if(datattc.loai == 4){
+    tenloai = "Thông báo khác";
+  }
+  var ngaytao = datattc.ngaytao;
+  var formatngaytao = moment(ngaytao).format('DD/MM/YYYY');
+  var ngaygui = datattc.ngaygui;
+  if(ngaygui != null){
+    $('#formngaygui').show();
+  }else{
+    $('#formngaygui').hide();
+  }
+  var formatngaygui = moment(ngaygui).format('DD/MM/YYYY');
+  $('#idloaixem').val(tenloai);
+  $('#idsohieuxem').val(datattc.sohieu);
+  $('#idtieudexem').val(datattc.tieude);
+  $('#idngaytaoxem').val(formatngaytao);
+  $('#idngayguixem').val(formatngaygui);
+  $('#idnoidungxem').text(datattc.noidung);
+  var bodytruong = document.getElementById("bodytruong");
+  var datatruong = datattc.truong;
+  var counttruong = datatruong.length;
+  for (var i = 0; i < counttruong; i++) {
         tr = document.createElement("tr");
-        tr.appendChild(document.createElement("td"));
-        tr.appendChild(document.createElement("td"));
+        tr.appendChild(document.createElement('td'));
+        tr.appendChild(document.createElement('td'));
 
-        tr.cells[0].appendChild(document.createTextNode(i + 1));
-        tr.cells[1].appendChild(
-            document.createTextNode(datatruong[i][0].tentruong)
-        );
-        bodytruong.appendChild(tr);
+        tr.cells[0].appendChild(document.createTextNode(i+1));
+        tr.cells[1].appendChild(document.createTextNode(datatruong[i][0].tentruong));
+        bodytruong.appendChild(tr); 
     }
     var tenfile = datattc.file;
-    // var url = url('uploads/thongbao/'+tenfile);
-    var divfile = document.getElementById("filedinhkem");
-    var a = document.createElement("a");
-    a.textContent = tenfile;
-    a.href = "uploads/thongbao/" + tenfile + "";
-    // a.target = '_blank';
-    divfile.appendChild(a);
+      // var url = url('public/uploads/thongbao/'+tenfile);
+      var divfile = document.getElementById("filedinhkem");
+      var a = document.createElement('a');
+      a.textContent= tenfile;
+      a.href = "uploads/thongbao/"+tenfile+"";
+      // a.target = '_blank';
+      divfile.appendChild(a);
 }
 
 function loadmodalsua(data){
     var datatts = data;
-    $('#idthongbao').val(datatts.id);
-    $('#idloaisua option').each(function(value) {
-        if (datatts.loai == $(this).val()) {
-            $(this).attr('selected', 'selected');
-        }else{
-            $(this).removeAttr('selected','selected');
-        }
-    });
-    $('#idsohieusua').val(datatts.sohieu);
-    $('#idtieudesua').val(datatts.tieude);
-    var ngaytaosua = datatts.ngaytao;
-    var formatngaytaosua = moment(ngaytaosua).format('DD/MM/YYYY');
-    $('#idngaytaosua').val(formatngaytaosua);
-    $('#idnoidungsua').text(datatts.noidung);
-    var tenfilesua = datatts.file;
-      var divfile = document.getElementById("filedinhkemsua");
-      var a = document.createElement('a');
-      a.textContent= tenfilesua;
-      a.href = "uploads/thongbao/"+tenfilesua+"";
-      // a.target = '_blank';
-      divfile.appendChild(a);
-      var datadv = [];
-      var datatruong = datatts.truong;
-      for(var i=0;i<datatruong.length;i++){
-        datadv.push(datatruong[i][0].matruong);
-      }
-    $('#iddonvisua').select2({ width: '100%'}).val(datadv).trigger("change"); 
+    axios.get('getdstruong').then(function(response) {
+        var dulieutruong = response.data;
+        var demdstruong = dulieutruong.length;
 
+        $('#idthongbao').val(datatts.id);
+        $('#idloaisua option').each(function(value) {
+            if (datatts.loai == $(this).val()) {
+                $(this).attr('selected', 'selected');
+            }else{
+                $(this).removeAttr('selected','selected');
+            }
+        });
+        $('#idsohieusua').val(datatts.sohieu);
+        $('#idtieudesua').val(datatts.tieude);
+        var ngaytaosua = datatts.ngaytao;
+        var formatngaytaosua = moment(ngaytaosua).format('DD/MM/YYYY');
+        $('#idngaytaosua').val(formatngaytaosua);
+        $('#idnoidungsua').text(datatts.noidung);
+        var tenfilesua = datatts.file;
+        var divfile = document.getElementById("filedinhkemsua");
+        var a = document.createElement('a');
+        a.textContent= tenfilesua;
+        a.href = "uploads/thongbao/"+tenfilesua+"";
+        // a.target = '_blank';
+        divfile.appendChild(a);
+
+        var datadv = [];
+        var datacaphoc = [];
+        var datatruong = datatts.truong;
+        var demdatatruong = datatruong.length;
+        
+        for(let i=0;i<demdstruong;i++){
+            for(let j=0;j<demdatatruong;j++){
+                if(dulieutruong[i].matruong == datatruong[j][0].matruong){
+                    datacaphoc.push({
+                        matruong: datatruong[j][0].matruong,
+                        caphoc: dulieutruong[i].caphoc
+                    });
+                    datadv.push(datatruong[j][0].matruong);
+                }                
+            }
+        }
+
+        if(demdstruong == demdatatruong){
+            $('#idcaphocsua').select2({width: '100%'}).val('all').trigger("change");
+        }else{
+            $('#idcaphocsua').select2({width: '100%'}).val(datacaphoc[0].caphoc).trigger("change");
+        }
+
+        if($('#idcaphocsua').val() == "all"){
+            document.getElementById('divdonvisua').style.display = "none";
+        }else{
+            document.getElementById('divdonvisua').style.display = "block";
+        }
+
+
+        var idcaphocsua = $('#idcaphocsua').val();
+
+        var selectmultiplesua = document.getElementById("iddonvisua");
+
+        for (let j = 0; j < demdstruong; j++) {
+            if(idcaphocsua == dulieutruong[j].caphoc){
+                var option = document.createElement("option");
+                option.value = dulieutruong[j].matruong;
+                option.text = dulieutruong[j].tentruong;
+                selectmultiplesua.appendChild(option);
+            }   
+        }
+  
+        $('#iddonvisua').select2({ width: '100%'}).val(datadv).trigger("change");
+
+    });
 }
 
 
 window.onload = function() {
+     
     loaddanhsachthongbao();
     $('#idngaytao').datepicker({
         autoclose: true,
@@ -457,33 +575,104 @@ window.onload = function() {
         language: "vi",
 
     });
-    axios.get('getdstruong').then(function(response) {
-        var data = response.data;
-        var selectmultiple = document.getElementById("iddonvi");
-        var selectmultiplesua = document.getElementById("iddonvisua");
-        for (var i = 0; i < data.length; i++) {
-            var option = document.createElement("option");
-            option.value = data[i].matruong;
-            option.text = data[i].tentruong;
-            selectmultiple.appendChild(option);
-            
-        }
-
-        for (var j = 0; j < data.length; j++) {
-            var option = document.createElement("option");
-            option.value = data[j].matruong;
-            option.text = data[j].tentruong;
-            selectmultiplesua.appendChild(option);
-            
-        }
-    });
+    
     $('#iddonvi').select2({
+        width: '100%'
+    });  
+    
+    $('#idcaphoc').select2({
         width: '100%'
     });
 
-    // $('#iddonvisua').select2({
-    //     width: '100%'
-    // });
+    $('#idcaphoc').on('change',function(){
+        $('#chbxalldonvi').prop('checked',false);
+        $('#iddonvi').empty();
+        let idcaphoc = $(this).val();
+        axios.get('getdstruong').then(function(response) {
+            var data = response.data;
+            var selectmultiple = document.getElementById("iddonvi");
+            for (var i = 0; i < data.length; i++) {
+                if(idcaphoc == data[i].caphoc){
+                    var option = document.createElement("option");
+                    option.value = data[i].matruong;
+                    option.text = data[i].tentruong;
+                    selectmultiple.appendChild(option);
+                    document.getElementById('divdonvi').style.display = "block";
+                }                
+            }
+
+
+            if(idcaphoc == "all"){
+                var arrmatruong = [];
+                for(let k=0;k<data.length;k++){
+                    arrmatruong.push(data[k].matruong);
+                }
+                $('#idcaphocall').val(arrmatruong);
+                document.getElementById('divdonvi').style.display = "none";
+            }
+
+            if(idcaphoc == null){
+                document.getElementById('divdonvi').style.display = "none";
+            }
+
+        });
+
+        
+    });
+
+    $("#chbxalldonvi").click(function(){
+        if($("#chbxalldonvi").is(':checked') ){
+            $("#iddonvi > option").prop("selected",true);
+            $("#iddonvi").trigger("change");
+        }else{
+            $("#iddonvi > option").prop("selected",false);
+            $("#iddonvi").trigger("change");
+         }
+    });
+
+    $('#idcaphocsua').on('select2:select', function (e) {
+        $('#chbxalldonvisua').prop('checked',false);
+        $('#iddonvisua').empty();
+        var idcaphocsua = $(this).val();
+        axios.get('getdstruong').then(function(response) {
+            var data = response.data;
+            var selectmultiple = document.getElementById("iddonvisua");
+            for (var i = 0; i < data.length; i++) {
+                if(idcaphocsua == data[i].caphoc){
+                    var option = document.createElement("option");
+                    option.value = data[i].matruong;
+                    option.text = data[i].tentruong;
+                    selectmultiple.appendChild(option);
+                    document.getElementById('divdonvisua').style.display = "block";
+                }                
+            }
+
+            if(idcaphocsua == "all"){
+                var arrmatruong = [];
+                for(let k=0;k<data.length;k++){
+                    arrmatruong.push(data[k].matruong);
+                }
+                $('#idcaphocsuaall').val(arrmatruong);
+                document.getElementById('divdonvisua').style.display = "none";
+            }
+
+            if(idcaphocsua == null){
+                document.getElementById('divdonvisua').style.display = "none";
+            }
+
+        });
+    });
+
+    $("#chbxalldonvisua").click(function(){
+        if($("#chbxalldonvisua").is(':checked') ){
+            $("#iddonvisua > option").prop("selected",true);
+            $("#iddonvisua").trigger("change");
+        }else{
+            $("#iddonvisua > option").prop("selected",false);
+            $("#iddonvisua").trigger("change");
+         }
+    });
+
 }
 
 jQuery(document).ready(function () {
@@ -495,6 +684,27 @@ jQuery(document).ready(function () {
 
 jQuery(document).ready(function () {
     jQuery('#modalsuathongbao').on('hidden.bs.modal', function (e) {
-      $('#filedinhkemsua a').empty();
+      // $('#tabletruong>tbody').empty();
+        $(this).find('#formsuathongbao')[0].reset();
+        $('#idcaphocsua').select2("val", " ");
+        $('#iddonvisua').empty();
+        let idcaphocsua = $('#idcaphocsua').val();
+        if(idcaphocsua == null){
+            document.getElementById('divdonvisua').style.display = "none";
+        }  
+        $('#filedinhkemsua a').empty();
+    });
+});
+
+
+jQuery(document).ready(function () {
+    jQuery('#modalthemthongbao').on('hidden.bs.modal', function (e) {
+        $(this).find('#formthemthongbao')[0].reset();
+        $('#idcaphoc').select2("val", " ");
+        $('#iddonvi').empty();
+        let idcaphoc = $('#idcaphoc').val();
+        if(idcaphoc == null){
+            document.getElementById('divdonvi').style.display = "none";
+        }          
     });
 });

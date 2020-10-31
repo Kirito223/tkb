@@ -55,6 +55,15 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('addtruong','admin\AdminController@addtruong');
 	Route::post('updatetruong','admin\AdminController@updatetruong');
 	Route::post('deltruong','admin\AdminController@deltruong');
+	//import
+	//import số tiết môn học temp
+	Route::get('getDssotietmonhoctemp','admin\AdminController@getDssotietmonhoctemp');
+	Route::get('importsotietmonhoctemp','admin\AdminController@viewimportsotietmonhoctemp');
+	Route::post('postexcelsotietmonhoctemp','admin\AdminController@postexcelsotietmonhoctemp');
+	Route::post('addsotietmonhoc_temp','admin\AdminController@addsotietmonhoc_temp');
+	Route::post('updatesotietmonhoc_temp','admin\AdminController@updatesotietmonhoc_temp');
+	Route::post('delsotietmonhoc_temp','admin\AdminController@delsotietmonhoc_temp');
+	Route::post('delsotietmonhoc_tempall','admin\AdminController@delsotietmonhoc_tempall');
 	
 	
 
@@ -67,14 +76,24 @@ Route::group(['middleware' => 'auth'], function(){
 
 //tinhchinh
 	Route::get('tinhchinh','tinhchinh\tinhchinhController@index');
-	Route::get('getdanhgiagv','tinhchinh\tinhchinhController@getdanhgiagv');
+	Route::get('getdanhgiagvtruong','tinhchinh\tinhchinhController@getdanhgiagvtruong');
 	Route::post('adddanhgiagv','tinhchinh\tinhchinhController@adddanhgiagv');
 	Route::post('updatedanhgiagv','tinhchinh\tinhchinhController@updatedanhgiagv');
 	Route::post('delldanhgiagv','tinhchinh\tinhchinhController@delldanhgiagv');
 
-
-//xemtkb
+	//xemtkb
 	Route::get('xemtkb','xemtkb\xemtkbController@index');
+	//lấy danh sách khối,gv,lớp
+	Route::get('getdskhoigvlop','xemtkb\xemtkbController@getdskhoigvlop');
+	//lấy thời khoá biểu trường
+	Route::get('gettkbtruong','xemtkb\xemtkbController@gettkbtruong');
+	//lây danh sách lớp từ trường
+	Route::get('getdslt','xemtkb\xemtkbController@getdslt');
+	//lấy danh sách tkb giáo viên
+	Route::get('gettkbgv','xemtkb\xemtkbController@gettkbgv');
+	//lấy danh sách tkb lớp
+	Route::get('gettkblop','xemtkb\xemtkbController@gettkblop');
+
 
 //tro giup
 	Route::get('exportkb','exportkb\exportkbController@index');
@@ -128,6 +147,9 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('updatedanhsachphonghocbomon','khaibao\khaibaoController@updatedanhsachphonghocbomon');
 	Route::post('deldanhsachphonghocbomon','khaibao\khaibaoController@deldanhsachphonghocbomon');
 	Route::post('deltoanbodanhsachphonghocbomon','khaibao\khaibaoController@deltoanbodanhsachphonghocbomon');
+	Route::post('addmonphonghoc','khaibao\khaibaoController@addmonphonghoc');
+	Route::post('updatemonphonghoc','khaibao\khaibaoController@updatemonphonghoc');
+	Route::post('dellmonphonghoc','khaibao\khaibaoController@dellmonphonghoc');
 
 	//danh sách giáo viên tham gia giảng dạy
 	Route::get('getdanhsachgvthamgiagiangday','khaibao\khaibaoController@getdanhsachgvthamgiagiangday');
@@ -187,6 +209,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('addrangbuoctietcodinhtiethoc','rangbuoc\rangbuocController@addrangbuoctietcodinhtiethoc');
 	Route::post('updaterangbuoctietcodinhtiethoc','rangbuoc\rangbuocController@updaterangbuoctietcodinhtiethoc');
 	Route::post('delrangbuoctietcodinh','rangbuoc\rangbuocController@delrangbuoctietcodinh');
+	Route::post('delmonhocrangbuoctietcodinh','rangbuoc\rangbuocController@delmonhocrangbuoctietcodinh');
 	
 
 	//tiết họp của tổ
@@ -194,6 +217,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::post('addtiethopcuato','rangbuoc\rangbuocController@addtiethopcuato');
 	Route::post('updatetiethopcuato','rangbuoc\rangbuocController@updatetiethopcuato');
 	Route::post('deltiethopcuato','rangbuoc\rangbuocController@deltiethopcuato');
+	Route::post('deltiethopcuatoall','rangbuoc\rangbuocController@deltiethopcuatoall');
 
 	//ti?t giáo viên bu?c ph?i có
 	Route::get('gettietgvbuocphaico','rangbuoc\rangbuocController@gettietgvbuocphaico');
@@ -203,6 +227,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('getdangkybuoitietnghicuagv','rangbuoc\rangbuocController@getdangkybuoitietnghicuagv');
 	Route::post('addrangbuocdangkytietnghigv','rangbuoc\rangbuocController@addrangbuocdangkytietnghigv');
 	Route::post('addrangbuocdangkybuoinghigv','rangbuoc\rangbuocController@addrangbuocdangkybuoinghigv');
+			//rang buoc buoi nghi giao vien all
+		Route::post('addrangbuocbuoinghiall','rangbuoc\rangbuocController@addrangbuocbuoinghiall');
+		//rang buoc tiet nghi giao vien all
+		Route::post('addrangbuoctietnghiall','rangbuoc\rangbuocController@addrangbuoctietnghiall');
 
 	
 	//ràng bu?c s? ti?t 5 sáng (ti?t 1 chi?u)
@@ -223,6 +251,9 @@ Route::group(['middleware' => 'auth'], function(){
 	//ràng buộc cặp tiết xếp liền nhau
 	Route::get('getlistrangbuoccaptietxepliennhau','rangbuoc\rangbuocController@getlistrangbuoccaptietxepliennhau');
 	Route::post('updaterangbuoccaptietxepliennhau','rangbuoc\rangbuocController@updaterangbuoccaptietxepliennhau');
+		Route::post('dellrangbuoccaptietxepliennhau','rangbuoc\rangbuocController@dellrangbuoccaptietxepliennhau');
+	Route::post('dellrangbuoccaptietxepliennhauall','rangbuoc\rangbuocController@dellrangbuoccaptietxepliennhauall');
+
 
 	// # so tiet toi da ngay
 	// Route::get('sotiettoidangay','rangbuoc\rangbuocController@index');
@@ -230,36 +261,174 @@ Route::group(['middleware' => 'auth'], function(){
 	// Route::get('sotiettoidabuoi','rangbuoc\rangbuocController@indexBuoi');
 	
 	
+	//rang buoc thu tu tiet
+	Route::get('getrangbuocthututiet','rangbuoc\rangbuocController@getrangbuocthututiet');
+	Route::post('addrangbuocthututiet','rangbuoc\rangbuocController@addrangbuocthututiet');
+	Route::post('updaterangbuocthututiet','rangbuoc\rangbuocController@updaterangbuocthututiet');
+	Route::post('dellrangbuocthututiet','rangbuoc\rangbuocController@dellrangbuocthututiet');
+	Route::post('dellrangbuocthututietall','rangbuoc\rangbuocController@dellrangbuocthututietall');
+	Route::post('updatethututietthutuhienthi','rangbuoc\rangbuocController@updatethututietthutuhienthi');
 	
 	
-		// tài khoản tổng hợp
-	// xem thời khoá biểu
-	Route::get('xemthoikhoabieu','tonghop\tonghopController@xemthoikhoabieu');
-	// lấy ds trường
-	Route::get('getdstruong','tonghop\tonghopController@getdstruong');
+		//rang buoc tiet nghi lop 
+	Route::get('getrangbuoctietnghilop','rangbuoc\rangbuocController@getrangbuoctietnghilop');
+	Route::post('addrangbuoctietnghilop','rangbuoc\rangbuocController@addrangbuoctietnghilop');
+	Route::post('updaterangbuoctietnghilop','rangbuoc\rangbuocController@updaterangbuoctietnghilop');
+	Route::post('dellrangbuoctietnghilop','rangbuoc\rangbuocController@dellrangbuoctietnghilop');
+	Route::post('dellrangbuoctietnghilopall','rangbuoc\rangbuocController@dellrangbuoctietnghilopall');
+	Route::post('addtietnghilopmulti','rangbuoc\rangbuocController@addtietnghilopmulti');
+
+//tài khoản trường
+	Route::get('taikhoantruong','taikhoantruong\taiKhoantruongController@viewtaikhoantruong');
+	Route::get('getlisttaikhoantruong','taikhoantruong\taiKhoantruongController@getlisttaikhoantruong');
+	Route::post('updatepasswordtruong','taikhoantruong\taiKhoantruongController@updatepasswordtruong');
+	
+	
+// tài khoản tổng hợp
+
+		// xem thời khoá biểu
+		Route::get('xemthoikhoabieu','tonghop\tonghopController@xemthoikhoabieu');
+		// lấy ds trường
+		Route::get('getdstruong','tonghop\tonghopController@getdstruong');
+		//lấy thời khoá biểu trường
+		Route::get('getthoikhoabieutruong','tonghop\tonghopController@getthoikhoabieutruong');
+		//lây danh sách lớp từ trường
+		Route::get('getdsloptruong','tonghop\tonghopController@getdsloptruong');
+		//lấy danh sách tkb giáo viên
+		Route::get('getthoikhoabieugv','tonghop\tonghopController@getthoikhoabieugv');
+		//lấy danh sách tkb lớp
+		Route::get('getthoikhoabieulop','tonghop\tonghopController@getthoikhoabieulop');
 
 	//thống kê
-	Route::get('thongke','tonghop\tonghopController@thongke');
-	//lấy ds gv phân công 
-	Route::get('getdsgvpcgd','tonghop\tonghopController@getdsgvpcgd');
+		Route::get('thongke','tonghop\tonghopController@thongke');
+		//lấy ds gv phân công 
+		Route::get('getdsgvpcgd','tonghop\tonghopController@getdsgvpcgd');
 
 	//theo dõi
 		// biến động tkb
-	Route::get('theodoibiendongtkb','tonghop\tonghopController@theodoibiendongtkb');
+		Route::get('theodoibiendongtkb','tonghop\tonghopController@theodoibiendongtkb');
 		// báo cáo đơn vị
-	Route::get('theodoibaocaodonvi','tonghop\tonghopController@theodoibaocaodonvi');
+		Route::get('theodoibaocaodonvi','tonghop\tonghopController@theodoibaocaodonvi');
+		//lấy danh sách báo cáo
+		Route::get('getdsbaocaodonvi','tonghop\tonghopController@getdsbaocaodonvi');
+		//cập nhật trạng thái xem báo cáo đơn vị
+		Route::post('updatetrangthaixembaocaodonvi','tonghop\tonghopController@updatetrangthaixembaocaodonvi');
+		// đánh giá giáo viên
+		Route::get('theodoidanhgiagiaovien','tonghop\tonghopController@theodoidanhgiagiaovien');
+		//lấy danh sách đánh giá giáo viên
+		Route::get('getdanhgiagv','tonghop\tonghopController@getdanhgiagv');
+		//lấy danh sách thời khoá biểu giáo viên theo thời gian
+		Route::get('getthoikhoabieugvtime','tonghop\tonghopController@getthoikhoabieugvtime');
+		//lấy danh sách thời khoá biểu lớp theo thời gian
+		Route::get('getthoikhoabieuloptime','tonghop\tonghopController@getthoikhoabieuloptime');
+
 	//thông báo	
-	Route::get('thongbao','tonghop\tonghopController@thongbao');
+		Route::get('thongbao','tonghop\tonghopController@thongbao');
+		//lấy ds thông báo
+		Route::get('getdsthongbao','tonghop\tonghopController@getdsthongbao');
+		//thêm mới thông báo
+		Route::post('addthongbao','tonghop\tonghopController@addthongbao');
+		//Cập nhật thông báo
+		Route::post('updatethongbao','tonghop\tonghopController@updatethongbao');
+		//Xoá thông báo
+		Route::post('delthongbao','tonghop\tonghopController@delthongbao');
+		//Gửi thông báo
+		Route::post('sendthongbao','tonghop\tonghopController@sendthongbao');
+		//Thu hồi thông báo
+		Route::post('thuhoithongbao','tonghop\tonghopController@thuhoithongbao');
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+//tro giup
+	Route::get('exportkb','exportkb\exportkbController@index');
+	//lấy dah sách báo cáo
+	Route::get('getdsbaocao','exportkb\exportkbController@getdsbaocao');
+	//thêm mới báo cáo
+	Route::post('addbaocao','exportkb\exportkbController@addbaocao');
+	//cập nhật báo cáo
+	Route::post('updatebaocao','exportkb\exportkbController@updatebaocao');
+	//xoá báo cáo
+	Route::post('delbaocao','exportkb\exportkbController@delbaocao');
+	//gửi báo cáo
+	Route::post('sendbaocao','exportkb\exportkbController@sendbaocao');
+	//gửi báo cáo
+	Route::post('thuhoibaocao','exportkb\exportkbController@thuhoibaocao');
+	
+	
+	
+// tài khoản tổng hợp
+
+	// xem thời khoá biểu
+		Route::get('xemthoikhoabieu','tonghop\tonghopController@xemthoikhoabieu');
+		// lấy ds trường
+		Route::get('getdstruong','tonghop\tonghopController@getdstruong');
+		//lấy thời khoá biểu trường
+		Route::get('getthoikhoabieutruong','tonghop\tonghopController@getthoikhoabieutruong');
+		//lây danh sách lớp từ trường
+		Route::get('getdsloptruong','tonghop\tonghopController@getdsloptruong');
+		//lấy danh sách tkb giáo viên
+		Route::get('getthoikhoabieugv','tonghop\tonghopController@getthoikhoabieugv');
+		//lấy danh sách tkb lớp
+		Route::get('getthoikhoabieulop','tonghop\tonghopController@getthoikhoabieulop');
+
+	//thống kê
+		Route::get('thongke','tonghop\tonghopController@thongke');
+		//lấy ds gv phân công 
+		Route::get('getdsgvpcgd','tonghop\tonghopController@getdsgvpcgd');
+
+	//theo dõi
+		// biến động tkb
+		Route::get('theodoibiendongtkb','tonghop\tonghopController@theodoibiendongtkb');
+		// báo cáo đơn vị
+		Route::get('theodoibaocaodonvi','tonghop\tonghopController@theodoibaocaodonvi');
+		//lấy danh sách báo cáo
+		Route::get('getdsbaocaodonvi','tonghop\tonghopController@getdsbaocaodonvi');
+		//cập nhật trạng thái xem báo cáo đơn vị
+		Route::post('updatetrangthaixembaocaodonvi','tonghop\tonghopController@updatetrangthaixembaocaodonvi');
+		// đánh giá giáo viên
+		Route::get('theodoidanhgiagiaovien','tonghop\tonghopController@theodoidanhgiagiaovien');
+		//lấy danh sách đánh giá giáo viên
+		Route::get('getdanhgiagv','tonghop\tonghopController@getdanhgiagv');
+		//lấy danh sách thời khoá biểu giáo viên theo thời gian
+		Route::get('getthoikhoabieugvtime','tonghop\tonghopController@getthoikhoabieugvtime');
+		//lấy danh sách thời khoá biểu lớp theo thời gian
+		Route::get('getthoikhoabieuloptime','tonghop\tonghopController@getthoikhoabieuloptime');
+
+	//thông báo	
+		Route::get('thongbao','tonghop\tonghopController@thongbao');
+		//lấy ds thông báo
+		Route::get('getdsthongbao','tonghop\tonghopController@getdsthongbao');
+		//thêm mới thông báo
+		Route::post('addthongbao','tonghop\tonghopController@addthongbao');
+		//Cập nhật thông báo
+		Route::post('updatethongbao','tonghop\tonghopController@updatethongbao');
+		//Xoá thông báo
+		Route::post('delthongbao','tonghop\tonghopController@delthongbao');
+		//Gửi thông báo
+		Route::post('sendthongbao','tonghop\tonghopController@sendthongbao');
+	
+	
+//thông báo	pgd gửi trường
+	Route::get('thongbaotruong','thongbao\thongbaoController@thongbaotruong');
 	//lấy ds thông báo
-	Route::get('getdsthongbao','tonghop\tonghopController@getdsthongbao');
-	//thêm mới thông báo
-	Route::post('addthongbao','tonghop\tonghopController@addthongbao');
-	//Cập nhật thông báo
-	Route::post('updatethongbao','tonghop\tonghopController@updatethongbao');
-	//Xoá thông báo
-	Route::post('delthongbao','tonghop\tonghopController@delthongbao');
-	//Gửi thông báo
-	Route::post('sendthongbao','tonghop\tonghopController@sendthongbao');
+	Route::get('getdsthongbaotruong','thongbao\thongbaoController@getdsthongbaotruong');
+	//cập nhật trạng thái xem thông báo của ogd
+	Route::post('updatetrangthaixemthongbaotruong','thongbao\thongbaoController@updatetrangthaixemthongbaotruong');
+Route::post('uploadFileKysos', "tonghop\tonghopController@uploadFileKyso");
+
+	
+	
+	
+	
+	
+	
 
 });
 
