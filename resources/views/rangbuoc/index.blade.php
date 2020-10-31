@@ -977,6 +977,7 @@
 														<th scope="col">Tiết</th>
 														<th scope="col">Mức ràng buộc</th>
 														<th scope="col">Danh sách buổi học được áp dụng</th>
+														<th>Danh sách lớp học được áp dụng</th>
 														<th scope="col">Chọn tiết gv buộc phải có</th>
 													</tr>
 												</thead>
