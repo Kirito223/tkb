@@ -123,8 +123,8 @@ function initEvent() {
         loadClass();
     };
     xuattkbphong.onclick = function () {
-        loadClass();
-        tableList.classList.remove("hidden");
+        // loadClass();
+        // tableList.classList.remove("hidden");
     };
     xuattkbtongquat.onclick = function () {
         tableList.classList.add("hidden");
@@ -216,7 +216,6 @@ async function exportExcel() {
         arrFile.push("tkbpccm");
     }
     if (xuattkbphong.checked) {
-        arrFile.push("tkblophoc");
         tkbphong = 1;
     }
     try {
@@ -232,7 +231,7 @@ async function exportExcel() {
             }
         }
 
-        await xuattkbapi.export(
+        let result = await xuattkbapi.export(
             JSON.stringify({
                 tkbtruong: tkbtruong,
                 tkblop: tkblop,
@@ -243,6 +242,17 @@ async function exportExcel() {
                 exportAll: selectAll.checked,
             })
         );
+
+        if (xuattkbphong.checked == true) {
+            arrFile.length = 0;
+
+            result.data.forEach((item) => {
+                let isset = arrFile.findIndex((x) => x == item);
+                if (isset == -1) {
+                    arrFile.push(item);
+                }
+            });
+        }
         progressExport.setAttribute("aria-valuenow", "100");
         progressExport.classList.add("hidden");
     } catch (error) {
