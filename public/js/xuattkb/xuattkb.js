@@ -19,7 +19,10 @@ var listTeacherBody,
     selectAll,
     titleColumn,
     bodyTableList,
-    xuattkbdiemtruong;
+    xuattkbdiemtruong,
+    kieu,
+    tendaydu,
+    tenviettat;
 
 var arrFile = [];
 var arrFileAttack = null;
@@ -48,6 +51,9 @@ function initControl() {
     titleColumn = document.getElementById("titleColumn");
     bodyTableList = document.getElementById("bodyTableList");
     xuattkbdiemtruong = document.getElementById("xuattkbdiemtruong");
+    kieu = document.getElementById("kieu");
+    tendaydu = document.getElementById("tendaydu");
+    tenviettat = document.getElementById("tenviettat");
 
     const now = new Date();
     $("#dateprocess").dxDateBox({
@@ -106,6 +112,12 @@ function showTable(data) {
     bodyTableList.innerHTML = html;
 }
 
+function reset() {
+    kieu.classList.add("hidden");
+    tendaydu.checked = false;
+    tenviettat.checked = false;
+}
+
 function initEvent() {
     selectAll.onclick = function () {
         let chk = document.getElementsByClassName("chkSelect");
@@ -115,23 +127,25 @@ function initEvent() {
     };
 
     xuattkbgiaovien.onclick = function (e) {
+        reset();
+
         tableList.classList.remove("hidden");
         titleColumn.textContent = "Tên giáo viên";
         loadTeacher();
     };
     xuattkblop.onclick = function () {
+        reset();
         tableList.classList.remove("hidden");
         titleColumn.textContent = "Lớp";
         loadClass();
     };
-    xuattkbphong.onclick = function () {
-        // loadClass();
-        // tableList.classList.remove("hidden");
-    };
+    xuattkbphong.onclick = function () {};
     xuattkbtongquat.onclick = function () {
+        kieu.classList.remove("hidden");
         tableList.classList.add("hidden");
     };
     xuattkbphancongcm.onclick = function () {
+        reset();
         tableList.classList.add("hidden");
     };
     fileInput.onchange = function (e) {
@@ -247,6 +261,8 @@ async function exportExcel() {
                 tkbphancongcm: tkbphancongcm,
                 arrSelect: JSON.stringify(arrSelect),
                 exportAll: selectAll.checked,
+                tendaydu: tendaydu.checked,
+                tenviettat: tenviettat.checked,
             })
         );
 

@@ -75,7 +75,8 @@ class exportExcelController extends Controller
             $sheet = $this->loadSheetExcel('mautkbtruong.xlsx');
             $sheet->setActiveSheetIndex(0);
             $sheetTKBSchool = $sheet->getActiveSheet();
-            $this->exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet);
+            $fullname = $param->tendaydu;
+            $this->exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname);
             array_push($fileExport, "thoikhoabieutruong");
         }
         if ($param->tkblop == 1) {
@@ -367,6 +368,7 @@ class exportExcelController extends Controller
             $item->listClass = $class;
             array_push($listLocation, $item);
         }
+
 
         // make table time
         $tableTimeLocation = array();
@@ -1018,7 +1020,7 @@ class exportExcelController extends Controller
     }
 
 
-    private function exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet)
+    private function exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname)
     {
         $rowTitle = 5;
         $columnTitle = 3;
@@ -1079,11 +1081,16 @@ class exportExcelController extends Controller
                         ->where('tiet', $ss)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
-                        ->select('monhoc.tenmonhoc', 'danhsachgv.bidanh', 'thoikhoabieu.malop', 'thoikhoabieu.tiet')
+                        ->select('monhoc.tenmonhoc', 'monhoc.monhocviettat', 'danhsachgv.bidanh', 'thoikhoabieu.malop', 'thoikhoabieu.tiet')
                         ->first();
 
                     if ($table != null) {
-                        $item = new TableTime($day, $session, $table->tenmonhoc, $table->bidanh);
+                        $item = null;
+                        if ($fullname == true) {
+                            $item = new TableTime($day, $session, $table->tenmonhoc, $table->bidanh);
+                        } else {
+                            $item = new TableTime($day, $session, $table->monhocviettat, $table->bidanh);
+                        }
                         array_push($tableTime, $item);
                     } else {
                         array_push($tableTime, null);

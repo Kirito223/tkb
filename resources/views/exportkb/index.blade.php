@@ -69,7 +69,18 @@
 													<input type="radio" name="radio" value="" id="xuattkbtongquat">
 													Xuất thời khóa biểu trường
 												</label>
+												<section class="hidden" id="kieu">
+													<label>
+														<input type="radio" name="typeRadio" value="" id="tendaydu">
+														Tên đầy đủ
+													</label>
+													<label>
+														<input type="radio" name="typeRadio" value="" id="tenviettat">
+														Tên viết tắt
+													</label>
+												</section>
 											</fieldset>
+
 											<fieldset class="radio" style="padding-right: 10px;">
 												<label>
 													<input type="radio" name="radio" value="" id="xuattkblop">
