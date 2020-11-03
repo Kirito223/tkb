@@ -18,7 +18,8 @@ var listTeacherBody,
     tableList,
     selectAll,
     titleColumn,
-    bodyTableList;
+    bodyTableList,
+    xuattkbdiemtruong;
 
 var arrFile = [];
 var arrFileAttack = null;
@@ -46,6 +47,7 @@ function initControl() {
     selectAll = document.getElementById("selectAll");
     titleColumn = document.getElementById("titleColumn");
     bodyTableList = document.getElementById("bodyTableList");
+    xuattkbdiemtruong = document.getElementById("xuattkbdiemtruong");
 
     const now = new Date();
     $("#dateprocess").dxDateBox({
@@ -197,6 +199,7 @@ async function exportExcel() {
         tkblop = 0,
         tkbGV = 0,
         tkbphong = 0,
+        tkbdiemtruong = 0,
         tkbphancongcm = 0;
 
     if (xuattkbtongquat.checked == true) {
@@ -218,6 +221,9 @@ async function exportExcel() {
     if (xuattkbphong.checked) {
         tkbphong = 1;
     }
+    if (xuattkbdiemtruong.checked) {
+        tkbdiemtruong = 1;
+    }
     try {
         progressExport.classList.remove("hidden");
         let arrSelect = [];
@@ -237,13 +243,14 @@ async function exportExcel() {
                 tkblop: tkblop,
                 tkbGV: tkbGV,
                 tkbphong: tkbphong,
+                tkbdiemtruong: tkbdiemtruong,
                 tkbphancongcm: tkbphancongcm,
                 arrSelect: JSON.stringify(arrSelect),
                 exportAll: selectAll.checked,
             })
         );
 
-        if (xuattkbphong.checked == true) {
+        if (xuattkbphong.checked == true || xuattkbdiemtruong.checked == true) {
             arrFile.length = 0;
 
             result.data.forEach((item) => {

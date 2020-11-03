@@ -1,5 +1,5 @@
 @extends('master')
-@section('title','Thiết lập CSDL')
+@section('title','Xuất thời khóa biểu')
 @section('content')
 
 <div class="card">
@@ -20,7 +20,7 @@
 				<div class="form-body">
 					<div class="row">
 						<div class="col-md-4">
-							<div class="card box-shadow-0 border-info bg-transparent" id="khaibao"  style="display:none">
+							<div class="card box-shadow-0 border-info bg-transparent" id="khaibao" style="display:none">
 								<div class="card-header bg-transparent" style="padding: 10px">
 									<div class="heading-elements">
 										<ul class="list-inline mb-0">
@@ -35,7 +35,8 @@
 											<label for="projectinput1">Import thời khóa biểu Excel</label>
 											<div class="controls">
 												<input type="file" name="file[]" id="importfile"
-												class="form-control input-sm" required="" style="padding: 0px;height: auto;">
+													class="form-control input-sm" required=""
+													style="padding: 0px;height: auto;">
 											</div>
 										</div>
 									</div>
@@ -56,134 +57,143 @@
 										<div class="form-group">
 											<div id="progressExport" class="progress hidden">
 												<div class="progress-bar progress-bar-striped progress-bar-animated"
-												role="progressbar" aria-valuenow="75" aria-valuemin="0"
-												aria-valuemax="100" style="width: 65%">Đang xuất thời khóa biểu vui
-											lòng chờ</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="projectinput1">Xuất thời khóa biểu</label>
-										<fieldset class="radio" style="padding-right: 10px;">
-											<label>
-												<input type="radio" name="radio" value="" id="xuattkbtongquat">
-												Xuất thời khóa biểu trường
-											</label>
-										</fieldset>
-										<fieldset class="radio" style="padding-right: 10px;">
-											<label>
-												<input type="radio" name="radio" value="" id="xuattkblop">
-												Xuất thời khóa biểu lớp
-											</label>
-										</fieldset>
-										<fieldset class="radio" style="padding-right: 10px;">
-											<label>
-												<input type="radio" name="radio" value="" id="xuattkbgiaovien">
-												Xuất thời khóa biểu giáo viên
-											</label>
-										</fieldset>
-										<fieldset class="radio" style="padding-right: 10px;">
-											<label>
-												<input type="radio" name="radio" value="" id="xuattkbphancongcm">
-												Xuất thời khóa biểu phân công chuyên môn
-											</label>
-										</fieldset>
-										<fieldset class="radio" style="padding-right: 10px;">
-											<label>
-												<input type="radio" name="radio" value="" id="xuattkbphong">
-												Xuất thời khóa biểu theo phòng
-											</label>
-										</fieldset>
-										<hr>
-										<div style="height: 300px; margin-bottom:3px; overflow: scroll;"
-										id="tableList" class="hidden">
-										<table class="table table-bordered">
-											<thead>
-												<tr>
-													<th><input type="checkbox" id="selectAll" /></th>
-													<th id="titleColumn"></th>
-												</tr>
-											</thead>
-											<tbody id="bodyTableList">
-											</tbody>
-										</table>
-									</div>
-									<button type="button" class="btn btn-success btn-sm" id="xuattkb">Xuất thời
-										khóa
-									biểu</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-8">
-					<div class="card box-shadow-0 border-info bg-transparent" id="khaibao">
-						<div class="card-header bg-transparent" style="padding: 10px">
-							<h5 class="card-title" id="basic-layout-form">Gửi Email</h5>
-							<a class="heading-elements-toggle"><i
-								class="fa fa-ellipsis-v font-medium-3"></i></a>
-								<div class="heading-elements">
-									<ul class="list-inline mb-0">
-										<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-									</ul>
-								</div>
-							</div>
-							<div class="card-content collapse show" style="">
-								<div class="card-body">
-									<form class="form">
-										<div class="form-body">
-											<h6 class="form-section"><i class="ft-calendar"></i> Thời khóa biểu</h6>
-											<div class="row">
-												<div class="col-md-2">
-													<div class="form-group">
-														<label>File đính kèm (Ký số)</label>
-														<button id="btnAttachFile" type="button"
-														class="btn mr-1 mb-1 btn-info btn-sm">File đính
-													kèm</button>
-												</div>
-												<div class="form-group">
-													<p>Danh sách file đính kèm:</p>
-													<ul id="listFileAttach"></ul>
-													<input type="file" id="fileInput" multiple class="hidden" />
-												</div>
-											</div>
-											<div class="col-md-1">
-												<div class="form-group">
-													<label>Gửi mail</label>
-													<button id="sendEmail" type="button"
-													class="btn mr-1 mb-1 btn-success btn-sm">Gửi</button>
-												</div>
-											</div>
-											<div class="col-md-2">
-												<div class="form-group">
-													<label>Ds báo cáo gửi lên PGD</label>
-													<button type="button" class="btn mr-1 mb-1 btn-primary btn-sm" id="btndsbaocao">Ds báo cáo</button>
-												</div>
+													role="progressbar" aria-valuenow="75" aria-valuemin="0"
+													aria-valuemax="100" style="width: 65%">Đang xuất thời khóa biểu vui
+													lòng chờ</div>
 											</div>
 										</div>
-									</div>
-								</form>
+										<div class="form-group">
+											<label for="projectinput1">Xuất thời khóa biểu</label>
+											<fieldset class="radio" style="padding-right: 10px;">
+												<label>
+													<input type="radio" name="radio" value="" id="xuattkbtongquat">
+													Xuất thời khóa biểu trường
+												</label>
+											</fieldset>
+											<fieldset class="radio" style="padding-right: 10px;">
+												<label>
+													<input type="radio" name="radio" value="" id="xuattkblop">
+													Xuất thời khóa biểu lớp
+												</label>
+											</fieldset>
+											<fieldset class="radio" style="padding-right: 10px;">
+												<label>
+													<input type="radio" name="radio" value="" id="xuattkbgiaovien">
+													Xuất thời khóa biểu giáo viên
+												</label>
+											</fieldset>
+											<fieldset class="radio" style="padding-right: 10px;">
+												<label>
+													<input type="radio" name="radio" value="" id="xuattkbphancongcm">
+													Xuất thời khóa biểu phân công chuyên môn
+												</label>
+											</fieldset>
+											<fieldset class="radio" style="padding-right: 10px;">
+												<label>
+													<input type="radio" name="radio" value="" id="xuattkbphong">
+													Xuất thời khóa biểu theo phòng
+												</label>
+											</fieldset>
 
-								<form class="form">
-									<div class="form-body">
-										<h6 class="form-section"><i class="ft-calendar"></i> Danh sách giáo viên
-										cần gửi</h6>
-										<div class="row">
-											<div class="col-md-12">
-												<div id="dsgiaovienguimail" style="display:none"></div>
-												<div id="dsgiaovienguimails"></div>
+											<fieldset class="radio" style="padding-right: 10px;">
+												<label>
+													<input type="radio" name="radio" value="" id="xuattkbdiemtruong">
+													Xuất thời khóa biểu theo điểm trường
+												</label>
+											</fieldset>
+											<hr>
+											<div style="height: 300px; margin-bottom:3px; overflow: scroll;"
+												id="tableList" class="hidden">
+												<table class="table table-bordered">
+													<thead>
+														<tr>
+															<th><input type="checkbox" id="selectAll" /></th>
+															<th id="titleColumn"></th>
+														</tr>
+													</thead>
+													<tbody id="bodyTableList">
+													</tbody>
+												</table>
 											</div>
+											<button type="button" class="btn btn-success btn-sm" id="xuattkb">Xuất thời
+												khóa
+												biểu</button>
 										</div>
 									</div>
-								</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-8">
+							<div class="card box-shadow-0 border-info bg-transparent" id="khaibao">
+								<div class="card-header bg-transparent" style="padding: 10px">
+									<h5 class="card-title" id="basic-layout-form">Gửi Email</h5>
+									<a class="heading-elements-toggle"><i
+											class="fa fa-ellipsis-v font-medium-3"></i></a>
+									<div class="heading-elements">
+										<ul class="list-inline mb-0">
+											<li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+										</ul>
+									</div>
+								</div>
+								<div class="card-content collapse show" style="">
+									<div class="card-body">
+										<form class="form">
+											<div class="form-body">
+												<h6 class="form-section"><i class="ft-calendar"></i> Thời khóa biểu</h6>
+												<div class="row">
+													<div class="col-md-2">
+														<div class="form-group">
+															<label>File đính kèm (Ký số)</label>
+															<button id="btnAttachFile" type="button"
+																class="btn mr-1 mb-1 btn-info btn-sm">File đính
+																kèm</button>
+														</div>
+														<div class="form-group">
+															<p>Danh sách file đính kèm:</p>
+															<ul id="listFileAttach"></ul>
+															<input type="file" id="fileInput" multiple class="hidden" />
+														</div>
+													</div>
+													<div class="col-md-1">
+														<div class="form-group">
+															<label>Gửi mail</label>
+															<button id="sendEmail" type="button"
+																class="btn mr-1 mb-1 btn-success btn-sm">Gửi</button>
+														</div>
+													</div>
+													<div class="col-md-2">
+														<div class="form-group">
+															<label>Ds báo cáo gửi lên PGD</label>
+															<button type="button"
+																class="btn mr-1 mb-1 btn-primary btn-sm"
+																id="btndsbaocao">Ds báo cáo</button>
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+
+										<form class="form">
+											<div class="form-body">
+												<h6 class="form-section"><i class="ft-calendar"></i> Danh sách giáo viên
+													cần gửi</h6>
+												<div class="row">
+													<div class="col-md-12">
+														<div id="dsgiaovienguimail" style="display:none"></div>
+														<div id="dsgiaovienguimails"></div>
+													</div>
+												</div>
+											</div>
+										</form>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</form>
 		</div>
-	</form>
-</div>
-</div>
+	</div>
 
 
 
@@ -207,8 +217,8 @@
 							<div class="card-body text-center">
 								<div class="progress">
 									<div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
-									id="loading" role="progressbar" aria-valuenow="80" aria-valuemin="80"
-									aria-valuemax="100" style="width:0%"></div>
+										id="loading" role="progressbar" aria-valuenow="80" aria-valuemin="80"
+										aria-valuemax="100" style="width:0%"></div>
 								</div>
 							</div>
 						</div>
@@ -220,7 +230,8 @@
 </div>
 
 <!-- modal danh sách báo cáo -->
-<div class="modal fade text-left" id="modaldsbaocao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" style="display: none;" aria-hidden="true">
+<div class="modal fade text-left" id="modaldsbaocao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
+	style="display: none;" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header bg-success white">
@@ -241,7 +252,8 @@
 </div>
 
 <!-- modal thêm mới báo cáo  -->
-<div class="modal fade text-left" id="modalthembaocao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" style="display: none;" aria-hidden="true">
+<div class="modal fade text-left" id="modalthembaocao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
+	style="display: none;" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header bg-success white">
@@ -260,235 +272,248 @@
 									<label for="projectinput5">Loại</label>
 									<select id="idloai" name="interested" class="form-control">
 										<option value="none" selected="" disabled="">--Chọn loại báo cáo--
-										</option><option value="1">Công tác quản lý
-										</option><option value="2">Công tác chuyên môn
-										</option><option value="3">Lịch kiểm tra
-										</option><option value="4">Thông báo khác
-										</option></select>
-									</div>
+										</option>
+										<option value="1">Công tác quản lý
+										</option>
+										<option value="2">Công tác chuyên môn
+										</option>
+										<option value="3">Lịch kiểm tra
+										</option>
+										<option value="4">Thông báo khác
+										</option>
+									</select>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="projectinput2">Số/ký hiệu</label>
-										<input type="text" id="idsohieu" class="form-control" name="lname">
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="projectinput2">Tiêu đề</label>
-										<input type="text" id="idtieude" class="form-control" name="lname">
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="projectinput2">Ngày tạo</label>
-										<input type="text" id="idngaytao" class="form-control" name="lname">
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label>Tập tin đính kèm</label>
-										<label id="projectinput7" class="file center-block">
-											<input type="file" id="file">
-											<span class="file-custom"></span>
-											<button type="button" class="btn btn-danger" id="btnSign">Ký văn bản</button>
-										</label>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="projectinput8">Nội dung</label>
-										<textarea id="idnoidung" rows="5" class="form-control" name="comment" ></textarea>
-									</div>
-								</div>
-							</div>
-
 						</div>
-					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary" id="btnluu">
-						<i class="fa fa-check-square-o"></i> Lưu
-					</button>
-					<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-				</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="projectinput2">Số/ký hiệu</label>
+									<input type="text" id="idsohieu" class="form-control" name="lname">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="projectinput2">Tiêu đề</label>
+									<input type="text" id="idtieude" class="form-control" name="lname">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="projectinput2">Ngày tạo</label>
+									<input type="text" id="idngaytao" class="form-control" name="lname">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Tập tin đính kèm</label>
+									<label id="projectinput7" class="file center-block">
+										<input type="file" id="file">
+										<span class="file-custom"></span>
+										<button type="button" class="btn btn-danger" id="btnSign">Ký văn bản</button>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="projectinput8">Nội dung</label>
+									<textarea id="idnoidung" rows="5" class="form-control" name="comment"></textarea>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary" id="btnluu">
+					<i class="fa fa-check-square-o"></i> Lưu
+				</button>
+				<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<!-- modal sửa báo cáo -->
-	<div class="modal fade text-left" id="modalsuabaocao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" style="display: none;" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header bg-success white">
-					<h5 class="modal-title" style="color: white;">Thông tin chung</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">×</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<form class="form" id="formsuathongbao" method="post" action="" enctype="multipart/form-data">
-						<div class="form-body">
-							<h4 class="form-section"><i class="fa fa-info-circle"></i> Chi tiết thông báo</h4>
-							<div class="row">
-								<div class="col-md-12">
-									<div class="form-group">
-										<label for="projectinput5">Loại</label>
-										<select id="idloaisua" name="interested" class="form-control">
-											<option value="none" selected="" disabled="">--Chọn loại thông báo--
-											</option><option value="1">Công tác quản lý
-											</option><option value="2">Công tác chuyên môn
-											</option><option value="3">Lịch kiểm tra
-											</option><option value="4">Thông báo khác
-											</option></select>
-										</div>
-									</div>
+<!-- modal sửa báo cáo -->
+<div class="modal fade text-left" id="modalsuabaocao" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
+	style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-success white">
+				<h5 class="modal-title" style="color: white;">Thông tin chung</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form class="form" id="formsuathongbao" method="post" action="" enctype="multipart/form-data">
+					<div class="form-body">
+						<h4 class="form-section"><i class="fa fa-info-circle"></i> Chi tiết thông báo</h4>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="projectinput5">Loại</label>
+									<select id="idloaisua" name="interested" class="form-control">
+										<option value="none" selected="" disabled="">--Chọn loại thông báo--
+										</option>
+										<option value="1">Công tác quản lý
+										</option>
+										<option value="2">Công tác chuyên môn
+										</option>
+										<option value="3">Lịch kiểm tra
+										</option>
+										<option value="4">Thông báo khác
+										</option>
+									</select>
 								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label for="projectinput2">Số/ký hiệu</label>
-											<input type="text" id="idsohieusua" class="form-control" name="lname">
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label for="projectinput2">Tiêu đề</label>
-											<input type="text" id="idtieudesua" class="form-control" name="lname">
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label for="projectinput2">Ngày tạo</label>
-											<input type="text" id="idngaytaosua" class="form-control" name="lname">
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label>Tập tin đính kèm</label>
-											<br>
-											<label id="projectinput7" class="file center-block">
-												<input type="file" id="filesua">
-												<div id="filedinhkemsua"></div>
-												<button type="button" class="btn btn-danger">Ký văn bản</button>
-											</label>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label for="projectinput8">Nội dung</label>
-											<textarea id="idnoidungsua" rows="5" class="form-control" name="comment" ></textarea>
-										</div>
-									</div>
-								</div>
-								<input type="hidden" name="" id="idbaocao">
 							</div>
-						</form>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="projectinput2">Số/ký hiệu</label>
+									<input type="text" id="idsohieusua" class="form-control" name="lname">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="projectinput2">Tiêu đề</label>
+									<input type="text" id="idtieudesua" class="form-control" name="lname">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="projectinput2">Ngày tạo</label>
+									<input type="text" id="idngaytaosua" class="form-control" name="lname">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label>Tập tin đính kèm</label>
+									<br>
+									<label id="projectinput7" class="file center-block">
+										<input type="file" id="filesua">
+										<div id="filedinhkemsua"></div>
+										<button type="button" class="btn btn-danger">Ký văn bản</button>
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="projectinput8">Nội dung</label>
+									<textarea id="idnoidungsua" rows="5" class="form-control" name="comment"></textarea>
+								</div>
+							</div>
+						</div>
+						<input type="hidden" name="" id="idbaocao">
 					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary" id="btnsua">
-							<i class="fa fa-check-square-o"></i> Cập nhật
-						</button>
-						<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-					</div>
-				</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary" id="btnsua">
+					<i class="fa fa-check-square-o"></i> Cập nhật
+				</button>
+				<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
 			</div>
 		</div>
+	</div>
+</div>
 
-		<!-- modal thông tin chung báo cáo -->
-		<div class="modal fade text-left" id="modalthongtinchung" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" style="display: none;" aria-hidden="true">
-			<div class="modal-dialog modal-lg" role="document">
-				<div class="modal-content">
-					<div class="modal-header bg-success white">
-						<h5 class="modal-title" style="color: white;">Thông tin chung</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">×</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<form class="form form-horizontal form-bordered">
-							<div class="form-body">
-								<h4 class="form-section"><i class="fa fa-info-circle"></i> Chi tiết báo cáo</h4>
-								<div class="form-group row">
-									<label class="col-md-3 label-control" for="projectinput1">Loại</label>
-									<div class="col-md-9">
-										<input type="text" id="idloaixem" class="form-control" name="fname" disabled="">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-md-3 label-control" for="projectinput2">Số/ký hiệu</label>
-									<div class="col-md-9">
-										<input type="text"  id="idsohieuxem" class="form-control" name="lname" disabled="">
-									</div>
-								</div>
+<!-- modal thông tin chung báo cáo -->
+<div class="modal fade text-left" id="modalthongtinchung" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
+	style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-success white">
+				<h5 class="modal-title" style="color: white;">Thông tin chung</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form class="form form-horizontal form-bordered">
+					<div class="form-body">
+						<h4 class="form-section"><i class="fa fa-info-circle"></i> Chi tiết báo cáo</h4>
+						<div class="form-group row">
+							<label class="col-md-3 label-control" for="projectinput1">Loại</label>
+							<div class="col-md-9">
+								<input type="text" id="idloaixem" class="form-control" name="fname" disabled="">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label class="col-md-3 label-control" for="projectinput2">Số/ký hiệu</label>
+							<div class="col-md-9">
+								<input type="text" id="idsohieuxem" class="form-control" name="lname" disabled="">
+							</div>
+						</div>
 
-								<div class="form-group row">
-									<label class="col-md-3 label-control" for="projectinput3">Tiêu đề</label>
-									<div class="col-md-9">
-										<input type="text" id="idtieudexem" class="form-control" name="email" disabled="">
-									</div>
-								</div>
+						<div class="form-group row">
+							<label class="col-md-3 label-control" for="projectinput3">Tiêu đề</label>
+							<div class="col-md-9">
+								<input type="text" id="idtieudexem" class="form-control" name="email" disabled="">
+							</div>
+						</div>
 
-								<div class="form-group row">
-									<label class="col-md-3 label-control" for="projectinput4">Ngày tạo</label>
-									<div class="col-md-9">
-										<input type="text" id="idngaytaoxem" class="form-control" name="phone" disabled="">
-									</div>
-								</div>
+						<div class="form-group row">
+							<label class="col-md-3 label-control" for="projectinput4">Ngày tạo</label>
+							<div class="col-md-9">
+								<input type="text" id="idngaytaoxem" class="form-control" name="phone" disabled="">
+							</div>
+						</div>
 
-								<div class="form-group row" id="formngaygui" >
-									<label class="col-md-3 label-control" for="projectinput4">Ngày gửi</label>
-									<div class="col-md-9">
-										<input type="text" id="idngayguixem" class="form-control" name="phone" disabled="">
-									</div>
-								</div>
+						<div class="form-group row" id="formngaygui">
+							<label class="col-md-3 label-control" for="projectinput4">Ngày gửi</label>
+							<div class="col-md-9">
+								<input type="text" id="idngayguixem" class="form-control" name="phone" disabled="">
+							</div>
+						</div>
 
-								<div class="form-group row">
-									<label class="col-md-3 label-control">Tập tin đính kèm</label>
-									<div class="col-md-9">
-										<label id="projectinput8" class="file center-block">
-											<!-- <input type="file" id="file"> -->
-											<div id="filedinhkem"></div>
-                                    <!-- <span class="file-custom"><a href="http://www.africau.edu/images/default/sample.pdf" target="_blank">File1</a></span>
+						<div class="form-group row">
+							<label class="col-md-3 label-control">Tập tin đính kèm</label>
+							<div class="col-md-9">
+								<label id="projectinput8" class="file center-block">
+									<!-- <input type="file" id="file"> -->
+									<div id="filedinhkem"></div>
+									<!-- <span class="file-custom"><a href="http://www.africau.edu/images/default/sample.pdf" target="_blank">File1</a></span>
                                     <br>
                                     <span class="file-custom"><a href="http://www.africau.edu/images/default/sample.pdf" target="_blank">File2</a></span> -->
-                                </label>
-                            </div>
-                        </div>
+								</label>
+							</div>
+						</div>
 
-                        <div class="form-group row last">
-                        	<label class="col-md-3 label-control" for="projectinput4">Nội dung</label>
-                        	<div class="col-md-9">
-                        		<textarea id="idnoidungxem" rows="5" class="form-control" name="comment" disabled=""></textarea>
-                        	</div>
-                        </div>
+						<div class="form-group row last">
+							<label class="col-md-3 label-control" for="projectinput4">Nội dung</label>
+							<div class="col-md-9">
+								<textarea id="idnoidungxem" rows="5" class="form-control" name="comment"
+									disabled=""></textarea>
+							</div>
+						</div>
 
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-            	<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
-            </div>
-        </div>
-    </div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Đóng</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
@@ -1349,4 +1374,3 @@ function exc_sign_copy(url) {
 <script type="module" src="js/xuattkb/xuattkb.js"></script>
 <script type="text/javascript" src='dx/js/jszip/dist/xlsx.full.min.js'></script>
 @endsection
-

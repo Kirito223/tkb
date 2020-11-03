@@ -4,6 +4,7 @@ namespace App\Http\Controllers\export;
 
 use App\danhsachgv;
 use App\danhsachlophoc;
+use App\diemtruong;
 use App\Http\Controllers\Controller;
 use App\Objects\Day;
 use App\Objects\SessionInfo;
@@ -108,6 +109,11 @@ class exportExcelController extends Controller
         if ($param->tkbphancongcm == 1) {
             $sheet = $this->loadSheetExcel('mautkbtochuyenmon.xlsx');
             $this->exportTKBGroup($sheet);
+        }
+
+        if ($param->tkbdiemtruong == 1) {
+            $file =   $this->exportTKBSchoolLocaltion();
+            return  response()->json(['msg' => 'ok', 'data' => $file], Response::HTTP_OK);
         }
 
         return response()->json(Response::HTTP_OK);
@@ -332,6 +338,259 @@ class exportExcelController extends Controller
             }
             $this->autoSiezColumn($sheet);
             $this->saveExcel($sheet, $item->getTeacher());
+        }
+
+        return $arrFile;
+    }
+
+
+    public function exportTKBSchoolLocaltion()
+    {
+        $listSchoolLocation = diemtruong::where('matruong', $this->sessionInfo->getSchoolId())->get();
+        $listNameLocation = array();
+        foreach ($listSchoolLocation as $nameLocation) {
+            if (!in_array($nameLocation->tendiemtruong, $listNameLocation)) {
+                array_push($listNameLocation, $nameLocation->tendiemtruong);
+            }
+        }
+        // get class of location
+        $listLocation = array();
+        foreach ($listNameLocation as $name) {
+            $item = new stdClass();
+            $item->nameLocation = $name;
+
+            $class = diemtruong::where('matruong', $this->sessionInfo->getSchoolId())
+                ->where('tendiemtruong', $name)
+                ->with('danhsachlophoc')
+                ->get();
+
+            $item->listClass = $class;
+            array_push($listLocation, $item);
+        }
+
+        // make table time
+        $tableTimeLocation = array();
+
+        foreach ($listLocation as $location) {
+            $itemTableTime = new stdClass;
+            $itemTableTime->locationName = $location->nameLocation;
+
+            $listClass =  $location->listClass;
+
+            $tableTime = array();
+
+            // construction tableTime;
+            foreach ($listClass as $room) {
+                $arrMorning = array();
+                $arrAfternoon = array();
+                // Get morning
+                $ss = 1;
+                for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
+
+                    for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+
+                        $table = thoikhoabieu::where('thu', $day)
+                            ->where('buoi', 0)
+                            ->where('tiet', $ss)
+                            ->where('thoikhoabieu.malop', $room->malop)
+                            ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+                            ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
+                            ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
+                            ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'danhsachlophoc.tenlop', 'thoikhoabieu.tiet')
+                            ->first();
+                        array_push($arrMorning, $table);
+                    }
+                    $ss++;
+                }
+                // Get afternoon
+                $ss = 1;
+                for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
+
+                    for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+
+                        $table = thoikhoabieu::where('thu', $day)
+                            ->where('buoi', 1)
+                            ->where('tiet', $ss)
+                            ->where('thoikhoabieu.malop', $room->malop)
+                            ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
+                            ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
+                            ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
+                            ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop', 'danhsachgv.hovaten', 'thoikhoabieu.tiet')
+                            ->first();
+                        array_push($arrAfternoon, $table);
+                    }
+                    $ss++;
+                }
+                $itemTeacher = new TableTimeTypeTwo($room->danhsachlophoc->tenlop, $arrMorning, $arrAfternoon);
+                array_push($tableTime, $itemTeacher);
+            }
+            $itemTableTime->tableTime = $tableTime;
+            array_push($tableTimeLocation, $itemTableTime);
+        }
+
+        // Export Tkb
+
+        $arrFile = array();
+        foreach ($listNameLocation as $name) {
+            array_push($arrFile, $name);
+        }
+
+        // Created file excel of school location
+        foreach ($tableTimeLocation as $itemTable) {
+            // Craeted Spreadsheet
+            $spreadsheet = new Spreadsheet();
+            $sheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $itemTable->locationName);
+
+            $spreadsheet->addSheet($sheet, 0);
+            $spreadsheet->setActiveSheetIndex(0);
+            $sheetSelect = $spreadsheet->getActiveSheet();
+            $tableTime = $itemTable->tableTime;
+            // Generate TimeTable
+
+            $startRow = 3;
+            $row = 3;
+
+            $rowTableBody = 4;
+            $rowName = 1;
+            // Render Header Table
+            foreach ($tableTime as $item) {
+                if ($row > 12) {
+                    $rowName = $row - 4;
+                }
+                $startRow = $row;
+                $sheetSelect->mergeCells("A" . $rowName . ":H" . $rowName);
+                $sheetSelect->setCellValueByColumnAndRow(1, $rowName, "THỜI KHÓA BIỂU LỚP " . $item->getTeacher());
+
+                $sheetSelect->getStyle("A" . $rowName)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $sheetSelect->getStyle("A" . $rowName)->getFont()->setBold(true);
+
+                $rowName++;
+                $sheetSelect->mergeCells("A" . $rowName . ":H" . $rowName);
+                // $sheetTKBClass->setCellValueByColumnAndRow(1, $rowName, "Thực hiện từ ngày: ");
+
+                $sheetSelect->getStyle("A" . $rowName)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $sheetSelect->getStyle("A" . $rowName)->getFont()->setBold(false);
+
+                // Render Header
+
+                $sheetSelect->setCellValueByColumnAndRow(1, $row, "Buổi");
+                $sheetSelect->setCellValueByColumnAndRow(2, $row, "Tiết");
+                $sheetSelect->setCellValueByColumnAndRow(3, $row, "Thứ 2");
+                $sheetSelect->setCellValueByColumnAndRow(4, $row, "Thứ 3");
+                $sheetSelect->setCellValueByColumnAndRow(5, $row, "Thứ 4");
+                $sheetSelect->setCellValueByColumnAndRow(6, $row, "Thứ 5");
+                $sheetSelect->setCellValueByColumnAndRow(7, $row, "Thứ 6");
+                $sheetSelect->setCellValueByColumnAndRow(8, $row, "Thứ 7");
+
+                for ($i = 1; $i < 9; $i++) {
+                    $cellPart = $sheetSelect->getCellByColumnAndRow($i, $row)->getCoordinate();
+                    $sheetSelect->getStyle($cellPart)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                    $sheetSelect->getStyle($cellPart)->getFont()->setBold(true);
+                }
+
+
+
+                // Render Body Table
+                $row++;
+                $sheetSelect->mergeCellsByColumnAndRow(1, $row, 1, $row + 4);
+                $sheetSelect->setCellValueByColumnAndRow(1, $row, "Sáng");
+
+                $cell = $sheetSelect->getCellByColumnAndRow(1, $row)->getCoordinate();
+                $sheetSelect->getStyle($cell)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheetSelect->getStyle($cell)->getFont()->setBold(true);
+
+                $row += 5;
+                $sheetSelect->mergeCellsByColumnAndRow(1, $row, 1, $row + 4);
+                $sheetSelect->setCellValueByColumnAndRow(1, $row, "Chiều");
+
+                $cell = $sheetSelect->getCellByColumnAndRow(1, $row)->getCoordinate();
+                $sheetSelect->getStyle($cell)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                $sheetSelect->getStyle($cell)->getFont()->setBold(true);
+                $sessions = 1;
+                for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
+                    if ($sessions == 6) {
+                        $sessions = 1;
+                    }
+                    $sheetSelect->setCellValueByColumnAndRow(2, $rowTableBody, $sessions);
+
+                    $cellSesion = $sheetSelect->getCellByColumnAndRow(2, $rowTableBody)->getCoordinate();
+                    $sheetSelect->getStyle($cellSesion)->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+                    $sheetSelect->getStyle($cellSesion)->getFont()->setBold(true);
+                    $rowTableBody++;
+                    $sessions++;
+                }
+
+                $styleArray = [
+                    'borders' => [
+                        'outline' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                            'color' => ['argb' => '000000'],
+                            'borderSize' => 1,
+                        ],
+                        'inside' => array(
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                            'color' => ['argb' => '000000'], 'borderSize' => 1,
+                        ),
+                    ],
+                ];
+                $endrow = $rowTableBody - 1;
+                $sheetSelect->getStyle("A" . $startRow . ":H" . $endrow)->applyFromArray($styleArray);
+                $row += 12;
+                $rowTableBody = $rowTableBody + 8;
+            }
+
+            $this->saveExcel($spreadsheet, $itemTable->locationName);
+        }
+
+
+        // export data to file excel template
+
+        foreach ($tableTimeLocation as $item) {
+            $sheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(public_path('export') . "/" . $item->locationName . '.xlsx');
+            $sheet->setActiveSheetIndex(0);
+            $sheetSelect = $sheet->getActiveSheet();
+
+            $columnTableTime = 3;
+            $rowTableBody = 4;
+
+            foreach ($item->tableTime as $itemTime) {
+                // Export Morning
+
+                $tableMorning = $itemTime->getTableTimeMorning();
+                foreach ($tableMorning as $key => $table) {
+                    if ($table != null) {
+                        $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->hovaten);
+                    } else {
+                        $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
+                    }
+                    if ($columnTableTime == 8) {
+                        $rowTableBody++;
+                        $columnTableTime = 3;
+                    } else {
+                        $columnTableTime++;
+                    }
+                }
+                // Export Afternoon
+                $tableAfterNoon = $itemTime->getTableTimeAfterNoon();
+                $columnTableTime = 3;
+
+                foreach ($tableAfterNoon as $key => $table) {
+                    if ($table != null) {
+                        $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->hovaten);
+                    } else {
+                        $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
+                    }
+                    if ($columnTableTime == 8) {
+                        $rowTableBody++;
+                        $columnTableTime = 3;
+                    } else {
+                        $columnTableTime++;
+                    }
+                }
+                $rowTableBody = $rowTableBody + 8;
+            }
+            $this->autoSiezColumn($sheet);
+            $this->saveExcel($sheet, $item->locationName);
         }
 
         return $arrFile;
