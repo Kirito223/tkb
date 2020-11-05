@@ -412,7 +412,7 @@ class rangbuocController extends Controller
 			}]);
 		}])
 			->with(['rangbuoctietgvbuocphaico' => function ($author1) {
-				$author1->select('rangbuoctietgvbuocphaico.id', 'rangbuoctietgvbuocphaico.magiaovien', 'rangbuoctietgvbuocphaico.mamucrangbuoc', 'rangbuoctietgvbuocphaico.buoi', 'rangbuoctietgvbuocphaico.thu', 'rangbuoctietgvbuocphaico.tiet', 'rangbuoctietgvbuocphaico.lop');
+				$author1->select('rangbuoctietgvbuocphaico.id', 'rangbuoctietgvbuocphaico.magiaovien', 'rangbuoctietgvbuocphaico.mamucrangbuoc', 'rangbuoctietgvbuocphaico.buoi', 'rangbuoctietgvbuocphaico.thu', 'rangbuoctietgvbuocphaico.tiet', 'rangbuoctietgvbuocphaico.lop', 'rangbuoctietgvbuocphaico.mon');
 			}])
 			->select('id', 'hovaten', 'bidanh', 'thutuhienthi')
 			->get();
@@ -433,17 +433,20 @@ class rangbuocController extends Controller
 
 		if ($datatietnghi != '') {
 			foreach ($datatietnghi as $d) {
-				foreach ($d->idClass as $key => $class) {
-					foreach ($d->idthu as $t) {
-						$tietgvbuocphaico = new rangbuoctietgvbuocphaico();
-						$tietgvbuocphaico->magiaovien = $d->idgv;
-						$tietgvbuocphaico->mamucrangbuoc = $d->idmrb;
-						$tietgvbuocphaico->buoi = $d->idbuoi;
-						$tietgvbuocphaico->thu = $t->id;
-						$tietgvbuocphaico->tiet = $d->idtiet;
-						$tietgvbuocphaico->matruong = $matruong;
-						$tietgvbuocphaico->lop = $class->id;
-						$tietgvbuocphaico->save();
+				foreach ($d->idSubject as $subject) {
+					foreach ($d->idClass as $key => $class) {
+						foreach ($d->idthu as $t) {
+							$tietgvbuocphaico = new rangbuoctietgvbuocphaico();
+							$tietgvbuocphaico->magiaovien = $d->idgv;
+							$tietgvbuocphaico->mamucrangbuoc = $d->idmrb;
+							$tietgvbuocphaico->buoi = $d->idbuoi;
+							$tietgvbuocphaico->thu = $t->id;
+							$tietgvbuocphaico->tiet = $d->idtiet;
+							$tietgvbuocphaico->matruong = $matruong;
+							$tietgvbuocphaico->lop = $class->id;
+							$tietgvbuocphaico->mon = $subject->id;
+							$tietgvbuocphaico->save();
+						}
 					}
 				}
 			}

@@ -22,7 +22,8 @@ var listTeacherBody,
     xuattkbdiemtruong,
     kieu,
     tendaydu,
-    tenviettat;
+    tenviettat,
+    selectweek;
 
 var arrFile = [];
 var arrFileAttack = null;
@@ -54,6 +55,7 @@ function initControl() {
     kieu = document.getElementById("kieu");
     tendaydu = document.getElementById("tendaydu");
     tenviettat = document.getElementById("tenviettat");
+    selectweek = document.getElementById("selectweek");
 
     const now = new Date();
     $("#dateprocess").dxDateBox({
@@ -63,6 +65,15 @@ function initControl() {
         value: now,
     });
     sendEmail = document.getElementById("sendEmail");
+
+    $("#selectmonth").datepicker({
+        format: "mm/yyyy",
+        orientation: "bottom",
+        viewMode: "months",
+        minViewMode: "months",
+        autoclose: true,
+        language: "vi",
+    });
 }
 
 async function initListTeacher() {

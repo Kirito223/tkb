@@ -260,6 +260,12 @@ async function loadListClassroom() {
     });
     return result;
 }
+async function loadListSubject() {
+    let result = await axios.get("getdanhsachmonhoc").then((res) => {
+        return res.data;
+    });
+    return result;
+}
 
 async function dangkytietbuocphaico() {
     var iddatarbtgvbpc = $("#iddatarbtgvbpc").val();
@@ -378,6 +384,9 @@ async function dangkytietbuocphaico() {
     ];
 
     var listClassRoom = await loadListClassroom();
+
+    var listSubject = await loadListSubject();
+
     let bodyTable1 = document.getElementById("tietgvbuocphaico");
     let countdata1 = data1.length;
     for (let i = 0; i < countdata1; i++) {
@@ -386,7 +395,8 @@ async function dangkytietbuocphaico() {
         tr.appendChild(document.createElement("td"));
         tr.appendChild(document.createElement("td"));
         // trdsbh.setAttribute("class","classdsbh"+i+"");
-        tr.appendChild(document.createElement("td")); //Added for checkbox
+        tr.appendChild(document.createElement("td"));
+        tr.appendChild(document.createElement("td"));
         tr.appendChild(document.createElement("td")); //Added for checkbox
 
         var checkbox = document.createElement("INPUT"); //Added for checkbox
@@ -437,15 +447,33 @@ async function dangkytietbuocphaico() {
             selectClassroom.appendChild(option);
         }
 
+        // Create select of classroom
+
+        let selectSubject = document.createElement("select");
+        selectSubject.setAttribute("id", "idmon" + (i + 1) + "");
+        selectSubject.setAttribute("class", "form-control input-sm");
+        selectSubject.setAttribute("type", "text");
+        selectSubject.setAttribute("multiple", "multiple");
+
+        //  Option of select subject
+        for (let subject = 0; subject < listSubject.length; subject++) {
+            let option = document.createElement("option");
+            option.value = listSubject[subject].id;
+            option.text = listSubject[subject].tenmonhoc;
+            selectSubject.appendChild(option);
+        }
+
         tr.cells[0].appendChild(
             document.createTextNode(
                 " " + data1[i].tentiet + "-" + data1[i].tenbuoi
             )
         );
+
         tr.cells[1].appendChild(selectList); // Select muc rang buoc
         tr.cells[2].appendChild(selectList1); // selectBuoihoc
         tr.cells[3].appendChild(selectClassroom); // select classroom
-        tr.cells[4].appendChild(checkbox); // Checkbox
+        tr.cells[4].appendChild(selectSubject); // select classroom
+        tr.cells[5].appendChild(checkbox); // Checkbox
         bodyTable1.appendChild(tr);
     }
     for (var i = 0; i < countdata1 + 1; i++) {
@@ -456,6 +484,10 @@ async function dangkytietbuocphaico() {
 
     for (let index = 0; index < listClassRoom.length; index++) {
         $("#idlop" + index + "").select2({ width: "100%" });
+    }
+
+    for (let index = 0; index < listSubject.length; index++) {
+        $("#idmon" + index + "").select2({ width: "100%" });
     }
 
     // Filter data and add item to chontietgvbuocphaico array
@@ -489,57 +521,80 @@ async function dangkytietbuocphaico() {
         var idclass9 = [];
         var idclass10 = [];
 
+        // id subject
+
+        var idsubject1 = [];
+        var idsubject2 = [];
+        var idsubject3 = [];
+        var idsubject4 = [];
+        var idsubject5 = [];
+        var idsubject6 = [];
+        var idsubject7 = [];
+        var idsubject8 = [];
+        var idsubject9 = [];
+        var idsubject10 = [];
+
         chontietgvbuocphaico.filter(function (items) {
             iddktgvbpc.push({ iddktgvbpc: items.id });
             if (items.buoi == 0 && items.tiet == 1) {
                 idposition.push(1);
                 idthu1.push(items.thu);
                 idclass1.push(items.lop);
+                idsubject1.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 1) {
                 idposition.push(2);
                 idthu2.push(items.thu);
                 idclass2.push(items.lop);
+                idsubject2.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 0 && items.tiet == 2) {
                 idposition.push(3);
                 idthu3.push(items.thu);
                 idclass3.push(items.lop);
+                idsubject3.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 2) {
                 idposition.push(4);
                 idthu4.push(items.thu);
                 idclass4.push(items.lop);
+                idsubject4.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 0 && items.tiet == 3) {
                 idposition.push(5);
                 idthu5.push(items.thu);
                 idclass5.push(items.lop);
+                idsubject5.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 3) {
                 idposition.push(6);
                 idthu6.push(items.thu);
                 idclass6.push(items.lop);
+                idsubject6.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 0 && items.tiet == 4) {
                 idposition.push(7);
                 idthu7.push(items.thu);
                 idclass7.push(items.lop);
+                idsubject7.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 4) {
                 idposition.push(8);
                 idthu8.push(items.thu);
                 idclass8.push(items.lop);
+                idsubject8.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 0 && items.tiet == 5) {
                 idposition.push(9);
                 idthu9.push(items.thu);
                 idclass9.push(items.lop);
+                idsubject9.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             } else if (items.buoi == 1 && items.tiet == 5) {
                 idposition.push(10);
                 idthu10.push(items.thu);
                 idclass10.push(items.lop);
+                idsubject10.push(items.mon);
                 idmrb.push(items.mamucrangbuoc);
             }
         });
@@ -741,9 +796,98 @@ async function dangkytietbuocphaico() {
                 }
             }
         }
+
+        // set value selected subject
+        if (idsubject1 != "") {
+            var idsubject1new = [...new Set(idsubject1)];
+        }
+        if (idsubject2 != "") {
+            var idsubject2new = [...new Set(idsubject2)];
+        }
+        if (idsubject3 != "") {
+            var idsubject3new = [...new Set(idsubject3)];
+        }
+        if (idsubject4 != "") {
+            var idsubject4new = [...new Set(idsubject4)];
+        }
+        if (idsubject5 != "") {
+            var idsubject5new = [...new Set(idsubject5)];
+        }
+        if (idsubject6 != "") {
+            var idsubject6new = [...new Set(idsubject6)];
+        }
+        if (idsubject7 != "") {
+            var idsubject7new = [...new Set(idsubject7)];
+        }
+        if (idsubject8 != "") {
+            var idsubject8new = [...new Set(idsubject8)];
+        }
+        if (idsubject9 != "") {
+            var idsubject9new = [...new Set(idsubject9)];
+        }
+        if (idsubject10 != "") {
+            var idsubject10new = [...new Set(idsubject10)];
+        }
+
+        var idsubjectnew = [
+            {
+                idposition: 1,
+                dataposition: idsubject1new,
+            },
+            {
+                idposition: 2,
+                dataposition: idsubject2new,
+            },
+            {
+                idposition: 3,
+                dataposition: idsubject3new,
+            },
+            {
+                idposition: 4,
+                dataposition: idsubject4new,
+            },
+            {
+                idposition: 5,
+                dataposition: idsubject5new,
+            },
+            {
+                idposition: 6,
+                dataposition: idsubject6new,
+            },
+            {
+                idposition: 7,
+                dataposition: idsubject7new,
+            },
+            {
+                idposition: 8,
+                dataposition: idsubject8new,
+            },
+            {
+                idposition: 9,
+                dataposition: idsubject9new,
+            },
+            {
+                idposition: 10,
+                dataposition: idsubject10new,
+            },
+        ];
+
+        for (var x = 0; x < idpositionnew.length; x++) {
+            var idpst = idpositionnew[x];
+            for (var z = 0; z < idsubjectnew.length; z++) {
+                if (idpst == idsubjectnew[z].idposition) {
+                    $("#idmon" + idpst + "")
+                        .select2({ width: "100%" })
+                        .val(idsubjectnew[z].dataposition)
+                        .trigger("change");
+                }
+            }
+        }
+
         $("#iddktgvbpc").val(JSON.stringify(iddktgvbpc));
     }
 }
+// Save data
 $("#btnluutietgvbuocphaico").click(function () {
     var idgv = $("#idgv").val();
     var iddktgvbpc = $("#iddktgvbpc").val();
@@ -767,6 +911,13 @@ $("#btnluutietgvbuocphaico").click(function () {
                     return { id: item };
                 });
 
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon1").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
+
                 var idmrb = $("#idmrb1").val();
                 datatietnghi.push({
                     idgv: idgv,
@@ -775,6 +926,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             } else if (checkboxes[i].id == 2) {
                 var idthu = [];
@@ -786,6 +938,14 @@ $("#btnluutietgvbuocphaico").click(function () {
                 let idClass = dataClass.map((item) => {
                     return { id: item };
                 });
+
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon2").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
+
                 var idmrb = $("#idmrb2").val();
                 datatietnghi.push({
                     idgv: idgv,
@@ -794,6 +954,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             } else if (checkboxes[i].id == 3) {
                 var idthu = [];
@@ -805,6 +966,13 @@ $("#btnluutietgvbuocphaico").click(function () {
                 let idClass = dataClass.map((item) => {
                     return { id: item };
                 });
+
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon3").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
                 var idmrb = $("#idmrb3").val();
                 datatietnghi.push({
                     idgv: idgv,
@@ -813,6 +981,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             } else if (checkboxes[i].id == 4) {
                 var idthu = [];
@@ -824,6 +993,12 @@ $("#btnluutietgvbuocphaico").click(function () {
                 let idClass = dataClass.map((item) => {
                     return { id: item };
                 });
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon4").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
                 var idmrb = $("#idmrb4").val();
                 datatietnghi.push({
                     idgv: idgv,
@@ -832,6 +1007,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             } else if (checkboxes[i].id == 5) {
                 var idthu = [];
@@ -843,6 +1019,12 @@ $("#btnluutietgvbuocphaico").click(function () {
                 let idClass = dataClass.map((item) => {
                     return { id: item };
                 });
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon5").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
                 var idmrb = $("#idmrb5").val();
                 datatietnghi.push({
                     idgv: idgv,
@@ -851,6 +1033,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             } else if (checkboxes[i].id == 6) {
                 var idthu = [];
@@ -862,6 +1045,12 @@ $("#btnluutietgvbuocphaico").click(function () {
                 let idClass = dataClass.map((item) => {
                     return { id: item };
                 });
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon6").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
                 var idmrb = $("#idmrb6").val();
                 datatietnghi.push({
                     idgv: idgv,
@@ -870,6 +1059,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             } else if (checkboxes[i].id == 7) {
                 var idthu = [];
@@ -882,6 +1072,12 @@ $("#btnluutietgvbuocphaico").click(function () {
                 let idClass = dataClass.map((item) => {
                     return { id: item };
                 });
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon7").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
 
                 var idmrb = $("#idmrb7").val();
                 datatietnghi.push({
@@ -891,6 +1087,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             } else if (checkboxes[i].id == 8) {
                 var idthu = [];
@@ -902,6 +1099,12 @@ $("#btnluutietgvbuocphaico").click(function () {
                 let idClass = dataClass.map((item) => {
                     return { id: item };
                 });
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon8").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
                 var idmrb = $("#idmrb8").val();
                 datatietnghi.push({
                     idgv: idgv,
@@ -910,6 +1113,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             } else if (checkboxes[i].id == 9) {
                 var idthu = [];
@@ -921,6 +1125,12 @@ $("#btnluutietgvbuocphaico").click(function () {
                 let idClass = dataClass.map((item) => {
                     return { id: item };
                 });
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon9").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
                 var idmrb = $("#idmrb9").val();
                 datatietnghi.push({
                     idgv: idgv,
@@ -929,6 +1139,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             } else if (checkboxes[i].id == 10) {
                 var idthu = [];
@@ -940,6 +1151,12 @@ $("#btnluutietgvbuocphaico").click(function () {
                 let idClass = dataClass.map((item) => {
                     return { id: item };
                 });
+                // filter and push data mon to idmon
+
+                let dataSubject = $("#idmon10").val();
+                let idSubject = dataSubject.map((item) => {
+                    return { id: item };
+                });
                 var idmrb = $("#idmrb10").val();
                 datatietnghi.push({
                     idgv: idgv,
@@ -948,6 +1165,7 @@ $("#btnluutietgvbuocphaico").click(function () {
                     idmrb: idmrb,
                     idthu: idthu,
                     idClass: idClass,
+                    idSubject: idSubject,
                 });
             }
         }

@@ -63,6 +63,27 @@
 											</div>
 										</div>
 										<div class="form-group">
+											<label>Thời gian</label>
+											<div style="z-index: 300">
+												<div class="input-daterange input-group" style="width: 100%;">
+													<span class="input-group-addon">Tháng</span>
+													<input type="text" class="form-control-sm form-control" name="start"
+														value="" id="selectmonth" placeholder="Chọn tháng">
+													<span class="input-group-addon">Tuần</span>
+													<select id="selectweek" name="interested" class="form-control">
+														<option value="none" selected="" disabled="">--Chọn tuần--
+														</option>
+														<option value="1">Tuần 1
+														</option>
+														<option value="2">Tuần 2
+														</option>
+														<option value="3">Tuần 3
+														</option>
+														<option value="4">Tuần 4
+														</option>
+													</select>
+												</div>
+											</div>
 											<label for="projectinput1">Xuất thời khóa biểu</label>
 											<fieldset class="radio" style="padding-right: 10px;">
 												<label>
