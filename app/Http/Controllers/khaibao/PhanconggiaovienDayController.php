@@ -135,6 +135,13 @@ class PhanconggiaovienDayController extends Controller
         }
     }
 
+    public function getListAssignmnet($id)
+    {
+        $list = phancongchuyenmon::where('phancongchuyenmon.magiaovien', $id)
+            ->select("phancongchuyenmon.mamonhoc")->get();
+        return response()->json(['msg' => 'ok', 'data' => $list], HTTPCode::$CODE_SUCCESS);
+    }
+
     public function xuatBangphancong()
     {
         if (!is_dir(storage_path('excel'))) {

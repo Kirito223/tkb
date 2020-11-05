@@ -267,6 +267,15 @@ async function loadListSubject() {
     return result;
 }
 
+async function loadListAssginmentOfTeacher(idTeacher) {
+    let result = await axios
+        .get(`/api/phanconggiaovien/listAssignment/${idTeacher}`)
+        .then((res) => {
+            return res.data.data;
+        });
+    return result;
+}
+
 async function dangkytietbuocphaico() {
     var iddatarbtgvbpc = $("#iddatarbtgvbpc").val();
     var datarbtgvbpc = JSON.parse(iddatarbtgvbpc);
@@ -386,6 +395,7 @@ async function dangkytietbuocphaico() {
     var listClassRoom = await loadListClassroom();
 
     var listSubject = await loadListSubject();
+    var arrConstrainst = await loadListAssginmentOfTeacher($("#idgv").val());
 
     let bodyTable1 = document.getElementById("tietgvbuocphaico");
     let countdata1 = data1.length;
@@ -455,11 +465,24 @@ async function dangkytietbuocphaico() {
         selectSubject.setAttribute("type", "text");
         selectSubject.setAttribute("multiple", "multiple");
 
+        // filter subject of teacher from assignment of expertise table
+        let arrSubjectfilter = [];
+
+        arrConstrainst.forEach((item) => {
+            let index = listSubject.findIndex((x) => x.id == item.mamonhoc);
+            let findSubject = arrSubjectfilter.findIndex(
+                (f) => f.id == item.mamonhoc
+            );
+            if (index > -1 && findSubject == -1) {
+                arrSubjectfilter.push(listSubject[index]);
+            }
+        });
+
         //  Option of select subject
-        for (let subject = 0; subject < listSubject.length; subject++) {
+        for (let subject = 0; subject < arrSubjectfilter.length; subject++) {
             let option = document.createElement("option");
-            option.value = listSubject[subject].id;
-            option.text = listSubject[subject].tenmonhoc;
+            option.value = arrSubjectfilter[subject].id;
+            option.text = arrSubjectfilter[subject].tenmonhoc;
             selectSubject.appendChild(option);
         }
 

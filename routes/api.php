@@ -29,7 +29,7 @@ Route::post('phanconggiaovien/xoaPhancongchuyenmonTaimon', 'khaibao\Phanconggiao
 
 Route::get('phanconggiaovien/xuatBangphancong', 'khaibao\PhanconggiaovienDayController@xuatBangphancong');
 
-
+Route::get('phanconggiaovien/listAssignment/{id}', 'khaibao\PhanconggiaovienDayController@getListAssignmnet');
 
 # so tiet trong ngay
 Route::get('sotietngay/getdata', 'rangbuoc\rangbuocController@getData');
