@@ -48,3 +48,6 @@ Route::post('xuattkb/sendEmail', 'export\exportExcelController@sendEmail');
 Route::get('xuattkb/viewtkb', 'export\exportExcelController@viewDatabase');
 Route::get('xuattkb/listTeacher', 'export\exportExcelController@listTeacher');
 Route::get('xuattkb/listClass', 'export\exportExcelController@listClass');
+
+Route::get('xuattkb/listRoom', 'export\exportExcelController@listRoom');
+Route::get('xuattkb/listLocation', 'export\exportExcelController@listLocation');

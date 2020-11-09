@@ -316,7 +316,6 @@ function ControlEvent() {
 
 // Sap xep thoi khoa bieu cac lop bang cach tao nhieu theard worker de sap xep cung luc
 function taoThoikhoabieu() {
-    //Tientrinhxepthoikhoabieu = new Worker("js/xeptkb/woker.js");
     Tientrinhxepthoikhoabieu = new Worker("js/xeptkb/woker.js");
     // Thiet lap ham sap xep thoi khoa bieu
 

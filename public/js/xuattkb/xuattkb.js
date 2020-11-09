@@ -1,5 +1,6 @@
 import { baseURl } from "../api/api.js";
 import xuattkbapi from "../api/xuattkbapi.js";
+import { getFistDay, getLastDay } from "../ultils/Ultils.js";
 
 var listTeacherBody,
     xuattkbtongquat,
@@ -107,6 +108,16 @@ async function loadTeacher() {
     showTable(result);
 }
 
+async function loadRoom() {
+    let result = await xuattkbapi.getListRoom();
+    showTable(result);
+}
+
+async function loadLocation() {
+    let result = await xuattkbapi.getListLocation();
+    showTable(result);
+}
+
 async function loadClass() {
     let result = await xuattkbapi.getListClass();
     showTable(result);
@@ -150,7 +161,11 @@ function initEvent() {
         titleColumn.textContent = "Lớp";
         loadClass();
     };
-    xuattkbphong.onclick = function () {};
+    xuattkbphong.onclick = function () {
+        reset();
+        loadRoom();
+        tableList.classList.remove("hidden");
+    };
     xuattkbtongquat.onclick = function () {
         kieu.classList.remove("hidden");
         tableList.classList.add("hidden");
@@ -158,6 +173,11 @@ function initEvent() {
     xuattkbphancongcm.onclick = function () {
         reset();
         tableList.classList.add("hidden");
+    };
+    xuattkbdiemtruong.onclick = function () {
+        reset();
+        loadLocation();
+        tableList.classList.remove("hidden");
     };
     fileInput.onchange = function (e) {
         let file = fileInput.files;
@@ -254,7 +274,12 @@ async function exportExcel() {
         let arrSelect = [];
 
         if (!tableList.classList.contains("hidden")) {
-            if (xuattkbgiaovien.checked || xuattkblop.checked) {
+            if (
+                xuattkbgiaovien.checked ||
+                xuattkblop.checked ||
+                xuattkbphong.checked ||
+                xuattkbdiemtruong.checked
+            ) {
                 let chkSelect = document.querySelectorAll(".chkSelect:checked");
                 for (const chk of chkSelect) {
                     arrSelect.push({ id: chk.value, name: chk.dataset.name });
@@ -262,34 +287,69 @@ async function exportExcel() {
             }
         }
 
-        let result = await xuattkbapi.export(
-            JSON.stringify({
-                tkbtruong: tkbtruong,
-                tkblop: tkblop,
-                tkbGV: tkbGV,
-                tkbphong: tkbphong,
-                tkbdiemtruong: tkbdiemtruong,
-                tkbphancongcm: tkbphancongcm,
-                arrSelect: JSON.stringify(arrSelect),
-                exportAll: selectAll.checked,
-                tendaydu: tendaydu.checked,
-                tenviettat: tenviettat.checked,
-            })
+        let monthSelect = $("#selectmonth").val();
+
+        monthSelect = monthSelect.split("/");
+
+        let firstDay = new Date(
+            Number(monthSelect[1]),
+            Number(monthSelect[0]) - 1,
+            1
+        );
+        var lastDay = new Date(
+            Number(monthSelect[1]),
+            Number(monthSelect[0]),
+            0
         );
 
-        if (xuattkbphong.checked == true || xuattkbdiemtruong.checked == true) {
-            arrFile.length = 0;
+        firstDay = moment(firstDay).format("YYYY/MM/DD");
+        lastDay = moment(lastDay).format("YYYY/MM/DD");
 
-            result.data.forEach((item) => {
-                let isset = arrFile.findIndex((x) => x == item);
-                if (isset == -1) {
-                    arrFile.push(item);
-                }
-            });
+        if (firstDay == "Invalid date" && lastDay == "Invalid date") {
+            progressExport.setAttribute("aria-valuenow", "100");
+            progressExport.classList.add("hidden");
+            Swal.fire(
+                "Xin vui lòng chọn thời gian muốn xuất",
+                "Chọn thời gian xuất",
+                "warning"
+            );
+        } else {
+            let result = await xuattkbapi.export(
+                JSON.stringify({
+                    tkbtruong: tkbtruong,
+                    tkblop: tkblop,
+                    tkbGV: tkbGV,
+                    tkbphong: tkbphong,
+                    tkbdiemtruong: tkbdiemtruong,
+                    tkbphancongcm: tkbphancongcm,
+                    arrSelect: JSON.stringify(arrSelect),
+                    exportAll: selectAll.checked,
+                    tendaydu: tendaydu.checked,
+                    tenviettat: tenviettat.checked,
+                    startMonth: firstDay,
+                    endMonth: lastDay,
+                    week: selectweek.value,
+                })
+            );
+
+            if (
+                xuattkbphong.checked == true ||
+                xuattkbdiemtruong.checked == true
+            ) {
+                arrFile.length = 0;
+
+                result.data.forEach((item) => {
+                    let isset = arrFile.findIndex((x) => x == item);
+                    if (isset == -1) {
+                        arrFile.push(item);
+                    }
+                });
+            }
+            progressExport.setAttribute("aria-valuenow", "100");
+            progressExport.classList.add("hidden");
         }
-        progressExport.setAttribute("aria-valuenow", "100");
-        progressExport.classList.add("hidden");
     } catch (error) {
+        console.log(error);
         progressExport.setAttribute("aria-valuenow", "100");
         progressExport.classList.add("hidden");
         Swal.fire("Đã có lỗi xảy ra vui lòng thử lại sau", "Lỗi", "error");

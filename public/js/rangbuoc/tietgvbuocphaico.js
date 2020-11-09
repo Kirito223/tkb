@@ -404,7 +404,6 @@ async function dangkytietbuocphaico() {
         tr.appendChild(document.createElement("td"));
         tr.appendChild(document.createElement("td"));
         tr.appendChild(document.createElement("td"));
-        // trdsbh.setAttribute("class","classdsbh"+i+"");
         tr.appendChild(document.createElement("td"));
         tr.appendChild(document.createElement("td"));
         tr.appendChild(document.createElement("td")); //Added for checkbox

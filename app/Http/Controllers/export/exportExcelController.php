@@ -70,13 +70,17 @@ class exportExcelController extends Controller
     {
         $param = json_decode($request->param);
         $fileExport = array();
+
+        $startMonth = $param->startMonth;
+        $endMonth = $param->endMonth;
+        $week = $param->week;
         if ($param->tkbtruong == 1) {
             // TKB trường
             $sheet = $this->loadSheetExcel('mautkbtruong.xlsx');
             $sheet->setActiveSheetIndex(0);
             $sheetTKBSchool = $sheet->getActiveSheet();
             $fullname = $param->tendaydu;
-            $this->exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname);
+            $this->exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week);
             array_push($fileExport, "thoikhoabieutruong");
         }
         if ($param->tkblop == 1) {
@@ -84,36 +88,28 @@ class exportExcelController extends Controller
             $sheet = $this->loadSheetExcel('mautkbphonghoc.xlsx');
             $sheet->setActiveSheetIndex(0);
             $sheetTKBTeacherClass = $sheet->getActiveSheet();
-            $this->exportTKBClass($sheetTKBTeacherClass, $sheet, $classList);
+            $this->exportTKBClass($sheetTKBTeacherClass, $sheet, $classList, $startMonth, $endMonth, $week);
         }
         if ($param->tkbGV == 1) {
             $teacherList  = json_decode($param->arrSelect);
             $sheet = $this->loadSheetExcel('mautkbphonghoc.xlsx');
             $sheet->setActiveSheetIndex(0);
             $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
-            $this->exportTKBTeachers($sheetTKBTeacherTypeTwo, $sheet, $teacherList);
-
-            // if ($param->exportAll == true) {
-            //     $teacherList  = json_decode($param->arrSelect);
-            //     $sheet = $this->loadSheetExcel('mautkbgiaovien.xlsx');
-            //     $sheet->setActiveSheetIndex(0);
-            //     $sheetTKBTeacherTypeTwo = $sheet->getActiveSheet();
-            //     $this->exportTKBTecherTypeTwo($sheetTKBTeacherTypeTwo, $sheet, $teacherList);
-            // } else {
-
-            // }
+            $this->exportTKBTeachers($sheetTKBTeacherTypeTwo, $sheet, $teacherList, $startMonth, $endMonth, $week);
         }
         if ($param->tkbphong == 1) {
-            $file =   $this->exportTKBRoom();
+            $roomList  = json_decode($param->arrSelect);
+            $file =   $this->exportTKBRoom($startMonth, $endMonth, $week, $roomList);
             return  response()->json(['msg' => 'ok', 'data' => $file], Response::HTTP_OK);
         }
         if ($param->tkbphancongcm == 1) {
             $sheet = $this->loadSheetExcel('mautkbtochuyenmon.xlsx');
-            $this->exportTKBGroup($sheet);
+            $this->exportTKBGroup($sheet, $startMonth, $endMonth, $week);
         }
 
         if ($param->tkbdiemtruong == 1) {
-            $file =   $this->exportTKBSchoolLocaltion();
+            $locationList  = json_decode($param->arrSelect);
+            $file =   $this->exportTKBSchoolLocaltion($startMonth, $endMonth, $week, $locationList);
             return  response()->json(['msg' => 'ok', 'data' => $file], Response::HTTP_OK);
         }
 
@@ -134,13 +130,44 @@ class exportExcelController extends Controller
         return response()->download(public_path('export/') . $file);
     }
 
-    public function exportTKBRoom()
+    public function listRoom()
     {
         $listRoom = phonghoc::where('matruong', $this->sessionInfo->getSchoolId())
             ->where('mamonhoc', '!=', null)
             ->where('trangthai', 1)
+            ->select('id', 'tenphong as name')
             ->get();
+        return response()->json($listRoom);
+    }
 
+    public function listLocation()
+    {
+        $listSchoolLocation = diemtruong::where('matruong', $this->sessionInfo->getSchoolId())->get();
+        $listNameLocation = array();
+        foreach ($listSchoolLocation as $nameLocation) {
+            if ($this->existsInArray($nameLocation, $listNameLocation) == false) {
+                array_push($listNameLocation, ['id' => 0, 'name' => $nameLocation->tendiemtruong]);
+            }
+        }
+        return response()->json($listNameLocation);
+    }
+
+    function existsInArray($entry, $array)
+    {
+        if (count($array) == 0) {
+            return false;
+        } else {
+            foreach ($array as $compare) {
+                if ($compare['name'] == $entry->tendiemtruong) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public function exportTKBRoom($startMonth, $endMonth, $week, $listRoom)
+    {
         $tableTime = array();
 
         // construction tableTime;
@@ -157,6 +184,8 @@ class exportExcelController extends Controller
                     $table = thoikhoabieu::where('thu', $day)
                         ->where('buoi', 0)
                         ->where('tiet', $ss)
+                        ->where('tuan', $week)
+                        ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                         ->where('thoikhoabieu.maphong', $room->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
@@ -186,7 +215,7 @@ class exportExcelController extends Controller
                 }
                 $ss++;
             }
-            $itemTeacher = new TableTimeTypeTwo($room->tenphong, $arrMorning, $arrAfternoon);
+            $itemTeacher = new TableTimeTypeTwo($room->name, $arrMorning, $arrAfternoon);
             array_push($tableTime, $itemTeacher);
         }
         // Generate TimeTable
@@ -194,7 +223,7 @@ class exportExcelController extends Controller
 
         $arrFile = array();
         foreach ($listRoom as $room) {
-            array_push($arrFile, $room->tenphong);
+            array_push($arrFile, $room->name);
         }
 
 
@@ -309,7 +338,7 @@ class exportExcelController extends Controller
             $tableMorning = $item->getTableTimeMorning();
             foreach ($tableMorning as $key => $table) {
                 if ($table != null) {
-                    $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->tenlop);
+                    $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->hovaten . "-" . $table->tenlop);
                 } else {
                     $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
                 }
@@ -326,7 +355,7 @@ class exportExcelController extends Controller
 
             foreach ($tableAfterNoon as $key => $table) {
                 if ($table != null) {
-                    $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenlop . "-" . $table->hovaten);
+                    $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->hovaten . "-" . $table->tenlop);
                 } else {
                     $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
                 }
@@ -345,23 +374,16 @@ class exportExcelController extends Controller
     }
 
 
-    public function exportTKBSchoolLocaltion()
+    public function exportTKBSchoolLocaltion($startMonth, $endMonth, $week, $listSchoolLocation)
     {
-        $listSchoolLocation = diemtruong::where('matruong', $this->sessionInfo->getSchoolId())->get();
-        $listNameLocation = array();
-        foreach ($listSchoolLocation as $nameLocation) {
-            if (!in_array($nameLocation->tendiemtruong, $listNameLocation)) {
-                array_push($listNameLocation, $nameLocation->tendiemtruong);
-            }
-        }
         // get class of location
         $listLocation = array();
-        foreach ($listNameLocation as $name) {
+        foreach ($listSchoolLocation as $name) {
             $item = new stdClass();
-            $item->nameLocation = $name;
+            $item->nameLocation = $name->name;
 
             $class = diemtruong::where('matruong', $this->sessionInfo->getSchoolId())
-                ->where('tendiemtruong', $name)
+                ->where('tendiemtruong',  $name->name)
                 ->with('danhsachlophoc')
                 ->get();
 
@@ -395,6 +417,8 @@ class exportExcelController extends Controller
                             ->where('buoi', 0)
                             ->where('tiet', $ss)
                             ->where('thoikhoabieu.malop', $room->malop)
+                            ->where('tuan', $week)
+                            ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                             ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                             ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                             ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
@@ -414,6 +438,8 @@ class exportExcelController extends Controller
                             ->where('buoi', 1)
                             ->where('tiet', $ss)
                             ->where('thoikhoabieu.malop', $room->malop)
+                            ->where('tuan', $week)
+                            ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                             ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                             ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                             ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
@@ -433,8 +459,8 @@ class exportExcelController extends Controller
         // Export Tkb
 
         $arrFile = array();
-        foreach ($listNameLocation as $name) {
-            array_push($arrFile, $name);
+        foreach ($listSchoolLocation as $name) {
+            array_push($arrFile,  $name->name);
         }
 
         // Created file excel of school location
@@ -1020,7 +1046,7 @@ class exportExcelController extends Controller
     }
 
 
-    private function exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname)
+    private function exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week)
     {
         $rowTitle = 5;
         $columnTitle = 3;
@@ -1079,6 +1105,8 @@ class exportExcelController extends Controller
                         ->where('thu', $day)
                         ->where('buoi', $swicth)
                         ->where('tiet', $ss)
+                        ->where('tuan', $week)
+                        ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
                         ->select('monhoc.tenmonhoc', 'monhoc.monhocviettat', 'danhsachgv.bidanh', 'thoikhoabieu.malop', 'thoikhoabieu.tiet')
@@ -1096,9 +1124,7 @@ class exportExcelController extends Controller
                         array_push($tableTime, null);
                     }
                 }
-                if ($session == 6) {
-                    $f = 0;
-                }
+
                 $ss++;
             }
         }
@@ -1183,7 +1209,7 @@ class exportExcelController extends Controller
         $this->saveExcel($sheet, "thoikhoabieutruong");
     }
 
-    private function exportTKBClass($sheetTKBClass, $sheet, $listClassRoom)
+    private function exportTKBClass($sheetTKBClass, $sheet, $listClassRoom, $startMonth, $endMonth, $week)
     {
         $tableTime = array();
 
@@ -1202,6 +1228,8 @@ class exportExcelController extends Controller
                         ->where('buoi', 0)
                         ->where('tiet', $ss)
                         ->where('thoikhoabieu.malop', $room->id)
+                        ->where('tuan', $week)
+                        ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
@@ -1221,6 +1249,8 @@ class exportExcelController extends Controller
                         ->where('buoi', 1)
                         ->where('tiet', $ss)
                         ->where('thoikhoabieu.malop', $room->id)
+                        ->where('tuan', $week)
+                        ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
@@ -1371,7 +1401,7 @@ class exportExcelController extends Controller
         $this->saveExcel($sheet, "tkblophoc");
     }
 
-    private function exportTKBTeachers($sheetTKBClass, $sheet, $listTeacher)
+    private function exportTKBTeachers($sheetTKBClass, $sheet, $listTeacher, $startMonth, $endMonth, $week)
     {
         $tableTime = array();
 
@@ -1390,6 +1420,8 @@ class exportExcelController extends Controller
                         ->where('buoi', 0)
                         ->where('tiet', $ss)
                         ->where('thoikhoabieu.magiaovien', $teacher->id)
+                        ->where('tuan', $week)
+                        ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
@@ -1409,6 +1441,8 @@ class exportExcelController extends Controller
                         ->where('buoi', 1)
                         ->where('tiet', $ss)
                         ->where('thoikhoabieu.magiaovien', $teacher->id)
+                        ->where('tuan', $week)
+                        ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
@@ -1975,7 +2009,7 @@ class exportExcelController extends Controller
         $this->saveExcel($sheet, "tkblop");
     }
 
-    private function exportTKBGroup($spreadsheet)
+    private function exportTKBGroup($spreadsheet, $startMonth, $endMonth, $week)
     {
 
         $listGroup = tochuyenmon::where('matruong', '=', $this->sessionInfo->getSchoolId())->get();
@@ -2069,6 +2103,8 @@ class exportExcelController extends Controller
                             ->where('buoi', 0)
                             ->where('tiet', $seesion)
                             ->where('magiaovien', $teacher->id)
+                            ->where('tuan', $week)
+                            ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                             ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                             ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                             ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
@@ -2083,6 +2119,8 @@ class exportExcelController extends Controller
                             ->where('buoi', 1)
                             ->where('tiet', $ss)
                             ->where('magiaovien', $teacher->id)
+                            ->where('tuan', $week)
+                            ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                             ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                             ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                             ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop')
