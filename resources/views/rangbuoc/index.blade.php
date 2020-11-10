@@ -1007,21 +1007,41 @@
 								<input type="text" id="idgv" class="form-control input-sm" hidden>
 								<input type="text" id="iddatarbtgvbpc" class="form-control input-sm" hidden>
 								<input type="text" id="iddktgvbpc" class="form-control input-sm" hidden>
-								<div class="flex-container" style=" display: flex;">
-									<div>
-										<table class="classTableEdit table table-bordered table-striped table-hover"
-											id="tablechontietgvbuocphaico" style="width: 98%;">
-											<thead class="thead-inverse">
-												<tr>
-													<th scope="col">Tiết</th>
-													<th scope="col">Mức ràng buộc</th>
-													<th scope="col">Danh sách buổi học được áp dụng</th>
-													<th>Danh sách lớp học được áp dụng</th>
-													<th>Danh sách môn học được áp dụng</th>
-													<th scope="col">Chọn tiết gv buộc phải có</th>
-												</tr>
+								<div class="row">
+									<div class="col-md-3 col-lg-3">
+										<table class="table table-bordered">
+											<thead>
+												<th>Tên môn</th>
 											</thead>
-											<tbody id="tietgvbuocphaico"></tbody>
+											<tbody id="tbodySubjects">
+
+											</tbody>
+										</table>
+
+									</div>
+									<div class="col-md-3 col-lg-3">
+										<table class="table table-bordered">
+											<thead>
+												<th>Tên lớp</th>
+											</thead>
+											<tbody id="tbodyClass">
+
+											</tbody>
+										</table>
+									</div>
+									<div class="col-md-6 col-lg-6">
+										<table class="table table-bordered">
+											<thead>
+												<th>Thứ 2</th>
+												<th>Thứ 3</th>
+												<th>Thứ 4</th>
+												<th>Thứ 5</th>
+												<th>Thứ 6</th>
+												<th>Thứ 7</th>
+											</thead>
+											<tbody id="tbodyConstraints">
+
+											</tbody>
 										</table>
 									</div>
 								</div>
@@ -1172,19 +1192,6 @@
 				</div>
 			</div>
 		</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		<script type="text/javascript">
 			function clearcheckbox(){
@@ -1424,5 +1431,9 @@
 		<!-- a duc -->
 		<!-- <script type="module" src="js\rangbuoc\toidabuoi.js"></script> -->
 		<script type="module" src="js\rangbuoc\toidangay.js"></script>
-
+		<style>
+			.modal-lg {
+				max-width: 1280px !important;
+			}
+		</style>
 		@endsection

@@ -176,6 +176,7 @@ class exportExcelController extends Controller
             $arrAfternoon = array();
 
             // Get morning
+
             $ss = 1;
             for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
 
@@ -201,10 +202,14 @@ class exportExcelController extends Controller
             for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
 
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
-
+                    if ($ss == 5 && $day == 3) {
+                        $t = 0;
+                    }
                     $table = thoikhoabieu::where('thu', $day)
                         ->where('buoi', 1)
                         ->where('tiet', $ss)
+                        ->where('tiet', $ss)
+                        ->where('tuan', $week)
                         ->where('thoikhoabieu.maphong', $room->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
