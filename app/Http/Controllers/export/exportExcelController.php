@@ -168,6 +168,8 @@ class exportExcelController extends Controller
 
     public function exportTKBRoom($startMonth, $endMonth, $week, $listRoom)
     {
+
+
         $tableTime = array();
 
         // construction tableTime;
@@ -177,47 +179,64 @@ class exportExcelController extends Controller
 
             // Get morning
 
-            $ss = 1;
-            for ($sessionMorning = Day::$MORNING; $sessionMorning < Day::$MIDDAY; $sessionMorning++) {
+            for ($day = 2; $day < 8; $day++) {
 
-                for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+                for ($tiet = 1; $tiet < 6; $tiet++) {
 
                     $table = thoikhoabieu::where('thu', $day)
                         ->where('buoi', 0)
-                        ->where('tiet', $ss)
+                        ->where('tiet', $tiet)
                         ->where('tuan', $week)
                         ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                         ->where('thoikhoabieu.maphong', $room->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
-                        ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'danhsachlophoc.tenlop', 'thoikhoabieu.tiet')
+                        ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'danhsachlophoc.tenlop', 'thoikhoabieu.tiet', 'thoikhoabieu.thu', 'thoikhoabieu.buoi')
                         ->first();
-                    array_push($arrMorning, $table);
-                }
-                $ss++;
-            }
-            // Get afternoon
-            $ss = 1;
-            for ($sessionAfterNoon = Day::$MIDDAY; $sessionAfterNoon < Day::$AFTERNOON; $sessionAfterNoon++) {
 
-                for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
-                    if ($ss == 5 && $day == 3) {
-                        $t = 0;
+                    $item = new stdClass();
+                    $item->day = $day;
+                    $item->session = $tiet;
+                    $item->time = 1;
+                    if ($table != null) {
+                        $item->assign = $table->hovaten . '-' . $table->tenlop;
+                    } else {
+                        $item->assign = "";
                     }
+                    array_push($arrAfternoon, $item);
+                    array_push($arrMorning, $item);
+                }
+            }
+
+            // Get afternoon
+            for ($day = 2; $day < 8; $day++) {
+
+                for ($tiet = 1; $tiet < 6; $tiet++) {
+
                     $table = thoikhoabieu::where('thu', $day)
                         ->where('buoi', 1)
-                        ->where('tiet', $ss)
+                        ->where('tiet', $tiet)
                         ->where('tuan', $week)
+                        ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
                         ->where('thoikhoabieu.maphong', $room->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
                         ->join('danhsachlophoc', 'danhsachlophoc.id', 'thoikhoabieu.malop')
                         ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
-                        ->select('monhoc.tenmonhoc', 'danhsachlophoc.tenlop', 'danhsachgv.hovaten', 'thoikhoabieu.tiet')
+                        ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'danhsachlophoc.tenlop', 'thoikhoabieu.tiet', 'thoikhoabieu.thu', 'thoikhoabieu.buoi')
                         ->first();
-                    array_push($arrAfternoon, $table);
+
+                    $item = new stdClass();
+                    $item->day = $day;
+                    $item->session = $tiet;
+                    $item->time = 1;
+                    if ($table != null) {
+                        $item->assign = $table->hovaten . '-' . $table->tenlop;
+                    } else {
+                        $item->assign = "";
+                    }
+                    array_push($arrAfternoon, $item);
                 }
-                $ss++;
             }
             $itemTeacher = new TableTimeTypeTwo($room->name, $arrMorning, $arrAfternoon);
             array_push($tableTime, $itemTeacher);
@@ -328,12 +347,8 @@ class exportExcelController extends Controller
 
 
         foreach ($tableTime as $item) {
-            // Export Morning
-            // if ($rowTableBody > 12) {
-            //     $rowTableBody -= 7;
-            // }
-            $columnTableTime = 3;
-            $rowTableBody = 4;
+
+
 
             $sheet = \PhpOffice\PhpSpreadsheet\IOFactory::load(public_path('export') . "/" . $item->getTeacher() . '.xlsx');
             $sheet->setActiveSheetIndex(0);
@@ -341,33 +356,461 @@ class exportExcelController extends Controller
 
             $tableMorning = $item->getTableTimeMorning();
             foreach ($tableMorning as $key => $table) {
-                if ($table != null) {
-                    $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->hovaten . "-" . $table->tenlop);
-                } else {
-                    $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
+
+                // 2th 
+                if ($table->day == 2 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C4", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C4", "");
+                    }
                 }
-                if ($columnTableTime == 8) {
-                    $rowTableBody++;
-                    $columnTableTime = 3;
-                } else {
-                    $columnTableTime++;
+                if ($table->day == 2 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C5", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C5", "");
+                    }
+                }
+
+                if ($table->day == 2 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C6", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C6", "");
+                    }
+                }
+
+                if ($table->day == 2 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C7", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C7", "");
+                    }
+                }
+                if ($table->day == 2 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C8", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C8", "");
+                    }
+                }
+
+                // 3th
+                if ($table->day == 3 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D4", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D4", "");
+                    }
+                }
+                if ($table->day == 3 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D5", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D5", "");
+                    }
+                }
+                if ($table->day == 3 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D6", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D6", "");
+                    }
+                }
+                if ($table->day == 3 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D7", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D7", "");
+                    }
+                }
+                if ($table->day == 3 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D8", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D8", "");
+                    }
+                }
+                // 4th 
+
+                if ($table->day == 4 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E4", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E4", "");
+                    }
+                }
+                if ($table->day == 4 && $table->session == 2) {
+
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E5", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E5", "");
+                    }
+                }
+                if ($table->day == 4 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E6", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E6", "");
+                    }
+                }
+                if ($table->day == 4 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E7", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E7", "");
+                    }
+                }
+                if ($table->day == 4 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E8", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E8", "");
+                    }
+                }
+                // 5th 
+
+                if ($table->day == 5 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F4", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F4", "");
+                    }
+                }
+                if ($table->day == 5 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F5", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F5", "");
+                    }
+                }
+                if ($table->day == 5 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F6", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F6", "");
+                    }
+                }
+                if ($table->day == 5 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F7", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F7", "");
+                    }
+                }
+                if ($table->day == 5 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F8", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F8", "");
+                    }
+                }
+                // 6th
+
+                if ($table->day == 5 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G4", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G4", "");
+                    }
+                }
+                if ($table->day == 6 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G5", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G5", "");
+                    }
+                }
+                if ($table->day == 6 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G6", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G6", "");
+                    }
+                }
+                if ($table->day == 6 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G7", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G7", "");
+                    }
+                }
+                if ($table->day == 6 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G8", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G8", "");
+                    }
+                }
+
+                // 7th
+
+                if ($table->day == 7 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H4", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H4", "");
+                    }
+                }
+                if ($table->day == 7 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H5", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H5", "");
+                    }
+                }
+                if ($table->day == 7 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H6", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H6", "");
+                    }
+                }
+                if ($table->day == 7 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H7", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H7", "");
+                    }
+                }
+                if ($table->day == 7 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H8", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H8", "");
+                    }
                 }
             }
             // Export Afternoon
             $tableAfterNoon = $item->getTableTimeAfterNoon();
-            $columnTableTime = 3;
 
             foreach ($tableAfterNoon as $key => $table) {
-                if ($table != null) {
-                    $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->hovaten . "-" . $table->tenlop);
-                } else {
-                    $sheetSelect->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
+                // 2th 
+                if ($table->day == 2 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C9", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C9", "");
+                    }
                 }
-                if ($columnTableTime == 8) {
-                    $rowTableBody++;
-                    $columnTableTime = 3;
-                } else {
-                    $columnTableTime++;
+                if ($table->day == 2 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C10", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C10", "");
+                    }
+                }
+
+                if ($table->day == 2 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C11", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C11", "");
+                    }
+                }
+
+                if ($table->day == 2 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C12", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C12", "");
+                    }
+                }
+                if ($table->day == 2 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("C13", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("C13", "");
+                    }
+                }
+
+                // 3th
+                if ($table->day == 3 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D9", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D9", "");
+                    }
+                }
+                if ($table->day == 3 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D10", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D10", "");
+                    }
+                }
+                if ($table->day == 3 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D11", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D11", "");
+                    }
+                }
+                if ($table->day == 3 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D12", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D12", "");
+                    }
+                }
+                if ($table->day == 3 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("D13", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("D13", "");
+                    }
+                }
+                // 4th 
+
+                if ($table->day == 4 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E9", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E9", "");
+                    }
+                }
+                if ($table->day == 4 && $table->session == 2) {
+
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E10", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E10", "");
+                    }
+                }
+                if ($table->day == 4 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E11", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E11", "");
+                    }
+                }
+                if ($table->day == 4 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E12", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E12", "");
+                    }
+                }
+                if ($table->day == 4 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("E13", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("E13", "");
+                    }
+                }
+                // 5th 
+
+                if ($table->day == 5 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F9", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F9", "");
+                    }
+                }
+                if ($table->day == 5 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F10", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F10", "");
+                    }
+                }
+                if ($table->day == 5 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F11", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F11", "");
+                    }
+                }
+                if ($table->day == 5 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F12", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F12", "");
+                    }
+                }
+                if ($table->day == 5 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("F13", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("F13", "");
+                    }
+                }
+                // 6th
+
+                if ($table->day == 5 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G9", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G9", "");
+                    }
+                }
+                if ($table->day == 6 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G10", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G10", "");
+                    }
+                }
+                if ($table->day == 6 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G11", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G11", "");
+                    }
+                }
+                if ($table->day == 6 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G12", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G12", "");
+                    }
+                }
+                if ($table->day == 6 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("G13", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("G13", "");
+                    }
+                }
+
+                // 7th
+
+                if ($table->day == 7 && $table->session == 1) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H9", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H9", "");
+                    }
+                }
+                if ($table->day == 7 && $table->session == 2) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H10", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H10", "");
+                    }
+                }
+                if ($table->day == 7 && $table->session == 3) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H11", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H11", "");
+                    }
+                }
+                if ($table->day == 7 && $table->session == 4) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H12", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H12", "");
+                    }
+                }
+                if ($table->day == 7 && $table->session == 5) {
+                    if ($table->assign != null) {
+                        $sheetSelect->setCellValue("H13", $table->assign);
+                    } else {
+                        $sheetSelect->setCellValue("H13", "");
+                    }
                 }
             }
             $this->autoSiezColumn($sheet);
@@ -2211,18 +2654,5 @@ class exportExcelController extends Controller
             }
         }
         return response()->json(['msg' => "OK", 'fail' => $arrFail]);
-    }
-
-    public function viewDatabase()
-    {
-        $table = thoikhoabieu::where('malop', 1811)
-            ->where('thu', 2)
-            ->where('buoi', 1)
-            ->where('tiet', 5)
-            ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
-            ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
-            ->select('monhoc.tenmonhoc', 'danhsachgv.hovaten', 'thoikhoabieu.malop', 'thoikhoabieu.tiet')
-            ->first();
-        return response()->json($table);
     }
 }
