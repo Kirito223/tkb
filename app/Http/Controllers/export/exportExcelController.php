@@ -208,7 +208,6 @@ class exportExcelController extends Controller
                     $table = thoikhoabieu::where('thu', $day)
                         ->where('buoi', 1)
                         ->where('tiet', $ss)
-                        ->where('tiet', $ss)
                         ->where('tuan', $week)
                         ->where('thoikhoabieu.maphong', $room->id)
                         ->join('monhoc', 'monhoc.id', 'thoikhoabieu.mamonhoc')
