@@ -138,7 +138,7 @@ class PhanconggiaovienDayController extends Controller
     public function getListAssignmnet($id)
     {
         $list = phancongchuyenmon::where('phancongchuyenmon.magiaovien', $id)
-            ->select("phancongchuyenmon.mamonhoc")->get();
+            ->select("phancongchuyenmon.mamonhoc", 'phancongchuyenmon.malop')->get();
         return response()->json(['msg' => 'ok', 'data' => $list], HTTPCode::$CODE_SUCCESS);
     }
 

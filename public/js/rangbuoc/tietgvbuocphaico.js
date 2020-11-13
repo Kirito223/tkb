@@ -1,4 +1,7 @@
 var tbodySubjects, tbodyClass, tbodyConstraints;
+var listClassRoom;
+var listSubject;
+var arrConstrainstData = [];
 
 function reloadgvthamgiagiangday() {
     chongvthamgiagiangday();
@@ -8,11 +11,12 @@ function reloadgvthamgiagiangday() {
     dataGrid.refresh();
 }
 
-function loaddatadanhsachgvthamgiagiangday() {
+async function loaddatadanhsachgvthamgiagiangday() {
     tbodySubjects = document.getElementById("tbodySubjects");
     tbodyClass = document.getElementById("tbodyClass");
     tbodyConstraints = document.getElementById("tbodyConstraints");
-
+    listClassRoom = await loadListClassroom();
+    listSubject = await loadListSubject();
     var data = axios.get("gettietgvbuocphaico").then(function (response) {
         var data1 = response.data;
         // console.log(data1);
@@ -177,10 +181,7 @@ function chongvthamgiagiangday(datas) {
                             type: "default",
                             width: 120,
                             onClick: function (e) {
-                                $("#iddatarbtgvbpc").val(
-                                    JSON.stringify(datarbtgvbpc)
-                                );
-                                dangkytietbuocphaico();
+                                dangkytietbuocphaico(options.data.id);
                                 $("#modaldangkytietbuocphaicogv").modal("show");
                             },
                         })
@@ -270,24 +271,36 @@ async function loadListAssginmentOfTeacher(idTeacher) {
     return result;
 }
 
-async function dangkytietbuocphaico() {
-    var iddatarbtgvbpc = $("#iddatarbtgvbpc").val();
-    var datarbtgvbpc = JSON.parse(iddatarbtgvbpc);
-    var chontietgvbuocphaico;
-    if (datarbtgvbpc != "") {
-        chontietgvbuocphaico = datarbtgvbpc;
-    } else {
-        chontietgvbuocphaico = [];
-    }
+async function dangkytietbuocphaico(id) {
+    // $("#idgv").val(id);
+    document.getElementById("idgv").value = id;
+    var iddatarbtgvbpc = id;
 
-    var listClassRoom = await loadListClassroom();
-    var listSubject = await loadListSubject();
-    var arrConstrainst = await loadListAssginmentOfTeacher($("#idgv").val());
-
+    var arrConstrainst = await loadListAssginmentOfTeacher(iddatarbtgvbpc);
+    let arrClass = [];
+    let arrSubject = [];
     listClassRoom.forEach((item) => {
+        let index = arrConstrainst.findIndex((x) => (x.malop = item.id));
+        if (index > -1) {
+            arrClass.push(item);
+        }
+    });
+
+    listSubject.forEach((item) => {
+        let indexSubject = arrConstrainst.findIndex(
+            (y) => y.mamonhoc == item.id
+        );
+        if (indexSubject > -1) {
+            arrSubject.push(item);
+        }
+    });
+
+    arrClass.forEach((item) => {
         let tr = document.createElement("tr");
         let checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
+        checkbox.setAttribute("data-class", item.id);
+        checkbox.setAttribute("class", "chkClass");
         let td = document.createElement("td");
         let span = document.createElement("span");
         span.appendChild(checkbox);
@@ -296,13 +309,68 @@ async function dangkytietbuocphaico() {
         span.appendChild(p);
         td.appendChild(span);
         tr.appendChild(td);
+        // set event
+        checkbox.onclick = function () {
+            checkbox.classList.add("view");
+            for (let session = 1; session < 6; session++) {
+                for (let day = 2; day < 8; day++) {
+                    // set morning
+                    let chkMorning = document.getElementById(
+                        `session-${session}-${day}th`
+                    );
+                    chkMorning.checked = false;
+
+                    chkMorning.setAttribute("data-class", item.id);
+                    let selectMorning = document.getElementById(
+                        `select-session-${session}-${day}th`
+                    );
+
+                    selectMorning.setAttribute("data-class", item.id);
+
+                    // set afternoon
+                    let chkAfternoon = document.getElementById(
+                        `session-pm-${session}-${day}th`
+                    );
+                    chkAfternoon.checked = false;
+                    chkAfternoon.setAttribute("data-class", item.id);
+                    let selectAfternoon = document.getElementById(
+                        `select-session-pm-${session}-${day}th`
+                    );
+
+                    selectAfternoon.setAttribute("data-class", item.id);
+                }
+            }
+
+            // add data to arrConstainst
+            if (checkbox.checked) {
+                let find = arrConstrainstData.findIndex(
+                    (x) => x.class == item.id
+                );
+                if (find == -1) {
+                    arrConstrainstData.push({
+                        class: item.id,
+                        constrainst: [],
+                    });
+                }
+            } else {
+                let find = arrConstrainstData.findIndex(
+                    (x) => x.class == item.id
+                );
+                if (find > -1) {
+                    arrConstrainstData.splice(find, 1);
+                }
+            }
+        };
+
         tbodyClass.appendChild(tr);
     });
 
-    listSubject.forEach((item) => {
+    arrSubject.forEach((item) => {
         let tr = document.createElement("tr");
         let checkbox = document.createElement("input");
         checkbox.setAttribute("type", "checkbox");
+        checkbox.setAttribute("data-subject", item.id);
+        checkbox.setAttribute("class", "chk-subject");
         let td = document.createElement("td");
         let span = document.createElement("span");
         span.appendChild(checkbox);
@@ -311,300 +379,227 @@ async function dangkytietbuocphaico() {
         span.appendChild(p);
         td.appendChild(span);
         tr.appendChild(td);
+
+        // set event
+        checkbox.onclick = function () {
+            for (let session = 1; session < 6; session++) {
+                for (let day = 2; day < 8; day++) {
+                    // set morning
+                    let chkMorning = document.getElementById(
+                        `session-${session}-${day}th`
+                    );
+                    chkMorning.checked = false;
+                    chkMorning.setAttribute("data-subject", item.id);
+                    chkMorning.setAttribute("data-session", session);
+                    chkMorning.setAttribute("data-day", day);
+                    // set event
+                    chkMorning.onclick = function () {
+                        if (chkMorning.checked) {
+                            let index = arrConstrainstData.findIndex(
+                                (x) => x.class == chkMorning.dataset.class
+                            );
+                            if (index > -1) {
+                                let findConstraint = arrConstrainstData[
+                                    index
+                                ].constrainst.findIndex(
+                                    (x) =>
+                                        x.subject == item.id &&
+                                        x.session == session &&
+                                        x.part == 0 &&
+                                        x.day == day
+                                );
+                                if (findConstraint == -1) {
+                                    arrConstrainstData[index].constrainst.push({
+                                        subject: item.id,
+                                        session: session,
+                                        day: day,
+                                        level: 0,
+                                        part: 0,
+                                    });
+                                }
+                            }
+                            console.log(arrConstrainstData);
+                        } else {
+                            let index = arrConstrainstData.findIndex(
+                                (x) => x.class == chkMorning.dataset.class
+                            );
+                            if (index > -1) {
+                                let findConstraint = arrConstrainstData[
+                                    index
+                                ].constrainst.findIndex(
+                                    (x) =>
+                                        x.subject == item.id &&
+                                        x.session == session &&
+                                        x.part == 0 &&
+                                        x.day == day
+                                );
+
+                                if (findConstraint > -1) {
+                                    arrConstrainstData[
+                                        index
+                                    ].constrainst.splice(findConstraint, 1);
+                                }
+                            }
+                            console.log(arrConstrainstData);
+                        }
+                    };
+
+                    let selectMorning = document.getElementById(
+                        `select-session-${session}-${day}th`
+                    );
+
+                    selectMorning.setAttribute("data-subject", item.id);
+                    selectMorning.setAttribute("data-session", session);
+                    selectMorning.setAttribute("data-day", day);
+
+                    selectMorning.onchange = function () {
+                        let index = arrConstrainstData.findIndex(
+                            (x) => x.class == selectMorning.dataset.class
+                        );
+                        if (index > -1) {
+                            let findConstraint = arrConstrainstData[
+                                index
+                            ].constrainst.findIndex(
+                                (x) =>
+                                    x.subject == item.id &&
+                                    x.session == session &&
+                                    x.part == 0 &&
+                                    x.day == day
+                            );
+
+                            if (findConstraint > -1) {
+                                arrConstrainstData[index].constrainst[
+                                    findConstraint
+                                ].level = selectMorning.value;
+                                console.log(arrConstrainstData);
+                            }
+                        }
+                    };
+
+                    // set afternoon
+                    let chkAfternoon = document.getElementById(
+                        `session-pm-${session}-${day}th`
+                    );
+                    chkAfternoon.checked = false;
+                    chkAfternoon.setAttribute("data-subject", item.id);
+                    chkAfternoon.setAttribute("data-session", session);
+                    chkAfternoon.setAttribute("data-day", day);
+
+                    // set event
+                    chkAfternoon.onclick = function () {
+                        if (chkAfternoon.checked) {
+                            let index = arrConstrainstData.findIndex(
+                                (x) => x.class == chkMorning.dataset.class
+                            );
+                            if (index > -1) {
+                                let findConstraint = arrConstrainstData[
+                                    index
+                                ].constrainst.findIndex(
+                                    (x) =>
+                                        x.subject == item.id &&
+                                        x.session == session &&
+                                        x.part == 1 &&
+                                        x.day == day
+                                );
+                                if (findConstraint == -1) {
+                                    arrConstrainstData[index].constrainst.push({
+                                        subject: item.id,
+                                        session: session,
+                                        day: day,
+                                        level: 0,
+                                        part: 1,
+                                    });
+                                }
+                            }
+                            console.log(arrConstrainstData);
+                        } else {
+                            let index = arrConstrainstData.findIndex(
+                                (x) => x.class == chkMorning.dataset.class
+                            );
+                            if (index > -1) {
+                                let findConstraint = arrConstrainstData[
+                                    index
+                                ].constrainst.findIndex(
+                                    (x) =>
+                                        x.subject == item.id &&
+                                        x.session == session &&
+                                        x.part == 1 &&
+                                        x.day == day
+                                );
+
+                                if (findConstraint > -1) {
+                                    arrConstrainstData[
+                                        index
+                                    ].constrainst.splice(findConstraint, 1);
+                                    console.log(arrConstrainstData);
+                                }
+                            }
+                            console.log(arrConstrainstData);
+                        }
+                    };
+
+                    let selectAfternoon = document.getElementById(
+                        `select-session-pm-${session}-${day}th`
+                    );
+
+                    selectAfternoon.setAttribute("data-subject", item.id);
+                    selectAfternoon.setAttribute("data-session", session);
+                    selectAfternoon.setAttribute("data-day", day);
+
+                    selectAfternoon.onchange = function () {
+                        let index = arrConstrainstData.findIndex(
+                            (x) => x.class == selectMorning.dataset.class
+                        );
+                        if (index > -1) {
+                            let findConstraint = arrConstrainstData[
+                                index
+                            ].constrainst.findIndex(
+                                (x) =>
+                                    x.subject == item.id &&
+                                    x.session == session &&
+                                    x.part == 1 &&
+                                    x.day == day
+                            );
+
+                            if (findConstraint > -1) {
+                                arrConstrainstData[index].constrainst[
+                                    findConstraint
+                                ].level = selectAfternoon.value;
+                                console.log(arrConstrainstData);
+                            }
+                        }
+                    };
+                }
+            }
+
+            if (checkbox.checked == false) {
+                let chkClass = document.querySelector(".view");
+
+                let index = arrConstrainstData.findIndex(
+                    (x) => x.class == chkClass.dataset.class
+                );
+                let indexConstrainst = 0;
+                arrConstrainstData[index].constrainst.forEach((item) => {
+                    if (item.subject == checkbox.dataset.subject) {
+                        arrConstrainstData[index].constrainst[
+                            indexConstrainst
+                        ].splice(indexConstrainst, 1);
+                    }
+                    indexConstrainst++;
+                });
+            }
+            console.log(arrConstrainstData);
+        };
+
         tbodySubjects.appendChild(tr);
     });
 }
 // Save data
 $("#btnluutietgvbuocphaico").click(function () {
-    var idgv = $("#idgv").val();
-    var iddktgvbpc = $("#iddktgvbpc").val();
-    var datatietnghi = [];
-    var table = document.getElementById("tietgvbuocphaico");
-    var checkboxes = table.querySelectorAll("input[type=checkbox]");
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked == true) {
-            if (checkboxes[i].id == 1) {
-                var idthu = [];
-                var datathu = $("#idthu1").val();
-                // filter and push data thu to idthu
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-
-                // filter and push data lop to idlop
-
-                let dataClass = $("#idlop1").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon1").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-
-                var idmrb = $("#idmrb1").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 1,
-                    idbuoi: 0,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            } else if (checkboxes[i].id == 2) {
-                var idthu = [];
-                var datathu = $("#idthu2").val();
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-                let dataClass = $("#idlop2").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon2").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-
-                var idmrb = $("#idmrb2").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 1,
-                    idbuoi: 1,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            } else if (checkboxes[i].id == 3) {
-                var idthu = [];
-                var datathu = $("#idthu3").val();
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-                let dataClass = $("#idlop3").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon3").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-                var idmrb = $("#idmrb3").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 2,
-                    idbuoi: 0,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            } else if (checkboxes[i].id == 4) {
-                var idthu = [];
-                var datathu = $("#idthu4").val();
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-                let dataClass = $("#idlop4").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon4").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-                var idmrb = $("#idmrb4").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 2,
-                    idbuoi: 1,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            } else if (checkboxes[i].id == 5) {
-                var idthu = [];
-                var datathu = $("#idthu5").val();
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-                let dataClass = $("#idlop5").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon5").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-                var idmrb = $("#idmrb5").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 3,
-                    idbuoi: 0,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            } else if (checkboxes[i].id == 6) {
-                var idthu = [];
-                var datathu = $("#idthu6").val();
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-                let dataClass = $("#idlop6").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon6").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-                var idmrb = $("#idmrb6").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 3,
-                    idbuoi: 1,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            } else if (checkboxes[i].id == 7) {
-                var idthu = [];
-                var datathu = $("#idthu7").val();
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-
-                let dataClass = $("#idlop7").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon7").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-
-                var idmrb = $("#idmrb7").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 4,
-                    idbuoi: 0,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            } else if (checkboxes[i].id == 8) {
-                var idthu = [];
-                var datathu = $("#idthu8").val();
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-                let dataClass = $("#idlop8").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon8").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-                var idmrb = $("#idmrb8").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 4,
-                    idbuoi: 1,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            } else if (checkboxes[i].id == 9) {
-                var idthu = [];
-                var datathu = $("#idthu9").val();
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-                let dataClass = $("#idlop9").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon9").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-                var idmrb = $("#idmrb9").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 5,
-                    idbuoi: 0,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            } else if (checkboxes[i].id == 10) {
-                var idthu = [];
-                var datathu = $("#idthu10").val();
-                datathu.filter(function (items) {
-                    idthu.push({ id: items });
-                });
-                let dataClass = $("#idlop10").val();
-                let idClass = dataClass.map((item) => {
-                    return { id: item };
-                });
-                // filter and push data mon to idmon
-
-                let dataSubject = $("#idmon10").val();
-                let idSubject = dataSubject.map((item) => {
-                    return { id: item };
-                });
-                var idmrb = $("#idmrb10").val();
-                datatietnghi.push({
-                    idgv: idgv,
-                    idtiet: 5,
-                    idbuoi: 1,
-                    idmrb: idmrb,
-                    idthu: idthu,
-                    idClass: idClass,
-                    idSubject: idSubject,
-                });
-            }
-        }
-    }
-
-    console.log("datatietnghi", datatietnghi);
-
     axios
         .post("addrangbuoctietgvbuocphaico", {
-            iddktgvbpc: iddktgvbpc,
-            // idthu: idthu,
-            datatietnghi: JSON.stringify(datatietnghi),
+            idTeacher: document.getElementById("idgv").value,
+            datatietnghi: JSON.stringify(arrConstrainstData),
         })
         .then(function (response) {
             var data = response.data;
@@ -615,13 +610,13 @@ $("#btnluutietgvbuocphaico").click(function () {
                 confirmButtonText: "OK",
             });
             $("#modaldangkytietbuocphaicogv").modal("hide");
-            $("#modaldangkytietbuocphaicogv").on(
-                "hidden.bs.modal",
-                function () {
-                    $(this).find("#formthemmoitietgvbuocphaico")[0].reset();
-                    // $(this).find('#formthemmoirangbuoctietcodinhtiethoc').trigger("reset");
-                }
-            );
+            // $("#modaldangkytietbuocphaicogv").on(
+            //     "hidden.bs.modal",
+            //     function () {
+            //         $(this).find("#formthemmoitietgvbuocphaico")[0].reset();
+            //         // $(this).find('#formthemmoirangbuoctietcodinhtiethoc').trigger("reset");
+            //     }
+            // );
             reloadgvthamgiagiangday();
         });
 });

@@ -422,37 +422,32 @@ class rangbuocController extends Controller
 	public function addrangbuoctietgvbuocphaico(Request $rq)
 	{
 		$matruong = Session::get('matruong');
-		$iddktgvbpc = json_decode($rq->iddktgvbpc);
-		// $idthu = $rq->idthu;
-		$datatietnghi = json_decode($rq->datatietnghi);
-		if ($iddktgvbpc != '') {
-			foreach ($iddktgvbpc as $i) {
-				rangbuoctietgvbuocphaico::destroy($i->iddktgvbpc);
+		$idTeacher = $rq->idTeacher;
+		$data = json_decode($rq->datatietnghi);
+		$oldList = rangbuoctietgvbuocphaico::where('magiaovien', $idTeacher)->get();
+		foreach ($oldList as $item) {
+			rangbuoctietgvbuocphaico::destroy($item->id);
+		}
+
+		foreach ($data as $value) {
+			$class = $value->class;
+			$listConstrainst = $value->constrainst;
+			foreach ($listConstrainst as $item) {
+				$tietgvbuocphaico = new rangbuoctietgvbuocphaico();
+				$tietgvbuocphaico->magiaovien = $idTeacher;
+				$tietgvbuocphaico->mamucrangbuoc = $item->level;
+				$tietgvbuocphaico->buoi = $item->part;
+				$tietgvbuocphaico->thu = $item->day;
+				$tietgvbuocphaico->tiet = $item->session;
+				$tietgvbuocphaico->matruong = $matruong;
+				$tietgvbuocphaico->lop = $class;
+				$tietgvbuocphaico->mon = $item->subject;
+				$tietgvbuocphaico->save();
 			}
 		}
 
-		if ($datatietnghi != '') {
-			foreach ($datatietnghi as $d) {
-				foreach ($d->idSubject as $subject) {
-					foreach ($d->idClass as $key => $class) {
-						foreach ($d->idthu as $t) {
-							$tietgvbuocphaico = new rangbuoctietgvbuocphaico();
-							$tietgvbuocphaico->magiaovien = $d->idgv;
-							$tietgvbuocphaico->mamucrangbuoc = $d->idmrb;
-							$tietgvbuocphaico->buoi = $d->idbuoi;
-							$tietgvbuocphaico->thu = $t->id;
-							$tietgvbuocphaico->tiet = $d->idtiet;
-							$tietgvbuocphaico->matruong = $matruong;
-							$tietgvbuocphaico->lop = $class->id;
-							$tietgvbuocphaico->mon = $subject->id;
-							$tietgvbuocphaico->save();
-						}
-					}
-				}
-			}
-		}
-		$success = 1;
-		return json_encode($success);
+
+		return response()->json(['msg' => 'ok', 'data' => 'Save success'], Response::HTTP_OK);
 	}
 
 

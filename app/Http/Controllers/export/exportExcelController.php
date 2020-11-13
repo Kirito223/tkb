@@ -202,7 +202,7 @@ class exportExcelController extends Controller
                     if ($table != null) {
                         $item->assign = $table->hovaten . '-' . $table->tenlop;
                     } else {
-                        $item->assign = "";
+                        $item->assign = null;
                     }
                     array_push($arrAfternoon, $item);
                     array_push($arrMorning, $item);
@@ -507,9 +507,10 @@ class exportExcelController extends Controller
                         $sheetSelect->setCellValue("F8", "");
                     }
                 }
+
                 // 6th
 
-                if ($table->day == 5 && $table->session == 1) {
+                if ($table->day == 6 && $table->session == 1) {
                     if ($table->assign != null) {
                         $sheetSelect->setCellValue("G4", $table->assign);
                     } else {
@@ -739,7 +740,7 @@ class exportExcelController extends Controller
                 }
                 // 6th
 
-                if ($table->day == 5 && $table->session == 1) {
+                if ($table->day == 6 && $table->session == 1) {
                     if ($table->assign != null) {
                         $sheetSelect->setCellValue("G9", $table->assign);
                     } else {

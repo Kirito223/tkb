@@ -1008,7 +1008,19 @@
 								<input type="text" id="iddatarbtgvbpc" class="form-control input-sm" hidden>
 								<input type="text" id="iddktgvbpc" class="form-control input-sm" hidden>
 								<div class="row">
-									<div class="col-md-3 col-lg-3">
+
+									<div class="col-md-2 col-lg-2" style="overflow: auto; height: 500px;">
+										<table class="table table-bordered">
+											<thead>
+												<th>Tên lớp</th>
+
+											</thead>
+											<tbody id="tbodyClass">
+
+											</tbody>
+										</table>
+									</div>
+									<div class="col-md-2 col-lg-2" style="overflow: auto; height: 500px;">
 										<table class="table table-bordered">
 											<thead>
 												<th>Tên môn</th>
@@ -1019,19 +1031,11 @@
 										</table>
 
 									</div>
-									<div class="col-md-3 col-lg-3">
+									<div class="col-md-8 col-lg-8">
 										<table class="table table-bordered">
 											<thead>
-												<th>Tên lớp</th>
-											</thead>
-											<tbody id="tbodyClass">
-
-											</tbody>
-										</table>
-									</div>
-									<div class="col-md-6 col-lg-6">
-										<table class="table table-bordered">
-											<thead>
+												<th>Buổi</th>
+												<th>Tiết</th>
 												<th>Thứ 2</th>
 												<th>Thứ 3</th>
 												<th>Thứ 4</th>
@@ -1040,7 +1044,522 @@
 												<th>Thứ 7</th>
 											</thead>
 											<tbody id="tbodyConstraints">
+												<tr>
+													<th rowspan="5">Sáng</th>
+													<td>1</td>
+													<td><input id="session-1-2th" type="checkbox" />
+														<select id="select-session-1-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-1-3th" type="checkbox" />
+														<select id="select-session-1-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-1-4th" type="checkbox" />
+														<select id="select-session-1-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-1-5th" type="checkbox" />
+														<select id="select-session-1-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-1-6th" type="checkbox" />
+														<select id="select-session-1-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-1-7th" type="checkbox" />
+														<select id="select-session-1-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
 
+												<tr>
+													<td>2</td>
+													<td><input id="session-2-2th" type="checkbox" />
+														<select id="select-session-2-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-2-3th" type="checkbox" />
+														<select id="select-session-2-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-2-4th" type="checkbox" />
+														<select id="select-session-2-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-2-5th" type="checkbox" />
+														<select id="select-session-2-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-2-6th" type="checkbox" />
+														<select id="select-session-2-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-2-7th" type="checkbox" />
+														<select id="select-session-2-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
+
+												<tr>
+													<td>3</td>
+													<td><input id="session-3-2th" type="checkbox" />
+														<select id="select-session-3-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-3-3th" type="checkbox" />
+														<select id="select-session-3-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-3-4th" type="checkbox" />
+														<select id="select-session-3-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-3-5th" type="checkbox" />
+														<select id="select-session-3-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-3-6th" type="checkbox" />
+														<select id="select-session-3-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-3-7th" type="checkbox" />
+														<select id="select-session-3-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td>4</td>
+													<td><input id="session-4-2th" type="checkbox" />
+														<select id="select-session-4-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-4-3th" type="checkbox" />
+														<select id="select-session-4-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-4-4th" type="checkbox" />
+														<select id="select-session-4-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-4-5th" type="checkbox" />
+														<select id="select-session-4-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-4-6th" type="checkbox" />
+														<select id="select-session-4-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-4-7th" type="checkbox" />
+														<select id="select-session-4-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td>5</td>
+													<td><input id="session-5-2th" type="checkbox" />
+														<select id="select-session-5-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-5-3th" type="checkbox" />
+														<select id="select-session-5-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-5-4th" type="checkbox" />
+														<select id="select-session-5-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-5-5th" type="checkbox" />
+														<select id="select-session-5-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-5-6th" type="checkbox" />
+														<select id="select-session-5-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-5-7th" type="checkbox" />
+														<select id="select-session-5-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<th rowspan="5">Chiều</th>
+													<td>1</td>
+													<td><input id="session-pm-1-2th" type="checkbox" />
+														<select id="select-session-pm-1-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-1-3th" type="checkbox" />
+														<select id="select-session-pm-1-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-1-4th" type="checkbox" />
+														<select id="select-session-pm-1-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-1-5th" type="checkbox" />
+														<select id="select-session-pm-1-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-1-6th" type="checkbox" />
+														<select id="select-session-pm-1-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-1-7th" type="checkbox" />
+														<select id="select-session-pm-1-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
+
+												<tr>
+													<td>2</td>
+													<td><input id="session-pm-2-2th" type="checkbox" />
+														<select id="select-session-pm-2-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-2-3th" type="checkbox" />
+														<select id="select-session-pm-2-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-2-4th" type="checkbox" />
+														<select id="select-session-pm-2-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-2-5th" type="checkbox" />
+														<select id="select-session-pm-2-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-2-6th" type="checkbox" />
+														<select id="select-session-pm-2-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-2-7th" type="checkbox" />
+														<select id="select-session-pm-2-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
+
+												<tr>
+													<td>3</td>
+													<td><input id="session-pm-3-2th" type="checkbox" />
+														<select id="select-session-pm-3-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-3-3th" type="checkbox" />
+														<select id="select-session-pm-3-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-3-4th" type="checkbox" />
+														<select id="select-session-pm-3-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-3-5th" type="checkbox" />
+														<select id="select-session-pm-3-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-3-6th" type="checkbox" />
+														<select id="select-session-pm-3-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-3-7th" type="checkbox" />
+														<select id="select-session-pm-3-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td>4</td>
+													<td><input id="session-pm-4-2th" type="checkbox" />
+														<select id="select-session-pm-4-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-4-3th" type="checkbox" />
+														<select id="select-session-pm-4-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-4-4th" type="checkbox" />
+														<select id="select-session-pm-4-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-4-5th" type="checkbox" />
+														<select id="select-session-pm-4-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-4-6th" type="checkbox" />
+														<select id="select-session-pm-4-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-4-7th" type="checkbox" />
+														<select id="select-session-pm-4-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
+												<tr>
+													<td>5</td>
+													<td><input id="session-pm-5-2th" type="checkbox" />
+														<select id="select-session-pm-5-2th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-5-3th" type="checkbox" />
+														<select id="select-session-pm-5-3th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-5-4th" type="checkbox" />
+														<select id="select-session-pm-5-4th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-5-5th" type="checkbox" />
+														<select id="select-session-pm-5-5th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-5-6th" type="checkbox" />
+														<select id="select-session-pm-5-6th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+													<td><input id="session-pm-5-7th" type="checkbox" />
+														<select id="select-session-pm-5-7th">
+															<option value="0">Mức 0</option>
+															<option value="1">Mức 1</option>
+															<option value="2">Mức 2</option>
+															<option value="3">Mức 3</option>
+														</select>
+													</td>
+												</tr>
 											</tbody>
 										</table>
 									</div>
@@ -1433,7 +1952,7 @@
 		<script type="module" src="js\rangbuoc\toidangay.js"></script>
 		<style>
 			.modal-lg {
-				max-width: 1280px !important;
+				max-width: 1900px !important;
 			}
 		</style>
 		@endsection
