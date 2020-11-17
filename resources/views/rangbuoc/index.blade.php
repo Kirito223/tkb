@@ -1059,7 +1059,7 @@
 														</select>
 													</td>
 													<td><input id="session-1-3th" type="checkbox" />
-														<select  id="select-session-1-3th">
+														<select id="select-session-1-3th">
 															<option value="0">Mức 0</option>
 															<option value="1">Mức 1</option>
 															<option value="2">Mức 2</option>

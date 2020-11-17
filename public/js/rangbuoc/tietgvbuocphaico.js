@@ -343,25 +343,51 @@ async function dangkytietbuocphaico(id, constrainstdata) {
                 chkold.classList.remove("view");
             }
             chkClass.classList.add("view");
-            chkClass.click();
+
             let oldChk = document.getElementsByClassName("chkViewClass");
             for (const chk of oldChk) {
                 chk.checked = false;
             }
             chkViewClass.checked = true;
+            // filter and show data subject of class asgin
+            setClassToAsgin(item.id);
+
+            let find = arrConstrainstData.findIndex(x => x.class == item.id);
+            if (find > -1) {
+                let dataConstrainst = arrConstrainstData[find].constrainst;
+                arrSubject.forEach(subject => {
+                    let findSubject = dataConstrainst.findIndex(
+                        x => x.subject == subject.id
+                    );
+                    let chk = document.querySelector(
+                        `.chk-subject[data-subject="${subject.id}"]`
+                    );
+                    if (findSubject > -1) {
+                        chk.checked = true;
+                    } else {
+                        chk.checked = false;
+                    }
+                });
+            } else {
+                arrSubject.forEach(subject => {
+                    let chk = document.querySelector(
+                        `.chk-subject[data-subject="${subject.id}"]`
+                    );
+                    chk.checked = false;
+                });
+            }
         };
 
         span.appendChild(p);
         td.appendChild(span);
         td.appendChild(chkViewClass);
         tr.appendChild(td);
-        // set event
+
+        // set event check box of class
+
         checkbox.onclick = function() {
-            if (checkbox.classList.contains("selected")) {
-                checkbox.checked = true;
-            } else {
-                checkbox.checked = false;
-            }
+            // set Attribute to checkbox and select box constraint
+
             for (let session = 1; session < 6; session++) {
                 for (let day = 2; day < 8; day++) {
                     // set morning
@@ -443,7 +469,6 @@ async function dangkytietbuocphaico(id, constrainstdata) {
                 `.chk-subject[data-subject="${item.id}"]`
             );
             chkSubject.classList.add("selected");
-            chkSubject.click();
             let oldChk = document.getElementsByClassName("chkViewSubject");
             for (const chk of oldChk) {
                 chk.checked = false;
@@ -503,8 +528,10 @@ async function dangkytietbuocphaico(id, constrainstdata) {
         checkbox.onclick = function() {
             if (checkbox.classList.contains("selected")) {
                 checkbox.checked = true;
-            } else {
-                checkbox.checked = false;
+            }
+
+            if (checkbox.classList.contains("view")) {
+                checkbox.classList.remove("selected");
             }
             for (let session = 1; session < 6; session++) {
                 for (let day = 2; day < 8; day++) {
@@ -809,3 +836,33 @@ jQuery(document).ready(function() {
         $("#tablechontietgvbuocphaico>tbody").empty();
     });
 });
+function setClassToAsgin(classId) {
+    for (let session = 1; session < 6; session++) {
+        for (let day = 2; day < 8; day++) {
+            // set morning
+            let chkMorning = document.getElementById(
+                `session-${session}-${day}th`
+            );
+            chkMorning.checked = false;
+
+            chkMorning.setAttribute("data-class", classId);
+            let selectMorning = document.getElementById(
+                `select-session-${session}-${day}th`
+            );
+
+            selectMorning.setAttribute("data-class", classId);
+
+            // set afternoon
+            let chkAfternoon = document.getElementById(
+                `session-pm-${session}-${day}th`
+            );
+            chkAfternoon.checked = false;
+            chkAfternoon.setAttribute("data-class", classId);
+            let selectAfternoon = document.getElementById(
+                `select-session-pm-${session}-${day}th`
+            );
+
+            selectAfternoon.setAttribute("data-class", classId);
+        }
+    }
+}
