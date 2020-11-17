@@ -1012,7 +1012,8 @@
 									<div class="col-md-2 col-lg-2" style="overflow: auto; height: 500px;">
 										<table class="table table-bordered">
 											<thead>
-												<th>Tên lớp</th>
+												<th style="display: flex; justify-content: space-between"><span>Tên
+														lớp</span> <span>Xem</span></th>
 
 											</thead>
 											<tbody id="tbodyClass">
@@ -1023,7 +1024,9 @@
 									<div class="col-md-2 col-lg-2" style="overflow: auto; height: 500px;">
 										<table class="table table-bordered">
 											<thead>
-												<th>Tên môn</th>
+												<th style="display: flex; justify-content: space-between"><span>Tên
+														môn</span> <span>Xem</span></th>
+
 											</thead>
 											<tbody id="tbodySubjects">
 
@@ -1056,7 +1059,7 @@
 														</select>
 													</td>
 													<td><input id="session-1-3th" type="checkbox" />
-														<select id="select-session-1-3th">
+														<select  id="select-session-1-3th">
 															<option value="0">Mức 0</option>
 															<option value="1">Mức 1</option>
 															<option value="2">Mức 2</option>

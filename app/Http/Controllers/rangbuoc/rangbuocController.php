@@ -30,6 +30,8 @@ use Session;
 use stdClass;
 use App\thongbao;
 
+use function Ramsey\Uuid\v1;
+
 class rangbuocController extends Controller
 {
 	public function index()
@@ -449,7 +451,10 @@ class rangbuocController extends Controller
 
 		return response()->json(['msg' => 'ok', 'data' => 'Save success'], Response::HTTP_OK);
 	}
-
+	public function test()
+	{
+		return view('test');
+	}
 
 	//get đăng ký buổi/tiết nghỉ của gv
 	public function getdangkybuoitietnghicuagv()
