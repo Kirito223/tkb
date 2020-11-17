@@ -1128,6 +1128,12 @@ function resetLevelSelectbox() {
             document.getElementById(
                 `select-session-pm-${session}-${day}th`
             ).value = 0;
+            document.getElementById(
+                `select-session-${session}-${day}th`
+            ).disabled = true;
+            document.getElementById(
+                `select-session-pm-${session}-${day}th`
+            ).disabled = true;
         }
     }
 }
