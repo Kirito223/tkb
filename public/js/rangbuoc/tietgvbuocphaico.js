@@ -347,8 +347,13 @@ async function dangkytietbuocphaico(id, constrainstdata) {
             );
             for (const chk of chkViewSubject) {
                 chk.checked = false;
+                chk.setAttribute("data-class", item.id);
             }
-
+            let chkSubject = document.getElementsByClassName("chk-subject");
+            for (const chk of chkSubject) {
+                chk.checked = false;
+                chk.setAttribute("data-class", item.id);
+            }
             let chkClass = document.querySelector(
                 `.chkClass[data-class="${item.id}"]`
             );
@@ -407,8 +412,13 @@ async function dangkytietbuocphaico(id, constrainstdata) {
             );
             for (const chk of chkViewSubject) {
                 chk.checked = false;
+                chk.setAttribute("data-class", item.id);
             }
-
+            let chkSubject = document.getElementsByClassName("chk-subject");
+            for (const chk of chkSubject) {
+                chk.checked = false;
+                chk.setAttribute("data-class", item.id);
+            }
             let find = arrConstrainstData.findIndex(x => x.class == item.id);
             if (find > -1) {
                 let dataConstrainst = arrConstrainstData[find].constrainst;
@@ -432,6 +442,8 @@ async function dangkytietbuocphaico(id, constrainstdata) {
                     );
                     chk.checked = false;
                 });
+
+                resetAll();
             }
 
             // set Attribute to checkbox and select box constraint
@@ -523,8 +535,7 @@ async function dangkytietbuocphaico(id, constrainstdata) {
             }
             chkViewSubject.checked = true;
 
-            let checkClass = document.querySelector(".chkViewClass:checked");
-            if (checkClass == undefined) {
+            if (chkViewSubject.dataset.class == "") {
                 Swal.fire(
                     "Vui lòng chọn lớp muốn xem",
                     "Chọn lớp muốn xem",
@@ -536,39 +547,43 @@ async function dangkytietbuocphaico(id, constrainstdata) {
 
                 // Show phan cong
                 let indexClass = arrConstrainstData.find(
-                    x => x.class == checkClass.dataset.class
+                    x => x.class == chkViewSubject.dataset.class
                 );
-                indexClass.constrainst.forEach(item => {
-                    if (item != undefined) {
-                        if (item.part == 0) {
-                            let chkMorning = document.getElementById(
-                                `session-${item.session}-${item.day}th`
-                            );
-                            chkMorning.checked = true;
-                            let selectMorning = document.getElementById(
-                                `select-session-${item.session}-${item.day}th`
-                            );
-                            selectMorning.value = item.level;
-                            let selectMornings = document.querySelector(
-                                `#select-session-${item.session}-${item.day}th`
-                            );
-                            selectMornings.disabled = false;
-                        } else {
-                            let chkAfternoon = document.getElementById(
-                                `session-pm-${item.session}-${item.day}th`
-                            );
-                            chkAfternoon.checked = true;
-                            let selectAfternoon = document.getElementById(
-                                `select-session-pm-${item.session}-${item.day}th`
-                            );
-                            selectAfternoon.value = item.level;
-                            let selectAfternoons = document.querySelector(
-                                `#select-session-pm-${item.session}-${item.day}th`
-                            );
-                            selectAfternoons.disabled = false;
+
+                if (indexClass != undefined) {
+                    resetAll();
+                    indexClass.constrainst.forEach(items => {
+                        if (items != undefined && items.subject == item.id) {
+                            if (items.part == 0) {
+                                let chkMorning = document.getElementById(
+                                    `session-${items.session}-${items.day}th`
+                                );
+                                chkMorning.checked = true;
+                                let selectMorning = document.getElementById(
+                                    `select-session-${items.session}-${items.day}th`
+                                );
+                                selectMorning.value = items.level;
+                                let selectMornings = document.querySelector(
+                                    `#select-session-${items.session}-${items.day}th`
+                                );
+                                selectMornings.disabled = false;
+                            } else {
+                                let chkAfternoon = document.getElementById(
+                                    `session-pm-${items.session}-${items.day}th`
+                                );
+                                chkAfternoon.checked = true;
+                                let selectAfternoon = document.getElementById(
+                                    `select-session-pm-${items.session}-${items.day}th`
+                                );
+                                selectAfternoon.value = items.level;
+                                let selectAfternoons = document.querySelector(
+                                    `#select-session-pm-${items.session}-${items.day}th`
+                                );
+                                selectAfternoons.disabled = false;
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
         };
         span.appendChild(p);
@@ -579,6 +594,21 @@ async function dangkytietbuocphaico(id, constrainstdata) {
         // set event for checkbox of subject
 
         checkbox.onclick = function() {
+            let indexCheckSubject = arrConstrainstData.findIndex(
+                x => x.class == checkbox.dataset.class
+            );
+            if (indexCheckSubject > -1) {
+                let checkIndex = arrConstrainstData[
+                    indexCheckSubject
+                ].constrainst.find(x => x.subject == item.id);
+
+                if (checkIndex == undefined) {
+                    resetLevelSelectbox();
+                }
+            } else {
+                resetAll();
+            }
+
             for (let session = 1; session < 6; session++) {
                 for (let day = 2; day < 8; day++) {
                     // set morning
@@ -717,7 +747,6 @@ async function dangkytietbuocphaico(id, constrainstdata) {
                                     });
                                 }
                             }
-                            console.log(arrConstrainstData);
                         } else {
                             let index = arrConstrainstData.findIndex(
                                 x => x.class == chkMorning.dataset.class
@@ -1119,6 +1148,33 @@ function setSubjectToAsgin(subjectId) {
         }
     }
 }
+
+function resetAll() {
+    for (let session = 1; session < 6; session++) {
+        for (let day = 2; day < 8; day++) {
+            document.getElementById(
+                `session-${session}-${day}th`
+            ).checked = false;
+            document.getElementById(
+                `session-pm-${session}-${day}th`
+            ).checked = false;
+
+            document.getElementById(
+                `select-session-${session}-${day}th`
+            ).value = 0;
+            document.getElementById(
+                `select-session-pm-${session}-${day}th`
+            ).value = 0;
+            document.getElementById(
+                `select-session-${session}-${day}th`
+            ).disabled = true;
+            document.getElementById(
+                `select-session-pm-${session}-${day}th`
+            ).disabled = true;
+        }
+    }
+}
+
 function resetLevelSelectbox() {
     for (let session = 1; session < 6; session++) {
         for (let day = 2; day < 8; day++) {
