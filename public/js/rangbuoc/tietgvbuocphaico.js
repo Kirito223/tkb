@@ -594,6 +594,13 @@ async function dangkytietbuocphaico(id, constrainstdata) {
         // set event for checkbox of subject
 
         checkbox.onclick = function() {
+            let chkViewSubjectChecked = document.querySelector(
+                ".chkViewSubject:checked"
+            );
+            if (chkViewSubjectChecked != null) {
+                chkViewSubjectChecked.checked = false;
+            }
+
             let indexCheckSubject = arrConstrainstData.findIndex(
                 x => x.class == checkbox.dataset.class
             );
@@ -845,13 +852,6 @@ async function dangkytietbuocphaico(id, constrainstdata) {
                 let arrConst = [];
                 constrainstdata.forEach(item => {
                     if (item.lop == classItem.id) {
-                        let chkSubject = document.querySelector(
-                            `.chk-subject[data-subject="${item.mon}"]`
-                        );
-                        if (chkSubject.checked == false) {
-                            chkSubject.checked = true;
-                            chkSubject.classList.add("selected");
-                        }
                         arrConst.push({
                             subject: item.mon,
                             session: item.tiet,
