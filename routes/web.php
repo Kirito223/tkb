@@ -349,8 +349,6 @@ Route::group(['middleware' => 'auth'], function () {
 
 	//tro giup
 	Route::get('exportkb', 'exportkb\exportkbController@index');
-
-	Route::get('qrcode', 'rangbuoc\rangbuocController@test');
 	//lấy dah sách báo cáo
 	Route::get('getdsbaocao', 'exportkb\exportkbController@getdsbaocao');
 	//thêm mới báo cáo

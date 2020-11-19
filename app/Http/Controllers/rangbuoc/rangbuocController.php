@@ -451,10 +451,6 @@ class rangbuocController extends Controller
 
 		return response()->json(['msg' => 'ok', 'data' => 'Save success'], Response::HTTP_OK);
 	}
-	public function test()
-	{
-		return view('test');
-	}
 
 	//get đăng ký buổi/tiết nghỉ của gv
 	public function getdangkybuoitietnghicuagv()

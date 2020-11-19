@@ -92,6 +92,18 @@
 												</label>
 												<section class="hidden" id="kieu">
 													<label>
+														<input type="radio" name="radBuoi" value="" id="sang">
+														Buổi sáng
+													</label>
+													<label>
+														<input type="radio" name="radBuoi" value="" id="chieu">
+														Buổi chiều
+													</label>
+													<label>
+														<input type="radio" name="radBuoi" value="" id="cahai">
+														Cả sáng và chiều
+													</label>
+													<label>
 														<input type="radio" name="typeRadio" value="" id="tendaydu">
 														Tên đầy đủ
 													</label>
@@ -133,6 +145,7 @@
 													Xuất thời khóa biểu theo điểm trường
 												</label>
 											</fieldset>
+
 											<hr>
 											<div style="height: 300px; margin-bottom:3px; overflow: scroll;"
 												id="tableList" class="hidden">

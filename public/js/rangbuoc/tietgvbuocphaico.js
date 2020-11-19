@@ -287,7 +287,7 @@ async function dangkytietbuocphaico(id, constrainstdata) {
     // show list class
 
     listClassRoom.forEach(item => {
-        let index = arrConstrainst.findIndex(x => (x.malop = item.id));
+        let index = arrConstrainst.findIndex(x => (x.malop == item.id));
         if (index > -1) {
             arrClass.push(item);
         }
@@ -822,9 +822,7 @@ async function dangkytietbuocphaico(id, constrainstdata) {
                 let indexConstrainst = 0;
                 arrConstrainstData[index].constrainst.forEach(item => {
                     if (item.subject == checkbox.dataset.subject) {
-                        arrConstrainstData[index].constrainst[
-                            indexConstrainst
-                        ].splice(indexConstrainst, 1);
+                        arrConstrainstData[index].constrainst.splice(indexConstrainst, 1);
                     }
                     indexConstrainst++;
                 });
