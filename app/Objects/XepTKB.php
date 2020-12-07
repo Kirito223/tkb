@@ -31,8 +31,13 @@ class XepTKB
     private $rangbuoctiethopcuato;
     private $rangbuoctranh2moncungbuoi;
     private $diemtruong;
-    public function __construct($giaovien, $monhoc, $lophoc, $danhsachrangbuoc, $tiethoc, $tietnghigiaovien, $tietghep, $sotietmonhoc, $phonghoc, $phong_mon_lop, $phancongchuyenmon, $giaovienmonlop, $giaovienchuyenmon,$tietcodinh,$sotiettrongbuoi,$rangbuocdangkybuoitietnghigv,$caphoc,$thututiet,$rangbuoccaptietxepliennhau,$rangbuocdangkytietnghilop,$rangbuoctiettranh,$rangbuocsotiet5sangtiet1chieu,$rangbuoctietgvbuocphaico,$rangbuoctiethopcuato,$rangbuoctranh2moncungbuoi,$diemtruong)
+    private $truycap;
+    private $rangbuocmoncachngay;
+    private $rangbuocmonsangchieu;
+   
+    public function __construct($rangbuocmonsangchieu,$truycap,$giaovien, $monhoc, $lophoc, $danhsachrangbuoc, $tiethoc, $tietnghigiaovien, $tietghep, $sotietmonhoc, $phonghoc, $phong_mon_lop, $phancongchuyenmon, $giaovienmonlop, $giaovienchuyenmon,$tietcodinh,$sotiettrongbuoi,$rangbuocdangkybuoitietnghigv,$caphoc,$thututiet,$rangbuoccaptietxepliennhau,$rangbuocdangkytietnghilop,$rangbuoctiettranh,$rangbuocsotiet5sangtiet1chieu,$rangbuoctietgvbuocphaico,$rangbuoctiethopcuato,$rangbuoctranh2moncungbuoi,$diemtruong,$rangbuocmoncachngay )
     {
+        $this->rangbuocmonsangchieu=$rangbuocmonsangchieu;
         $this->giaovien = $giaovien;
         $this->monhoc = $monhoc;
         $this->lophoc = $lophoc;
@@ -59,6 +64,10 @@ class XepTKB
         $this->rangbuoctiethopcuato=$rangbuoctiethopcuato;
         $this->rangbuoctranh2moncungbuoi=$rangbuoctranh2moncungbuoi;
         $this->diemtruong=$diemtruong;
+        $this->truycap=$truycap;
+        $this->rangbuocmoncachngay=$rangbuocmoncachngay;
+        
+        
     }
 
     public function jsonSerialize()

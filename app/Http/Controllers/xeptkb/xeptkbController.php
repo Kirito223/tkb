@@ -29,13 +29,15 @@ use App\rangbuoctiethopcuato;
 use App\rangbuoctranh2moncungbuoi;
 use App\giaovien_chuyenmon;
 use App\diemtruong;
+use App\tiethopcuato;
 use App\truong;
 use App\thututiet;
+use App\tbl_truycap;
 use stdClass;
-use Session; 
+use Session;
 use App\thoikhoabieu;
-use App\thongbao;
-
+use App\rangbuocmoncachngay;
+use App\rangbuocmonsangchieu;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -43,13 +45,11 @@ class xeptkbController extends Controller
 {
 	public function index()
 	{
-		\Assets::addScripts(['js-macdinh','js-custom','js-dev','js-datatable'])->addStyles(['style-macdinh','style-dev','style-datatable']);
-		$matruong = Session::get('matruong');
-		$thongbao = thongbao::where('truong_id',$matruong)->get();
-		$thongbaocount = thongbao::where('trangthai',0)->where('truong_id',$matruong)->count();
-		return view('xeptkb.index',compact('thongbao', 'thongbaocount'));
+		\Assets::addScripts(['js-macdinh', 'js-custom', 'js-dev', 'js-datatable'])->addStyles(['style-macdinh', 'style-dev', 'style-datatable']);
+		return view('xeptkb.index');
 	}
-	public function uptcrangbuoc(Request $rq){
+	public function uptcrangbuoc(Request $rq)
+	{
 		$danhsachrangbuoc = danhsachrangbuoc::find($rq->id);
 		$danhsachrangbuoc->muc1 = $rq->muc1;
 		$danhsachrangbuoc->muc2 = $rq->muc2;
@@ -61,46 +61,55 @@ class xeptkbController extends Controller
 	public function nguontainguyen()
 	{
 		$matruong = Session::get('matruong');
-		$giaovien = danhsachgv::where('matruong',$matruong)->get();
-		$monhoc = monhoc::where('matruong',$matruong)->get();
+		$giaovien = danhsachgv::where('matruong', $matruong)->get();
+		$monhoc = monhoc::where('matruong', $matruong)->get();
 		$danhsachrangbuoc = danhsachrangbuoc::all();
-		$tiethoc = tiethoc::where('matruong',$matruong)->get();
-		$tietnghigiaovien = tietnghigiaovien::where('matruong',$matruong)->get();
-		$tietghep = tietghep::where('matruong',$matruong)->get();
-		$sotietmonhoc = sotietmonhoc::where('matruong',$matruong)->get();
-		$phonghoc = phonghoc::where('matruong',$matruong)->get();
-		$phongmonlop = phongmonlop::where('matruong',$matruong)->get();
-		$phancongchuyenmon = phancongchuyenmon::where('matruong',$matruong)->get();
-		$giaovienmonlop = giaovienmonlop::where('matruong',$matruong)->get();
-		$giaovienchuyenmon = giaovienchuyenmon::where('matruong',$matruong)->get();
-		$lophoc = danhsachlophoc::where('matruong',$matruong)->get();
-		$tietcodinh = rangbuoctietcodinh::where('matruong',$matruong)->get();
-		$sotiettrongbuoi = sotiettrongbuoi::where('matruong',$matruong)->get();
-		$rangbuocdangkybuoitietnghigv=rangbuocdangkybuoitietnghigv::where('matruong',$matruong)->get();
-		$truonghoc=truong::where('matruong',$matruong)->first();
-		$thututiet=thututiet::where('matruong',$matruong)->get();
-		$rangbuoccaptietxepliennhau=rangbuoccaptietxepliennhau::where('matruong',$matruong)->get();
-		$rangbuocdangkytietnghilop=rangbuocdangkytietnghilop::where('matruong',$matruong)->get();
-		$rangbuoctiettranh=rangbuoctiettranh::where('matruong',$matruong)->get();
+		$rangbuocmonsangchieu = rangbuocmonsangchieu::where('matruong', $matruong)->get();
+		$tiethoc = tiethoc::where('matruong', $matruong)->get();
+		$tietnghigiaovien = tietnghigiaovien::where('matruong', $matruong)->get();
+		$tietghep = tietghep::where('matruong', $matruong)->get();
+		$sotietmonhoc = sotietmonhoc::where('matruong', $matruong)->get();
+		$phonghoc = phonghoc::where('matruong', $matruong)->get();
+		$phongmonlop = phongmonlop::where('matruong', $matruong)->get();
+		$phancongchuyenmon = phancongchuyenmon::where('matruong', $matruong)->get();
+		$giaovienmonlop = giaovienmonlop::where('matruong', $matruong)->get();
+		$giaovienchuyenmon = giaovienchuyenmon::where('matruong', $matruong)->get();
+		$lophoc = danhsachlophoc::where('matruong', $matruong)->get();
+		$tietcodinh = rangbuoctietcodinh::where('matruong', $matruong)->get();
+		$sotiettrongbuoi = sotiettrongbuoi::where('matruong', $matruong)->get();
+		$rangbuocdangkybuoitietnghigv = rangbuocdangkybuoitietnghigv::where('matruong', $matruong)->get();
+		$truonghoc = truong::where('matruong', $matruong)->first();
+		$thututiet = thututiet::where('matruong', $matruong)->get();
+		$phonghoc = phonghoc::where('matruong', $matruong)->get();
+		$rangbuoccaptietxepliennhau = rangbuoccaptietxepliennhau::where('matruong', $matruong)->get();
+		$rangbuocdangkytietnghilop = rangbuocdangkytietnghilop::where('matruong', $matruong)->get();
+		$rangbuoctiettranh = rangbuoctiettranh::where('matruong', $matruong)->get();
 
-		$rangbuocsotiet5sangtiet1chieu=rangbuocsotiet5sangtiet1chieu::where('matruong',$matruong)->get();
-		$rangbuoctietgvbuocphaico=rangbuoctietgvbuocphaico::where('matruong',$matruong)->get();
-		$rangbuoctiethopcuato=rangbuoctiethopcuato::where('giaovien_chuyenmon.matruong',$matruong)
-		->join('giaovien_chuyenmon','giaovien_chuyenmon.matochuyenmon','rangbuoctiethopcuato.matochuyenmon')
-		->get();
-		$rangbuoctranh2moncungbuoi=rangbuoctranh2moncungbuoi::where('matruong',$matruong)->get();
-		$diemtruong=diemtruong::where('matruong',$matruong)->get();
-		$caphoc=$truonghoc['caphoc'];
-		if($caphoc==null)$caphoc=1;
-		$tainguyen = new XepTKB($giaovien, $monhoc, $lophoc, $danhsachrangbuoc, $tiethoc, $tietnghigiaovien, $tietghep, $sotietmonhoc, $phonghoc, $phongmonlop, $phancongchuyenmon, $giaovienmonlop, $giaovienchuyenmon,$tietcodinh,$sotiettrongbuoi,$rangbuocdangkybuoitietnghigv,$caphoc,$thututiet,$rangbuoccaptietxepliennhau,$rangbuocdangkytietnghilop,$rangbuoctiettranh,$rangbuocsotiet5sangtiet1chieu,$rangbuoctietgvbuocphaico,$rangbuoctiethopcuato,$rangbuoctranh2moncungbuoi,$diemtruong);
+		$rangbuocsotiet5sangtiet1chieu = rangbuocsotiet5sangtiet1chieu::where('matruong', $matruong)->get();
+		$rangbuoctietgvbuocphaico = rangbuoctietgvbuocphaico::where('matruong', $matruong)->get();
+		$rangbuoctiethopcuato = tiethopcuato::where('giaovien_chuyenmon.matruong', $matruong)
+			->join('giaovien_chuyenmon', 'giaovien_chuyenmon.matochuyenmon', 'tiethopcuato.matochuyenmon')
+			->get();
+		$rangbuoctranh2moncungbuoi = rangbuoctranh2moncungbuoi::where('matruong', $matruong)->get();
+		$diemtruong = diemtruong::where('matruong', $matruong)->get();
+		$rangbuocmoncachngay = rangbuocmoncachngay::where('matruong', $matruong)->get();
+
+
+
+		// $truycap=tbl_truycap::first();
+		$caphoc = $truonghoc['caphoc'];
+		if ($caphoc == null) $caphoc = 1;
+
+		$tainguyen = new XepTKB($rangbuocmonsangchieu, '123456', $giaovien, $monhoc, $lophoc, $danhsachrangbuoc, $tiethoc, $tietnghigiaovien, $tietghep, $sotietmonhoc, $phonghoc, $phongmonlop, $phancongchuyenmon, $giaovienmonlop, $giaovienchuyenmon, $tietcodinh, $sotiettrongbuoi, $rangbuocdangkybuoitietnghigv, $caphoc, $thututiet, $rangbuoccaptietxepliennhau, $rangbuocdangkytietnghilop, $rangbuoctiettranh, $rangbuocsotiet5sangtiet1chieu, $rangbuoctietgvbuocphaico, $rangbuoctiethopcuato, $rangbuoctranh2moncungbuoi, $diemtruong, $phonghoc, $rangbuocmoncachngay);
 
 		return response()->json($tainguyen->jsonSerialize());
-	}	
-		public function capnhatthoikhoabieu(Request $rq){
-		$matruong = Session::get('matruong');	
-		$tkbdell = thoikhoabieu::where('matruong',$matruong)->delete();	
+	}
+	public function capnhatthoikhoabieu(Request $rq)
+	{
+		$matruong = Session::get('matruong');
+		$tkbdell = thoikhoabieu::where('matruong', $matruong)->delete();
 		$request = $rq->request;
-		foreach ($request as $data) {	
+		foreach ($request as $data) {
 			foreach ($data as $key) {
 				$datas = (object)$key;
 				$magiaovien = $datas->magiaovien;
@@ -110,7 +119,7 @@ class xeptkbController extends Controller
 				$buoi = $datas->buoi;
 				$tiet = $datas->tiet;
 
-				$thoikhoabieu = new thoikhoabieu();			
+				$thoikhoabieu = new thoikhoabieu();
 				$thoikhoabieu->magiaovien = $magiaovien;
 				$thoikhoabieu->thu = $thu;
 				$thoikhoabieu->mamonhoc = $mamon;

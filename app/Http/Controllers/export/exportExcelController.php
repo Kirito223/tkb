@@ -226,7 +226,7 @@ class exportExcelController extends Controller
                     $item->session = $tiet;
                     $item->time = 1;
                     if ($table != null) {
-                        $item->assign = $table->hovaten . '-' . $table->tenlop;
+                        $item->assign = $table->tenmonhoc . '-' . $table->hovaten . '-' . $table->tenlop;
                     } else {
                         $item->assign = null;
                     }
@@ -257,7 +257,7 @@ class exportExcelController extends Controller
                     $item->session = $tiet;
                     $item->time = 1;
                     if ($table != null) {
-                        $item->assign = $table->hovaten . '-' . $table->tenlop;
+                        $item->assign = $table->tenmonhoc . '-' . $table->hovaten . '-' . $table->tenlop;
                     } else {
                         $item->assign = "";
                     }
@@ -1423,22 +1423,6 @@ class exportExcelController extends Controller
         $titleLenght = count($listClassRoom);
         $indexcolum = 3;
 
-
-        // Data synthesis for tabletime
-        // day of week
-        /***
-         * 1 - monday
-         * 2 - tuesday
-         * 3 - Wednesday
-         * 4 - Thursday
-         * 5 - Friday
-         * 6 - Saturday
-         * 
-         * session of the day
-         * 1-5: morning
-         * 6-10: afternoon
-         */
-
         $tableTime = array();
         for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
             for ($session = Day::$MORNING; $session < Day::$AFTERNOON; $session++) {
@@ -1555,7 +1539,6 @@ class exportExcelController extends Controller
             $ss = 1;
             for ($session = Day::$MORNING; $session < Day::$MIDDAY; $session++) {
 
-
                 foreach ($listClassRoom as $class) {
 
                     // get table time of morning
@@ -1586,13 +1569,13 @@ class exportExcelController extends Controller
         }
 
         // Render content tabletime
-        $totalRow = 36;
+        $totalRow = 37;
         $indexTable = 0;
         $lastColumn = 0;
         for ($indexRowbody = 7; $indexRowbody < $totalRow; $indexRowbody++) {
             $indexcolum = 3;
             while ($indexcolum < $titleLenght) {
-                // if indexTable == titleLenght/2 then new row and indexcolum == 24 indexRowbody + 1
+
                 $tableItem = $tableTime[$indexTable];
                 if ($tableItem != null) {
                     $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, $tableItem->getSubject());
@@ -1600,9 +1583,9 @@ class exportExcelController extends Controller
                     $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, $tableItem->getName());
                     $indexcolum++;
                 } else {
-                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, "");
+                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, "-");
                     $indexcolum++;
-                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, "");
+                    $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, "-");
                     $indexcolum++;
                 }
                 $lastColumn = $indexcolum;
@@ -1636,7 +1619,7 @@ class exportExcelController extends Controller
             $sheetTKBSchool->setCellValueByColumnAndRow($lastColumn, $rowTeacher, $restItem);
             $rowTeacher = $rowTeacher + 5;
         }
-        $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn, $totalRow)->getCoordinate();
+        $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn, 36)->getCoordinate();
 
         $this->sign($sheetTKBSchool, $lastColumn, $totalRow + 6);
 
@@ -1730,13 +1713,13 @@ class exportExcelController extends Controller
         }
 
         // Render content tabletime
-        $totalRow = 36;
+        $totalRow = 37;
         $indexTable = 0;
         $lastColumn = 0;
         for ($indexRowbody = 7; $indexRowbody < $totalRow; $indexRowbody++) {
             $indexcolum = 3;
             while ($indexcolum < $titleLenght) {
-                // if indexTable == titleLenght/2 then new row and indexcolum == 24 indexRowbody + 1
+
                 $tableItem = $tableTime[$indexTable];
                 if ($tableItem != null) {
                     $sheetTKBSchool->setCellValueByColumnAndRow($indexcolum, $indexRowbody, $tableItem->getSubject());
@@ -1750,9 +1733,10 @@ class exportExcelController extends Controller
                     $indexcolum++;
                 }
                 $lastColumn = $indexcolum;
-                if ($indexTable < count($tableTime) - 1) {
-                    $indexTable++;
-                }
+                // if ($indexTable < count($tableTime) - 1) {
+                //     $indexTable++;
+                // }
+                $indexTable++;
             }
         }
 
@@ -1780,7 +1764,7 @@ class exportExcelController extends Controller
             $sheetTKBSchool->setCellValueByColumnAndRow($lastColumn, $rowTeacher, $restItem);
             $rowTeacher = $rowTeacher + 5;
         }
-        $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn, $totalRow)->getCoordinate();
+        $lastCellAddress = $sheetTKBSchool->getCellByColumnAndRow($lastColumn, 36)->getCoordinate();
 
         $this->sign($sheetTKBSchool, $lastColumn, $totalRow + 6);
 
@@ -2118,7 +2102,7 @@ class exportExcelController extends Controller
             $tableMorning = $item->getTableTimeMorning();
             foreach ($tableMorning as $key => $table) {
                 if ($table != null) {
-                    $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->hovaten);
+                    $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->hovaten . "-" . $table->tenlop);
                 } else {
                     $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
                 }
@@ -2135,7 +2119,7 @@ class exportExcelController extends Controller
 
             foreach ($tableAfterNoon as $key => $table) {
                 if ($table != null) {
-                    $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->hovaten);
+                    $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, $table->tenmonhoc . "-" . $table->hovaten . "-" . $table->tenlop);
                 } else {
                     $sheetTKBClass->setCellValueByColumnAndRow($columnTableTime, $rowTableBody, "");
                 }
