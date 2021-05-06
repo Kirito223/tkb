@@ -11,7 +11,7 @@ class SessionInfo
     public function __construct()
     {
         $this->schoolId = Session::get('matruong');
-        $this->schoolName = Session::get('tentruong');
+        $this->schoolName = Session::get('schoolName');
     }
     public function getSchoolId()
     {

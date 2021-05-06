@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Mail;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpParser\Node\Expr\FuncCall;
 use stdClass;
-use ZipArchive;
+use DB;
 
 class exportExcelController extends Controller
 {
@@ -74,6 +74,7 @@ class exportExcelController extends Controller
         $startMonth = $param->startMonth;
         $endMonth = $param->endMonth;
         $week = $param->week;
+        $idTruong = $param->idTruong;
         if ($param->tkbtruong == 1) {
             switch ($param->buoi) {
                 case 1:
@@ -82,7 +83,7 @@ class exportExcelController extends Controller
                     $sheetTKBSchool = $sheet->getActiveSheet();
                     $fullname = $param->tendaydu;
 
-                    $this->exportTKBSchoolMorning($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week);
+                    $this->exportTKBSchoolMorning($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week, $idTruong);
                     array_push($fileExport, "thoikhoabieutruongsang");
                     break;
 
@@ -92,7 +93,7 @@ class exportExcelController extends Controller
                     $sheetTKBSchool = $sheet->getActiveSheet();
                     $fullname = $param->tendaydu;
 
-                    $this->exportTKBSchoolAfternoon($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week);
+                    $this->exportTKBSchoolAfternoon($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week, $idTruong);
                     array_push($fileExport, "thoikhoabieutruongchieu");
                     break;
 
@@ -103,7 +104,7 @@ class exportExcelController extends Controller
                     $sheetTKBSchool = $sheet->getActiveSheet();
                     $fullname = $param->tendaydu;
 
-                    $this->exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week);
+                    $this->exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week, $idTruong);
                     array_push($fileExport, "thoikhoabieutruong");
                     break;
             }
@@ -130,13 +131,23 @@ class exportExcelController extends Controller
         }
         if ($param->tkbphancongcm == 1) {
             $sheet = $this->loadSheetExcel('mautkbtochuyenmon.xlsx');
-            $this->exportTKBGroup($sheet, $startMonth, $endMonth, $week);
+            $groupList = json_decode($param->arrSelect);
+            $this->exportTKBGroup($sheet, $startMonth, $endMonth, $week, $groupList);
         }
 
         if ($param->tkbdiemtruong == 1) {
             $locationList  = json_decode($param->arrSelect);
             $file =   $this->exportTKBSchoolLocaltion($startMonth, $endMonth, $week, $locationList);
             return  response()->json(['msg' => 'ok', 'data' => $file], Response::HTTP_OK);
+        }
+
+        //giáo viên nghỉ
+
+        if ($param->gvNghi == 1) {
+            $sheet = $this->loadSheetExcel('maugiaoviennghi.xlsx');
+            $sheet->setActiveSheetIndex(0);
+            $sheetGvNghi = $sheet->getActiveSheet();
+            $this->exportGvNghi($sheetGvNghi, $sheet, $startMonth, $endMonth, $week);
         }
 
         return response()->json(Response::HTTP_OK);
@@ -164,6 +175,14 @@ class exportExcelController extends Controller
             ->select('id', 'tenphong as name')
             ->get();
         return response()->json($listRoom);
+    }
+
+    public function listGroup()
+    {
+        $listGroup = tochuyenmon::where('matruong', '=', $this->sessionInfo->getSchoolId())
+            ->select('id', 'tentocm as name')
+            ->get();
+        return response()->json($listGroup);
     }
 
     public function listLocation()
@@ -1504,12 +1523,16 @@ class exportExcelController extends Controller
     }
 
 
-    public function exportTKBSchoolMorning($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week)
+    public function exportTKBSchoolMorning($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week, $idTruong)
     {
         $rowTitle = 5;
         $columnTitle = 3;
         $matruong = 0;
-        $matruong = $this->sessionInfo->getSchoolId();
+        if ($idTruong != 0) {
+            $matruong = $idTruong;
+        } else {
+            $matruong = $this->sessionInfo->getSchoolId();
+        }
 
         $listClassRoom = danhsachlophoc::where('matruong', $matruong)->orderBy('tenlop', 'ASC')->get();
         // Render Class at header
@@ -1640,19 +1663,30 @@ class exportExcelController extends Controller
 
         $sheetTKBSchool->getStyle('A5:' . $lastCellAddress)->applyFromArray($styleArray);
 
-        $sheetTKBSchool->mergeCells("A1:G1");
-        $sheetTKBSchool->setCellValue("A1", $this->sessionInfo->getSchoolName());
+        $sheetTKBSchool->setCellValue("A2", "Thời khóa biểu trường" . $this->sessionInfo->getSchoolName());
 
-        $sheetTKBSchool->getStyle("A1")->getFont()->setBold(true);
+        $sheetTKBSchool->getStyle("A2")->getFont()->setBold(true);
+        $sheetTKBSchool->getStyle("A2")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $month = explode('/', $startMonth);
+
+        $sheetTKBSchool->setCellValue("A3", "(Tháng: " . $month[1] . '/' . $month[0] . " Tuần: " . $week . ")");
+
+        $sheetTKBSchool->getStyle("A3")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
         $this->autoSiezColumn($sheet);
         $this->saveExcel($sheet, "thoikhoabieutruongbuoisang");
     }
-    public function exportTKBSchoolAfternoon($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week)
+    public function exportTKBSchoolAfternoon($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week, $idTruong)
     {
         $rowTitle = 5;
         $columnTitle = 3;
         $matruong = 0;
-        $matruong = $this->sessionInfo->getSchoolId();
+        if ($idTruong != 0) {
+            $matruong = $idTruong;
+        } else {
+            $matruong = $this->sessionInfo->getSchoolId();
+        }
 
         $listClassRoom = danhsachlophoc::where('matruong', $matruong)->orderBy('tenlop', 'ASC')->get();
         // Render Class at header
@@ -1785,20 +1819,31 @@ class exportExcelController extends Controller
 
         $sheetTKBSchool->getStyle('A5:' . $lastCellAddress)->applyFromArray($styleArray);
 
-        $sheetTKBSchool->mergeCells("A1:G1");
-        $sheetTKBSchool->setCellValue("A1", $this->sessionInfo->getSchoolName());
+        $sheetTKBSchool->setCellValue("A2", "Thời khóa biểu trường" . $this->sessionInfo->getSchoolName());
 
-        $sheetTKBSchool->getStyle("A1")->getFont()->setBold(true);
+        $sheetTKBSchool->getStyle("A2")->getFont()->setBold(true);
+        $sheetTKBSchool->getStyle("A2")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $month = explode('/', $startMonth);
+
+        $sheetTKBSchool->setCellValue("A3", "(Tháng: " . $month[1] . '/' . $month[0] . "Tuần: " . $week);
+
+        $sheetTKBSchool->getStyle("A3")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
         $this->autoSiezColumn($sheet);
         $this->saveExcel($sheet, "thoikhoabieutruongbuoichieu");
     }
 
-    private function exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week)
+    private function exportTKBSchoolTwoColumn($sheetTKBSchool, $sheet, $fullname, $startMonth, $endMonth, $week, $idTruong)
     {
         $rowTitle = 5;
         $columnTitle = 3;
         $matruong = 0;
-        $matruong = $this->sessionInfo->getSchoolId();
+        if ($idTruong != 0) {
+            $matruong = $idTruong;
+        } else {
+            $matruong = $this->sessionInfo->getSchoolId();
+        }
 
         $listClassRoom = danhsachlophoc::where('matruong', $matruong)->orderBy('tenlop', 'ASC')->get();
         // Render Class at header
@@ -1936,10 +1981,18 @@ class exportExcelController extends Controller
 
         $sheetTKBSchool->getStyle('A5:' . $lastCellAddress)->applyFromArray($styleArray);
 
-        $sheetTKBSchool->mergeCells("A1:G1");
-        $sheetTKBSchool->setCellValue("A1", $this->sessionInfo->getSchoolName());
+        $sheetTKBSchool->setCellValue("A2", "Thời khóa biểu trường" . $this->sessionInfo->getSchoolName());
 
-        $sheetTKBSchool->getStyle("A1")->getFont()->setBold(true);
+        $sheetTKBSchool->getStyle("A2")->getFont()->setBold(true);
+        $sheetTKBSchool->getStyle("A2")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $month = explode('/', $startMonth);
+        dd($month);
+        $sheetTKBSchool->setCellValue("A3", "(Tháng: " . $month[1] . '/' . $month[0] . " Tuần: " . $week . ")");
+
+        $sheetTKBSchool->getStyle("A3")->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+
         $this->autoSiezColumn($sheet);
         $this->saveExcel($sheet, "thoikhoabieutruong");
     }
@@ -2744,14 +2797,13 @@ class exportExcelController extends Controller
         $this->saveExcel($sheet, "tkblop");
     }
 
-    private function exportTKBGroup($spreadsheet, $startMonth, $endMonth, $week)
+    private function exportTKBGroup($spreadsheet, $startMonth, $endMonth, $week, $listGroup)
     {
 
-        $listGroup = tochuyenmon::where('matruong', '=', $this->sessionInfo->getSchoolId())->get();
 
         $numberSheet = 0;
         foreach ($listGroup as $group) {
-            $sheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $group->tentocm);
+            $sheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $group->name);
             $spreadsheet->addSheet($sheet, $numberSheet);
             $spreadsheet->setActiveSheetIndex($numberSheet);
             $sheetSelect = $spreadsheet->getActiveSheet();
@@ -2942,5 +2994,442 @@ class exportExcelController extends Controller
             }
         }
         return response()->json(['msg' => "OK", 'fail' => $arrFail]);
+    }
+
+    //giáo viên nghỉ
+    private function exportGvNghi($sheetGvNghi, $sheet, $startMonth, $endMonth, $week)
+    {
+        $date = explode("/", $endMonth);
+        $year = $date[0];
+        $month = $date[1];
+
+        $matruong = $this->sessionInfo->getSchoolId();
+        $thoikhoabieu = DB::table('thoikhoabieu')
+            ->join('danhsachgv', 'danhsachgv.id', 'thoikhoabieu.magiaovien')
+            ->select('danhsachgv.bidanh', 'danhsachgv.hovaten', 'thoikhoabieu.magiaovien', 'thoikhoabieu.buoi', 'thoikhoabieu.thu', 'thoikhoabieu.matruong', 'thoikhoabieu.created_at', 'thoikhoabieu.tuan')
+            ->where('thoikhoabieu.matruong', $matruong)
+            ->where('thoikhoabieu.tuan', $week)
+            ->whereBetween('thoikhoabieu.created_at', [$startMonth, $endMonth])
+            ->orderBy('thoikhoabieu.tuan', 'ASC')
+            ->orderBy('thoikhoabieu.buoi', 'ASC')
+            ->orderBy('thoikhoabieu.tiet', 'ASC')
+            ->orderBy('thoikhoabieu.thu', 'ASC')
+            ->get();
+
+        $buoi = array(
+            array(
+                'idbuoi' => 0,
+                "tenbuoi" => "Sáng"
+            ),
+            array(
+                'idbuoi' => 1,
+                "tenbuoi" => "Chiều"
+            )
+        );
+
+        $thu = array(
+            array(
+                'idthu' => 2,
+                "tenthu" => "Thứ 2"
+            ),
+            array(
+                'idthu' => 3,
+                "tenthu" => "Thứ 3"
+            ),
+            array(
+                'idthu' => 4,
+                "tenthu" => "Thứ 4"
+            ),
+            array(
+                'idthu' => 5,
+                "tenthu" => "Thứ 5"
+            ),
+            array(
+                'idthu' => 6,
+                "tenthu" => "Thứ 6"
+            ),
+            array(
+                'idthu' => 7,
+                "tenthu" => "Thứ 7"
+            ),
+        );
+
+        $databt = array();
+        foreach ($buoi as $b) {
+            foreach ($thu as $k) {
+                foreach ($thoikhoabieu as $t) {
+                    if (($t->buoi != $b['idbuoi'] && $t->thu != $k['idthu']) || ($t->buoi == $b['idbuoi'] && $t->thu != $k['idthu']) || ($t->buoi != $b['idbuoi'] && $t->thu == $k['idthu'])) {
+                        $datetime = date_parse_from_format('Y-m-d', $t->created_at);
+                        $thang = $datetime['month'];
+                        $nam = $datetime['year'];
+                        array_push($databt, array('matruong' => $t->matruong, 'magiaovien' => $t->magiaovien, 'mabuoi' => $b['idbuoi'], 'mathu' => $k['idthu'], 'bidanh' => $t->bidanh, 'hovaten' => $t->hovaten, 'tenbuoi' => $b['tenbuoi'], 'tenthu' => $k['tenthu'], 'nam' => $nam, 'thang' => $thang, 'tuan' => $t->tuan, 'created_at' => $t->created_at));
+                    }
+                }
+            }
+        }
+
+        foreach ($thoikhoabieu as $t) {
+            foreach ($databt as $k => $d) {
+                if ($t->matruong == $d['matruong'] && $t->magiaovien == $d['magiaovien'] && $t->buoi == $d['mabuoi'] && $t->thu == $d['mathu'] && $t->tuan == $d['tuan'] && $t->created_at == $d['created_at']) {
+                    unset($databt[$k]);
+                }
+            }
+        }
+
+        $databt = array_values($databt);
+
+        $grouped = [];
+
+        foreach ($databt as $d) {
+            $mabuoi = $d['mabuoi'];
+            $mathu = $d['mathu'];
+            $magiaovien = $d['magiaovien'];
+            $grouped[$mabuoi][$mathu][$magiaovien][] = $d;
+        }
+
+        $new_data_giaoviennghi = [];
+
+        foreach ($grouped as $k => $v) {
+            $datathu = [];
+            $tenbuoi = null;
+            foreach ($v as $k1 => $v1) {
+                $datagv = [];
+                $tenthu = null;
+                foreach ($v1 as $k2 => $v2) {
+                    $tenbuoi = $v2[0]['tenbuoi'];
+                    $tenthu = $v2[0]['tenthu'];
+                    $hovaten = $v2[0]['hovaten'];
+                    $bidanh = $v2[0]['bidanh'];
+                    array_push($datagv, array('magiaovien' => $k2, 'hovaten' => $hovaten, 'bidanh' => $bidanh));
+                }
+                array_push($datathu, array('mathu' => $k1, 'tenthu' => $tenthu, 'dsgiaovien' => $datagv));
+            }
+            $new_data_giaoviennghi[] = array('mabuoi' => $k, 'tenbuoi' => $tenbuoi, 'dsthu' => $datathu);
+        }
+
+        $styleBorderParent = array(
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                    'borderSize' => 1,
+                ],
+                'inside' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'], 'borderSize' => 1,
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ],
+            'font' => [
+                'bold' => true,
+            ],
+        );
+
+        $styleBorderChild = array(
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'],
+                    'borderSize' => 1,
+                ],
+                'inside' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                    'color' => ['argb' => '000000'], 'borderSize' => 1,
+                ],
+            ],
+            'alignment' => [
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            ],
+        );
+
+        $i = 3;
+        $sheetGvNghi->setCellValue('G' . $i, '(Tháng: ' . $month . '/' . $year . ' - Tuần: ' . $week . ')');
+        $sheetGvNghi->mergeCells("G" . $i . ':I' . $i);
+        $sheetGvNghi->getStyle("G" . $i . ':I' . $i)->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
+        $i = 6;
+        $h = 6;
+        $j = 6;
+        $k = 6;
+        $l = 6;
+        $m = 6;
+        $x = 6;
+
+        //sáng
+
+        $demDSGVSangT2 = 0;
+        $demDSGVSangT3 = 0;
+        $demDSGVSangT4 = 0;
+        $demDSGVSangT5 = 0;
+        $demDSGVSangT6 = 0;
+        $demDSGVSangT7 = 0;
+
+        for ($keyS = 0; $keyS < count($new_data_giaoviennghi[0]['dsthu']); $keyS++) {
+            if ($new_data_giaoviennghi[0]['dsthu'][$keyS]['mathu'] == 2) {
+                $demDSGVSangT2 = count($new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien']);
+                $mangGVSangT2 = $new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[0]['dsthu'][$keyS]['mathu'] == 3) {
+                $demDSGVSangT3 = count($new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien']);
+                $mangGVSangT3 = $new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[0]['dsthu'][$keyS]['mathu'] == 4) {
+                $demDSGVSangT4 = count($new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien']);
+                $mangGVSangT4 = $new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[0]['dsthu'][$keyS]['mathu'] == 5) {
+                $demDSGVSangT5 = count($new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien']);
+                $mangGVSangT5 = $new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[0]['dsthu'][$keyS]['mathu'] == 6) {
+                $demDSGVSangT6 = count($new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien']);
+                $mangGVSangT6 = $new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[0]['dsthu'][$keyS]['mathu'] == 7) {
+                $demDSGVSangT7 = count($new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien']);
+                $mangGVSangT7 = $new_data_giaoviennghi[0]['dsthu'][$keyS]['dsgiaovien'];
+            }
+        }
+
+        $demMaxSang = max($demDSGVSangT2, $demDSGVSangT3, $demDSGVSangT4, $demDSGVSangT5, $demDSGVSangT6, $demDSGVSangT7);
+
+        $merCellLastSang = ($i + $demMaxSang) - 1;
+
+        $sheetGvNghi->setCellValue('B' . $i, $new_data_giaoviennghi[0]['tenbuoi']);
+        $sheetGvNghi->mergeCells("B" . $i . ':B' . $merCellLastSang);
+        $sheetGvNghi->getStyle("B" . $i . ':B' . $merCellLastSang)->applyFromArray($styleBorderParent);
+
+        if ($demDSGVSangT2 != 0) {
+            foreach ($mangGVSangT2 as $d) {
+                $sheetGvNghi->setCellValue('C' . $h, $d['hovaten']);
+                $sheetGvNghi->mergeCells("C" . $h . ':D' . $h);
+                $sheetGvNghi->getStyle("C" . $h . ':D' . $h)->applyFromArray($styleBorderChild);
+                $h++;
+            }
+        }
+
+        //cột thứ 2 giá trị rỗng
+        for ($h = $h; $h < $merCellLastSang + 1; $h++) {
+            $sheetGvNghi->mergeCells("C" . $h . ':D' . $h);
+            $sheetGvNghi->getStyle("C" . $h . ':D' . $h)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVSangT3 != 0) {
+            foreach ($mangGVSangT3 as $d1) {
+                $sheetGvNghi->setCellValue('E' . $j, $d1['hovaten']);
+                $sheetGvNghi->mergeCells("E" . $j . ':F' . $j);
+                $sheetGvNghi->getStyle("E" . $j . ':F' . $j)->applyFromArray($styleBorderChild);
+                $j++;
+            }
+        }
+
+        //cột thứ 3 giá trị rỗng
+        for ($j = $j; $j < $merCellLastSang + 1; $j++) {
+            $sheetGvNghi->mergeCells("E" . $j . ':F' . $j);
+            $sheetGvNghi->getStyle("E" . $j . ':F' . $j)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVSangT4 != 0) {
+            foreach ($mangGVSangT4 as $d2) {
+                $sheetGvNghi->setCellValue('G' . $k, $d2['hovaten']);
+                $sheetGvNghi->mergeCells("G" . $k . ':H' . $k);
+                $sheetGvNghi->getStyle("G" . $k . ':H' . $k)->applyFromArray($styleBorderChild);
+                $k++;
+            }
+        }
+
+        //cột thứ 4 giá trị rỗng
+        for ($k = $k; $k < $merCellLastSang + 1; $k++) {
+            $sheetGvNghi->mergeCells("G" . $k . ':H' . $k);
+            $sheetGvNghi->getStyle("G" . $k . ':H' . $k)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVSangT5 != 0) {
+            foreach ($mangGVSangT5 as $d3) {
+                $sheetGvNghi->setCellValue('I' . $l, $d3['hovaten']);
+                $sheetGvNghi->mergeCells("I" . $l . ':J' . $l);
+                $sheetGvNghi->getStyle("I" . $l . ':J' . $l)->applyFromArray($styleBorderChild);
+                $l++;
+            }
+        }
+
+        //cột thứ 5 giá trị rỗng
+        for ($l = $l; $l < $merCellLastSang + 1; $l++) {
+            $sheetGvNghi->mergeCells("I" . $l . ':J' . $l);
+            $sheetGvNghi->getStyle("I" . $l . ':J' . $l)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVSangT6 != 0) {
+            foreach ($mangGVSangT6 as $d4) {
+                $sheetGvNghi->setCellValue('K' . $m, $d4['hovaten']);
+                $sheetGvNghi->mergeCells("K" . $m . ':L' . $m);
+                $sheetGvNghi->getStyle("K" . $m . ':L' . $m)->applyFromArray($styleBorderChild);
+                $m++;
+            }
+        }
+
+        //cột thứ 6 giá trị rỗng
+        for ($m = $m; $m < $merCellLastSang + 1; $m++) {
+            $sheetGvNghi->mergeCells("K" . $m . ':L' . $m);
+            $sheetGvNghi->getStyle("K" . $m . ':L' . $m)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVSangT7 != 0) {
+            foreach ($mangGVSangT7 as $d5) {
+                $sheetGvNghi->setCellValue('M' . $x, $d5['hovaten']);
+                $sheetGvNghi->mergeCells("M" . $x . ':N' . $x);
+                $sheetGvNghi->getStyle("M" . $x . ':N' . $x)->applyFromArray($styleBorderChild);
+                $x++;
+            }
+        }
+
+        //cột thứ 7 giá trị rỗng
+        for ($x = $x; $x < $merCellLastSang + 1; $x++) {
+            $sheetGvNghi->mergeCells("M" . $x . ':N' . $x);
+            $sheetGvNghi->getStyle("M" . $x . ':N' . $x)->applyFromArray($styleBorderChild);
+        }
+
+
+        $iNew = $i + $demMaxSang;
+
+        //chiều
+
+        $demDSGVChieuT2 = 0;
+        $demDSGVChieuT3 = 0;
+        $demDSGVChieuT4 = 0;
+        $demDSGVChieuT5 = 0;
+        $demDSGVChieuT6 = 0;
+        $demDSGVChieuT7 = 0;
+
+        for ($keyC = 0; $keyC < count($new_data_giaoviennghi[1]['dsthu']); $keyC++) {
+            if ($new_data_giaoviennghi[1]['dsthu'][$keyC]['mathu'] == 2) {
+                $demDSGVChieuT2 = count($new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien']);
+                $mangGVChieuT2 = $new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[1]['dsthu'][$keyC]['mathu'] == 3) {
+                $demDSGVChieuT3 = count($new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien']);
+                $mangGVChieuT3 = $new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[1]['dsthu'][$keyC]['mathu'] == 4) {
+                $demDSGVChieuT4 = count($new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien']);
+                $mangGVChieuT4 = $new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[1]['dsthu'][$keyC]['mathu'] == 5) {
+                $demDSGVChieuT5 = count($new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien']);
+                $mangGVChieuT5 = $new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[1]['dsthu'][$keyC]['mathu'] == 6) {
+                $demDSGVChieuT6 = count($new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien']);
+                $mangGVChieuT6 = $new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien'];
+            }
+            if ($new_data_giaoviennghi[1]['dsthu'][$keyC]['mathu'] == 7) {
+                $demDSGVChieuT7 = count($new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien']);
+                $mangGVChieuT7 = $new_data_giaoviennghi[1]['dsthu'][$keyC]['dsgiaovien'];
+            }
+        }
+
+        $demMaxChieu = max($demDSGVChieuT2, $demDSGVChieuT3, $demDSGVChieuT4, $demDSGVChieuT5, $demDSGVChieuT6, $demDSGVChieuT7);
+
+        $merCellLastChieu = ($iNew + $demMaxChieu) - 1;
+
+        $sheetGvNghi->setCellValue('B' . $iNew, $new_data_giaoviennghi[1]['tenbuoi']);
+        $sheetGvNghi->mergeCells("B" . $iNew . ':B' . $merCellLastChieu);
+        $sheetGvNghi->getStyle("B" . $iNew . ':B' . $merCellLastChieu)->applyFromArray($styleBorderParent);
+
+        if ($demDSGVChieuT2 != 0) {
+            foreach ($mangGVChieuT2 as $d) {
+                $sheetGvNghi->setCellValue('C' . $h, $d['hovaten']);
+                $sheetGvNghi->mergeCells("C" . $h . ':D' . $h);
+                $sheetGvNghi->getStyle("C" . $h . ':D' . $h)->applyFromArray($styleBorderChild);
+                $h++;
+            }
+        }
+
+        //cột thứ 2 giá trị rỗng
+        for ($h = $h; $h < $merCellLastChieu + 1; $h++) {
+            $sheetGvNghi->mergeCells("C" . $h . ':D' . $h);
+            $sheetGvNghi->getStyle("C" . $h . ':D' . $h)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVChieuT3 != 0) {
+            foreach ($mangGVChieuT3  as $d1) {
+                $sheetGvNghi->setCellValue('E' . $j, $d1['hovaten']);
+                $sheetGvNghi->mergeCells("E" . $j . ':F' . $j);
+                $sheetGvNghi->getStyle("E" . $j . ':F' . $j)->applyFromArray($styleBorderChild);
+                $j++;
+            }
+        }
+
+        //cột thứ 3 giá trị rỗng
+        for ($j = $j; $j < $merCellLastChieu + 1; $j++) {
+            $sheetGvNghi->mergeCells("E" . $j . ':F' . $j);
+            $sheetGvNghi->getStyle("E" . $j . ':F' . $j)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVChieuT4 != 0) {
+            foreach ($mangGVChieuT4 as $d2) {
+                $sheetGvNghi->setCellValue('G' . $k, $d2['hovaten']);
+                $sheetGvNghi->mergeCells("G" . $k . ':H' . $k);
+                $sheetGvNghi->getStyle("G" . $k . ':H' . $k)->applyFromArray($styleBorderChild);
+                $k++;
+            }
+        }
+
+        //cột thứ 4 giá trị rỗng
+        for ($k = $k; $k < $merCellLastChieu + 1; $k++) {
+            $sheetGvNghi->mergeCells("G" . $k . ':H' . $k);
+            $sheetGvNghi->getStyle("G" . $k . ':H' . $k)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVChieuT5 != 0) {
+            foreach ($mangGVChieuT5 as $d3) {
+                $sheetGvNghi->setCellValue('I' . $l, $d3['hovaten']);
+                $sheetGvNghi->mergeCells("I" . $l . ':J' . $l);
+                $sheetGvNghi->getStyle("I" . $l . ':J' . $l)->applyFromArray($styleBorderChild);
+                $l++;
+            }
+        }
+
+        //cột thứ 5 giá trị rỗng
+        for ($l = $l; $l < $merCellLastChieu + 1; $l++) {
+            $sheetGvNghi->mergeCells("I" . $l . ':J' . $l);
+            $sheetGvNghi->getStyle("I" . $l . ':J' . $l)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVChieuT6 != 0) {
+            foreach ($mangGVChieuT6 as $d4) {
+                $sheetGvNghi->setCellValue('K' . $m, $d4['hovaten']);
+                $sheetGvNghi->mergeCells("K" . $m . ':L' . $m);
+                $sheetGvNghi->getStyle("K" . $m . ':L' . $m)->applyFromArray($styleBorderChild);
+                $m++;
+            }
+        }
+
+        //cột thứ 6 giá trị rỗng
+        for ($m = $m; $m < $merCellLastChieu + 1; $m++) {
+            $sheetGvNghi->mergeCells("K" . $m . ':L' . $m);
+            $sheetGvNghi->getStyle("K" . $m . ':L' . $m)->applyFromArray($styleBorderChild);
+        }
+
+        if ($demDSGVChieuT7 != 0) {
+            foreach ($mangGVChieuT7 as $d5) {
+                $sheetGvNghi->setCellValue('M' . $x, $d5['hovaten']);
+                $sheetGvNghi->mergeCells("M" . $x . ':N' . $x);
+                $sheetGvNghi->getStyle("M" . $x . ':N' . $x)->applyFromArray($styleBorderChild);
+                $x++;
+            }
+        }
+
+        //cột thứ 7 giá trị rỗng
+        for ($x = $x; $x < $merCellLastChieu + 1; $x++) {
+            $sheetGvNghi->mergeCells("M" . $x . ':N' . $x);
+            $sheetGvNghi->getStyle("M" . $x . ':N' . $x)->applyFromArray($styleBorderChild);
+        }
+
+
+        $this->saveExcel($sheet, 'dsgiaoviennghi');
     }
 }

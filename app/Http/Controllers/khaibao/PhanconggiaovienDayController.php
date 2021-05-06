@@ -142,6 +142,8 @@ class PhanconggiaovienDayController extends Controller
         return response()->json(['msg' => 'ok', 'data' => $list], HTTPCode::$CODE_SUCCESS);
     }
 
+  
+
     public function xuatBangphancong()
     {
         if (!is_dir(storage_path('excel'))) {
