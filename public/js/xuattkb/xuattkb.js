@@ -125,7 +125,7 @@ async function loadRoom() {
 }
 
 async function loadGroup() {
-    let result = await xuattkbapi.getListRoom();
+    let result = await xuattkbapi.getListGroup();
     showTable(result);
 }
 
@@ -228,10 +228,10 @@ function initEvent() {
     };
 
     //giáo viên nghi
-    xuatgiaoviennghi.onclick = function() {
-        reset();
-        tableList.classList.add("hidden");
-    };
+    // xuatgiaoviennghi.onclick = function() {
+    //     reset();
+    //     tableList.classList.add("hidden");
+    // };
 }
 
 async function downLoadTKBEvent() {
@@ -310,10 +310,10 @@ async function exportExcel() {
     if (xuattkbdiemtruong.checked) {
         tkbdiemtruong = 1;
     }
-    if (xuatgiaoviennghi.checked) {
-        gvNghi = 1;
-        arrFile.push("dsgiaoviennghi");
-    }
+    // if (xuatgiaoviennghi.checked) {
+    //     gvNghi = 1;
+    //     arrFile.push("dsgiaoviennghi");
+    // }
 
     try {
         progressExport.classList.remove("hidden");
@@ -324,7 +324,7 @@ async function exportExcel() {
                 xuattkbgiaovien.checked ||
                 xuattkblop.checked ||
                 xuattkbphong.checked ||
-                xuattkbdiemtruong.checked||
+                xuattkbdiemtruong.checked ||
                 xuattkbphancongcm.checked
             ) {
                 let chkSelect = document.querySelectorAll(".chkSelect:checked");
@@ -408,7 +408,7 @@ async function exportExcel() {
 
 function downloadTkb() {
     arrFile.forEach(file => {
-        window.open(`/public/export/${file}.xlsx`);
+        // window.open(`/public/export/${file}.xlsx`);
     });
     arrFile.length = 0;
 }

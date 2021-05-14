@@ -5,6 +5,7 @@ namespace App\Http\Controllers\export;
 use App\danhsachgv;
 use App\danhsachlophoc;
 use App\diemtruong;
+use App\giaovien_chuyenmon;
 use App\Http\Controllers\Controller;
 use App\Objects\Day;
 use App\Objects\SessionInfo;
@@ -2799,8 +2800,6 @@ class exportExcelController extends Controller
 
     private function exportTKBGroup($spreadsheet, $startMonth, $endMonth, $week, $listGroup)
     {
-
-
         $numberSheet = 0;
         foreach ($listGroup as $group) {
             $sheet = new \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet($spreadsheet, $group->name);
@@ -2863,11 +2862,20 @@ class exportExcelController extends Controller
                 }
             }
 
-            $listTeacher = danhsachgv::where('giaovien_chuyenmon.matochuyenmon', $group->id)
-                ->join('giaovien_chuyenmon', 'giaovien_chuyenmon.magiaovien', 'danhsachgv.id')
-                ->select('danhsachgv.id', 'danhsachgv.hovaten')
+            $listTeacher = giaovien_chuyenmon::where('matochuyenmon', $group->id)
+                ->select('magiaovien')
                 ->get();
+            $listTeacher = $listTeacher->unique('magiaovien');
+            $arrID = array();
+
+            foreach ($listTeacher as $teacher) {
+                array_push($arrID, $teacher->magiaovien);
+            }
+
+            $listTeacher = danhsachgv::whereIn('id', $arrID)->get();
+
             $rowHead = 4;
+
             $indexColum = 3;
             $lastColumn = 0;
             // Render Header with list teacher
@@ -2884,6 +2892,10 @@ class exportExcelController extends Controller
                 $table->name = $teacher->id;
                 $arrTable = array();
                 for ($day = Day::$MONDAY; $day < Day::$SUNDAY; $day++) {
+
+                    if ($teacher->id == 27845) {
+                        $break = 1;
+                    }
                     // Morning
                     for ($seesion = DAY::$MORNING; $seesion < Day::$MIDDAY; $seesion++) {
                         $tableMorning = thoikhoabieu::where('thu', $day)
@@ -2925,10 +2937,13 @@ class exportExcelController extends Controller
             $indexColum = 3;
             $totalRow = 64;
             $indexTable = 0;
-            $titleLenght = count($listTeacher);
+            $titleLenght = count($listTeacher) + 3;
 
             $indexColum = 3;
             while ($indexColum < $titleLenght) {
+                if ($indexTable == 10) {
+                    $b = 1;
+                }
                 $tableItem = $tableTime[$indexTable];
                 $table = $tableItem->table;
                 $row = 5;
@@ -2943,11 +2958,11 @@ class exportExcelController extends Controller
                 $indexColum++;
                 $indexTable++;
             }
-            $lastCellAddress = $sheetSelect->getCellByColumnAndRow($titleLenght + 2, $totalRow)->getCoordinate();
+            $lastCellAddress = $sheetSelect->getCellByColumnAndRow(($titleLenght-1), $totalRow)->getCoordinate();
             $this->setBorder($sheetSelect, "A4:", $lastCellAddress);
 
             $sheetSelect->mergeCellsByColumnAndRow(1, 1, $lastColumn, 1);
-            $sheetSelect->setCellValueByColumnAndRow(1, 1, "THỜI KHÓA BIỂU " . strtoupper($group->tentocm));
+            $sheetSelect->setCellValueByColumnAndRow(1, 1, "THỜI KHÓA BIỂU " . strtoupper($group->name));
             $sheetSelect->mergeCellsByColumnAndRow(1, 2, $lastColumn, 2);
             $sheetSelect->setCellValueByColumnAndRow(1, 2, "Ngày thực hiện ");
 
