@@ -223,7 +223,7 @@ Route::group(['middleware' => 'auth'], function () {
 	//ti?t giáo viên bu?c ph?i có
 	Route::get('gettietgvbuocphaico', 'rangbuoc\rangbuocController@gettietgvbuocphaico');
 	Route::post('addrangbuoctietgvbuocphaico', 'rangbuoc\rangbuocController@addrangbuoctietgvbuocphaico');
-	
+
 	//dang ký bu?i/ti?t ngh? c?a gv
 	Route::get('getdangkybuoitietnghicuagv', 'rangbuoc\rangbuocController@getdangkybuoitietnghicuagv');
 	Route::post('addrangbuocdangkytietnghigv', 'rangbuoc\rangbuocController@addrangbuocdangkytietnghigv');
@@ -423,4 +423,9 @@ Route::group(['middleware' => 'auth'], function () {
 	//cập nhật trạng thái xem thông báo của ogd
 	Route::post('updatetrangthaixemthongbaotruong', 'thongbao\thongbaoController@updatetrangthaixemthongbaotruong');
 	Route::post('uploadFileKysos', "tonghop\tonghopController@uploadFileKyso");
+
+	Route::get('daythay', 'GiaoVienDayThayController@index');
+
+	Route::post('getTKB', 'GiaoVienDayThayController@getTKB');
+	Route::post('phanCongDayThay', 'GiaoVienDayThayController@phanCongDayThay');
 });
